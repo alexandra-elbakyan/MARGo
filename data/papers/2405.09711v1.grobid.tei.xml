@@ -1,0 +1,1429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">STAR: A Benchmark for Situated Reasoning in Real-World Videos</title>
+				<funder>
+					<orgName type="full">Nexplore</orgName>
+				</funder>
+				<funder>
+					<orgName type="full">Mitsubishi Electric</orgName>
+				</funder>
+				<funder ref="#_hue6p5E">
+					<orgName type="full">ONR MURI</orgName>
+				</funder>
+				<funder ref="#_asRBcE2">
+					<orgName type="full">ONR</orgName>
+				</funder>
+				<funder>
+					<orgName type="full">MIT-IBM Watson AI Lab</orgName>
+				</funder>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability  status="unknown">
+					<licence/>
+				</availability>
+				<date type="published" when="2024-05-15">15 May 2024</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Bo</forename><surname>Wu</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Shoubin</forename><surname>Yu</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Zhenfang</forename><surname>Chen</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Joshua</forename><forename type="middle">B</forename><surname>Tenenbaum</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Chuang</forename><surname>Gan</surname></persName>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">MIT-IBM Watson AI Lab</orgName>
+								<orgName type="institution" key="instit2">Shanghai Jiao Tong University</orgName>
+								<orgName type="institution" key="instit3">MIT-IBM Watson AI Lab</orgName>
+								<orgName type="institution" key="instit4">MIT BCS</orgName>
+								<address>
+									<settlement>CBMM</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="institution" key="instit1">CSAIL</orgName>
+								<orgName type="institution" key="instit2">MIT-IBM Watson AI Lab</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">STAR: A Benchmark for Situated Reasoning in Real-World Videos</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2024-05-15">15 May 2024</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">E92C7321EF3E4C33EBD19EF5DE98C981</idno>
+					<idno type="arXiv">arXiv:2405.09711v1[cs.AI]</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.8.2-SNAPSHOT" ident="GROBID" when="2025-01-24T14:30+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Reasoning in the real world is not divorced from situations. How to capture the present knowledge from surrounding situations and perform reasoning accordingly is crucial and challenging for machine intelligence. This paper introduces a new benchmark that evaluates the situated reasoning ability via situation abstraction and logic-grounded question answering for real-world videos, called Situated Reasoning in Real-World Videos (STAR). This benchmark is built upon the realworld videos associated with human actions or interactions, which are naturally dynamic, compositional, and logical. The dataset includes four types of questions, including interaction, sequence, prediction, and feasibility. We represent the situations in real-world videos by hyper-graphs connecting extracted atomic entities and relations (e.g., actions, persons, objects, and relationships). Besides visual perception, situated reasoning also requires structured situation comprehension and logical reasoning. Questions and answers are procedurally generated. The answering logic of each question is represented by a functional program based on a situation hyper-graph. We compare various existing video reasoning models and find that they all struggle on this challenging situated reasoning task. We further propose a diagnostic neuro-symbolic model that can disentangle visual perception, situation abstraction, language understanding, and functional reasoning to understand the challenges of this benchmark.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Reasoning about real-world situations is essential to human intelligence. In a specific situation like Figure <ref type="figure" target="#fig_0">1</ref>, we are able to know how to act in situations quickly and make feasible decisions subconsciously. That means we are logically antecedent before the concrete act. "Situated Reasoning" aims at making us understand situations dynamically and reason with the present knowledge accordingly. Such ability is logic-centered but not isolated or divorced from the surrounding situations since cognition in the real world cannot be separated from the context <ref type="bibr" target="#b4">[5]</ref>.</p><p>In fact, such situated reasoning in the real world is very challenging to existing intelligent systems. Early studies about reasoning in actions <ref type="bibr" target="#b34">[35,</ref><ref type="bibr" target="#b42">42]</ref> provide formalism definitions and frameworks from logic formalism perspectives (e.g., situation calculus, etc.). They formulate situations as a set of formulae and perform calculus based on the designed logic rules <ref type="bibr" target="#b30">[31,</ref><ref type="bibr" target="#b35">36]</ref>. However, creating all possible logic rules in real scenarios is impossible, limiting their practicality. Recent studies of visual reasoning on synthetic video datasets <ref type="bibr" target="#b47">[47]</ref> demonstrate the possibilities to connect visual perception, language understanding with symbolic reasoning. It remains unclear to what extent the model performs well on these synthetic datasets can be extended to real-world situations. According to situated cognition theory <ref type="bibr" target="#b6">[7,</ref><ref type="bibr" target="#b4">5,</ref><ref type="bibr" target="#b3">4]</ref>, situated reasoning relies on logical thinking and integrates naturally with the present knowledge captured from the surrounding situations. Such situated reasoning may be trivial for humans but not easy to current state-of-the-art methods. According to the experiment results in Table <ref type="table">2</ref> of the paper, we find existing QA models struggle with these challenging tasks, and they mainly leveraging the correlation between the visual content and question-answer pairs instead of reasoning. To explore situated reasoning with increasing complexity, we propose STAR, a novel benchmark for real-world situated reasoning via videos that require systems to capture the present knowledge from dynamic situations as structured representation and answer questions accordingly. From our perspective, such ability is a progressive process from concrete situations to mental logic. We hope the diagnostic benchmark will help to reduce the gap by conducting bottom-up perception, structured abstraction, and explicit reasoning in real-world videos.</p><p>We take human activities or actions in daily life as an exemplary domain and build the dataset upon video clips of real-world situations. The benchmark includes four types of questions: interaction question, sequence question, prediction question, and feasibility question. Each question is associated with an action-centered situation from diverse scenes and places, and each situation involves multiple actions. In order to represent the present knowledge and their dynamic changes in situations, we abstract them into structured representations with entities and relations: situation hypergraphs. Inspired by the work <ref type="bibr" target="#b21">[22]</ref>, our benchmark designs well-controlled questions and answers by question templates and programs. We simplify the language understanding by adopting concise forms and question templates for generation since our research scope mainly focuses on diagnostics for visual reasoning ability. And we also provided an auxiliary set STAR-Humans to help the evaluation with more challenging human-written questions. The answering logics describe logical reasoning processes which were grounded to executive programs over generated situation hypergraphs. We analyzed rationality by human annotations by showing these situations and synthetic questions and choices to annotators. As summarized in Table <ref type="table">1</ref>, STAR complements existing visual reasoning benchmarks on various aspects. It combines both situation abstraction and diagnostic reasoning focusing on human-object interaction, temporal sequence analysis, action prediction, and feasibility inference. We evaluate various visual question answering or visual reasoning models on STAR but find none of them can achieve promising performance. We design a diagnostic model called Neuro-Symbolic Situated Reasoning (NS-SR), a neural-symbolic architecture for real-world situated reasoning. It answers questions by leveraging structured situation graphs and dynamic clues from situations to perform symbolic reasoning. Our main contributions are:</p><p>• We systematically formulate the problem of situated reasoning from real-world videos, focusing on interaction, sequence, prediction, and feasibility questions. • We construct a well-controlled benchmark STAR for situated reasoning, where designing annotations from three perspectives: visual perception, situation abstraction and logic reasoning. Each video is grounded with a situation hyper-graph, and each question is associated with a functional program that specifies the explicit reasoning steps to answer the question. • We evaluate various state-of-the-art methods on STAR and find that they still make many mistakes in situations that are trivial for humans. • We design a diagnostic neuro-symbolic framework for an in-depth analysis of the challenges on STAR benchmark and provide future directions on building more powerful reasoning models.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Related Work</head><p>Visual Question Answering Visual Question Answering <ref type="bibr" target="#b0">[1,</ref><ref type="bibr" target="#b40">40]</ref> requires a model to answer visual related questions via understanding both visual content and question semantics. The existing visual/video question answering benchmarks <ref type="bibr" target="#b12">[13,</ref><ref type="bibr" target="#b50">50,</ref><ref type="bibr" target="#b23">24,</ref><ref type="bibr" target="#b40">40,</ref><ref type="bibr" target="#b44">44]</ref> adopted images <ref type="bibr" target="#b0">[1,</ref><ref type="bibr" target="#b50">50,</ref><ref type="bibr" target="#b10">11]</ref>/videos <ref type="bibr" target="#b40">[40,</ref><ref type="bibr" target="#b44">44,</ref><ref type="bibr" target="#b18">19,</ref><ref type="bibr" target="#b27">28,</ref><ref type="bibr" target="#b17">18,</ref><ref type="bibr" target="#b8">9,</ref><ref type="bibr" target="#b45">45]</ref> and types of visual comprehension questions. They achieved significant progress on evaluating the vision-language understanding ability of systems from multiple perspectives of perception. Differently, STAR requires systems to perform explicit reasoning in real-world situations and provides step-by-step reasoning programs.</p><p>Visual Reasoning Beyond visual question answering, several new datasets <ref type="bibr" target="#b20">[21,</ref><ref type="bibr" target="#b17">18,</ref><ref type="bibr" target="#b47">47,</ref><ref type="bibr" target="#b13">14,</ref><ref type="bibr" target="#b15">16,</ref><ref type="bibr" target="#b5">6]</ref> are designed to diagnose models' reasoning abilities. They contain questions with compositional attributes and logic programs, which require systems to perform step-by-step reasoning. It was first studied in CLEVR <ref type="bibr" target="#b20">[21]</ref> and GQA <ref type="bibr" target="#b17">[18]</ref> for reasoning in static images. Later, it was extended to the video domain for a more complex visual senses. MarioQA <ref type="bibr" target="#b31">[32]</ref>, COG <ref type="bibr" target="#b46">[46]</ref>, CATER <ref type="bibr" target="#b11">[12]</ref> and CLEVRER <ref type="bibr" target="#b47">[47]</ref> include human-annotated or generated questions and synthetic videos from simulated environments. They ask models to recognize geometric objects and their movements or collisions for understanding of compositional or spatio-temporal relations in the form of video question answering. Most of them focus on objects dynamics in synthetic scenes and it remains a doubt whether those are representative enough to reflect the complexity of real-world situations. AGQA <ref type="bibr" target="#b13">[14]</ref> is the most recent work about reasoning in real-world videos, but it focuses on spatio-temporal relations.</p><p>Situation Formalism Early-stage work <ref type="bibr" target="#b30">[31,</ref><ref type="bibr" target="#b35">36,</ref><ref type="bibr" target="#b24">25]</ref> establish formalisms for reasoning about action and change. The situation calculus represents changing scenarios as a set of first-order logic formulae. However, it is not realistic to apply such formalisms directly to real-world situations. Not all axioms are visible or detectable. Moreover, real-world situations are dynamic and have not been well-defined. It is still an open challenge to diagnose reasoning about actions for real-world situations. </p><formula xml:id="formula_0">✗ ✗ ✗ ✓ ✗ ✗ ✗ VCR [49] ✗ ✗ ✗ ✓ ✓ ✗ ✗ GQA [18] ✗ ✓ ✗ ✗ ✗ ✗ ✗ CLEVR [21] ✗ ✗ ✓ ✗ ✗ ✗ ✗ COG [46] ✗ ✗ ✓ ✗ ✗ ✗ ✗ CLEVRER [47] ✗ ✗ ✓ ✓ ✓ ✓ ✗ TGIF-QA [19] ✓ ✗ ✗ ✓ ✓ ✗ ✗ MovieQA [40] ✓ ✗ ✗ ✓ ✓ ✗ ✗ TVQA/TVQA+ [28, 29] ✓ ✗ ✗ ✓ ✓ ✗ ✗ STAR (ours) ✓ ✓ ✓ ✓ ✓ ✓ ✓</formula><p>Table <ref type="table">1</ref>: Comparison between STAR and other benchmarks (visual reasoning or video QA). STAR is a real-world situated reasoning benchmark with situation abstraction and diagnostic reasoning. It contains a wide range of reasoning tasks about human-object interaction, temporal sequence analysis, action prediction, and feasibility inference.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Situated Reasoning Benchmark</head><p>STAR evaluates the human-like ability: situated reasoning. It requires systems to learn and perform reasoning in real-world situations to challenging questions. Building a situated reasoning benchmark via real-world data is challenging because it requires tight-controlled situation clues and well-designed question-answer pairs. We combine both situations abstraction and logical reasoning and adopt three guidelines in our benchmark construction: 1. situations are represented by hierarchical graphs based on bottom-up annotations for abstraction; 2. question and option generation for situated reasoning is grounded to formatted questions, functional programs, and shared situation data types; 3. situated reasoning can perform over the situation graphs iteratively.</p><p>STAR consists of about 60K situated reasoning questions with programs and answers, 240K candidate choices, and 22K trimmed situation video clips. Situation video clips in our benchmark are sourced from human activity videos, which record the dynamic interaction processes of human actions and surrounding environments in daily-life scenes. We also provide about 144K situation hypergraphs as structured situation abstraction. Designed questions cover four types of skills for situated reasoning.</p><p>We constructed annotated questions with answers and options. Each question answering corresponds to a specific program for reasoning logic. To connect situation abstraction and reasoning diagnosis for question-answering, we provide situation hypergraphs tied with executable programs. Then situations, questions, and options are aligned with the unified data type schema, including actions, objects, humans, and relations. The STAR includes 111 action predicates, 28 objects, and 24 relationships. The benchmark is split into training/validation/test sets with a ratio of about 6:1:1. More dataset setting and data analysis details are in the supplementary material Section 2 or 3.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Situation Abstraction</head><p>Situations Situation is a core concept in the STAR benchmark. It describes entities, events, moments, and environments. We build up situations start from 9K source videos with action annotations sampled from Charades dataset <ref type="bibr" target="#b38">[38]</ref>. The videos describe daily-life actions or activities in 11 indoor scenes, such as the kitchen, living room, bedroom, etc.. A situation is a trimmed video with multiple consecutive or overlapped actions and interactions. According to the provided annotations, we filter source videos by their quality, stability, and video length to construct clean and unambiguous data space for situations. All situation videos in our dataset are trimmed from source videos according to question types, temporal boundaries of multiple appeared actions (from Charades), and question logic. We split each action into two action segments according to the definition in situation calculus <ref type="bibr" target="#b30">[31]</ref>: action precondition and effect. The action precondition is the beginning frame to show an initial static scene of the environment. The action effect describes the process of a single action or multiple actions. Situations of interaction or sequence questions contain complete action segments. Situations of prediction questions (or feasibility questions) include the actions involved in questions and an incomplete action effect segment (or no other action segments) about answers.</p><p>Situation Hypergraph To distill abstract representations from situation videos, STAR benchmark defines a unified schema to describe dynamic processes in real-world situations in the form of the hypergraph. Situation hypergraphs represent actions and inner-relations and their hierarchical structures within situations. As shown in Figure <ref type="figure" target="#fig_0">1</ref>, each situation video is a set of subgraphs with person and object nodes, and edges represent in-frame relations (person-object or object-object). Meanwhile, each action hyperedge connects multiple subgraphs. In some cases, multiple actions are overlapped, and the nodes in subgraphs are shared. The entire dynamic process in a situation can be abstracted to a set of consecutive and overlapped situation hypergraphs. Formally, the situation hypergraph H is a pair H = (X, E) where X is a set of nodes for objects or persons that appeared in situation frames, and E is a set of non-empty hyperedge subgraphs S i for actions. Different from spatio-temporal graphs <ref type="bibr" target="#b23">[24,</ref><ref type="bibr" target="#b41">41,</ref><ref type="bibr" target="#b19">20]</ref>, the hypergraph structure describes actions as hyperedges and instead of the frame-level subgraphs. Such structure naturally reflects the hierarchical abstraction from real-world situations and symbolic representations. The annotations of situation hypergraphs are as follows: We created the one-to-many connections as action hyperedges based on the annotations of action temporal duration and appeared objects. The action annotations are from Charades, personobject relationships (Rel1), objects/persons annotations are from ActionGenome <ref type="bibr" target="#b19">[20]</ref>. We extracted object-object relationships (Rel2) by using a detector VCTree with TDE <ref type="bibr" target="#b39">[39]</ref>, and extended more person-object relations (Rel3) with relation propagation over Rel1 and Rel2. For example, if &lt;person, on, chair&gt; and &lt;chair, on the left of, table&gt; exist, the &lt;person, on the left of, table&gt; exists. All models in experiments use videos as inputs, but hypergraph annotations (entities, relationships, actions, or entire graphs) can be used to learn better visual perception or structured abstraction.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Questions and Answers Designing</head><p>The question-answer engine generates all questions, answers, and options based on situation hypergraphs. Such design allows the question and answer generation of STAR are under control and available to be applied in situated reasoning diagnosis.</p><p>Question Generation Situated reasoning questions ask systems to provide rational answers for multiple purposes in particular situations. We design multiple types of questions that indicate distinct purposes and cover different levels of difficulty in situated reasoning. In dynamic video situations, we propose that four types of purposes are essential and close to our daily life: happened facts, temporal order, future probability, and feasibility in a specific situation.</p><p>• Interaction Question (What did a person do ...): It is a basic test for understanding interactions between humans and objects in a situation. • Sequence Question (What did the person do before/after ...): This type evaluates the temporal relationship reasoning of systems when facing consecutive actions in dynamic situations. • Prediction Question ( What will the person do next with...): This type investigates the forecasting about plausible actions under the current situation. Seen situations only include the beginning (1/4) of actions (the remaining situations were masked), and questions ask the future actions or results. • Feasibility Question (What is the person able to do/Which object is possible to be ...): This type probes the ability to infer feasible actions in particular situation conditions. We use spatial and temporal prompts (e.g., spatial relationships and temporal relationships) to control the situations.</p><p>To keep the logical consistency of the question types, all types of questions are derived from welldesigned templates and data from situation hypergraphs. We design formatted question templates with shared data type placeholders to align data types in situation hypergraphs (e.g.,</p><formula xml:id="formula_1">[P], [O], [V], [R]</formula><p>for the person, objects, action verbs or relationships, etc..). Then the generation process is consists of the following steps: (1) data extraction from situation annotations and hypergraphs; (2) question templates filling with extracted data; (3) language expansion for phrase collocation and morphology (articles, prepositions, and tenses).</p><p>Answer Generation Each question has a correct answer generated by executing a functional program (parsed from the given question) on a STAR hypergraph of a given situation video. The program shows the step-by-step reasoning process on graph structures. A valid functional program (Supplementary material Figure <ref type="figure">5</ref>) is a set of predefined and nested functional operations that can be executed (more details refer to the work in <ref type="bibr" target="#b21">[22]</ref>) until getting the final correct answer. Each operation takes certain entities or relationships as inputs and returns the entities, relationships, or actions as the inputs of the next reasoning step or the final output.</p><p>Distractor Generation Setting deliberate confusion forces systems to distinguish the reasoning logic behind correct answers and incorrect options instead of guessing by probability. We design three distractor strategies: compositional option, random option, and frequent option.</p><p>• Compositional Option: This option is the most challenging incorrect option since it has contraries to the given situation. It satisfies the verb-object compositionality and is also generated from the program over happened facts in the same situation. • Random Option: This option also satisfies compositionality but was randomly selected from other situation hypergraphs. • Frequent Option: This option is used for deceiving models by probability. It selects the most happened option in each type of question group.</p><p>Finally, all options (one correct answer and three distractors) are randomly ordered for each question.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Debiasing and Balancing Strategies</head><p>In real-world situations, the data of human actions naturally have distribution bias and reasoning shortcuts because some entities or action compositions (e.g., "wear clothes" or "grasp doorknob") frequently occurred. Such frequent collocation makes questions can be easily answered even without seeing the actual situations or questions. To avoid such shortcuts, we control the compositionality of appeared verbs/nouns in questions and answers and only select the verbs or nouns which has multiple compositions in our dataset world. To deal with answer distribution bias, we balance the answer distribution for each type of question through</p><p>The door.</p><p>The clothes.</p><p>The cup.</p><p>The book.</p><p>The food.</p><p>Took.</p><p>Put down.</p><p>Opened.</p><p>Closed.</p><p>Threw.</p><p>Put down the cup.</p><p>Took the food.</p><p>Put down the food.</p><p>Put down the dish.</p><p>Closed the book.</p><p>Took the food.</p><p>Took the cup.</p><p>Put down the cup.</p><p>Took the phone.</p><p>Put down the food.</p><p>The cup.</p><p>The door.</p><p>The food.</p><p>The closet.</p><p>The clothes.</p><p>The door.</p><p>The closet.</p><p>The cup.</p><p>The clothes.</p><p>The bag.</p><p>Took the cup.</p><p>Opened the door.</p><p>Took the food.</p><p>Put down the cup.</p><p>Opened the door.</p><p>Closed the door.</p><p>Closed the door.</p><p>Opened the closet.</p><p>Put down the cup.</p><p>Took the food.</p><p>Took.</p><p>Put down.</p><p>Opened.</p><p>Closed.</p><p>Threw.</p><p>Put down.</p><p>Took.</p><p>Opened.</p><p>Closed.</p><p>Threw.</p><p>Put down the cup.</p><p>Close the door.</p><p>Open the door.</p><p>Take the cup.</p><p>Put down the food.</p><p>Take.</p><p>Put down.</p><p>Open.</p><p>Close.</p><p>Throw.</p><p>The cup.</p><p>The clothes.</p><p>The book.</p><p>The closet.</p><p>The bag.</p><p>The clothes.</p><p>The book.</p><p>The bag.</p><p>The box.</p><p>The food.</p><p>The cup.</p><p>The box.</p><p>The clothes.</p><p>The food.</p><p>The dish.</p><p>Close the closet.</p><p>Put down the cup.</p><p>Put down the food.</p><p>Close the book.</p><p>Close the door.</p><p>Sit at the table.</p><p>Put down the cup.</p><p>Close the door.</p><p>Put down the dish.</p><p>Close the closet.</p><p>The closet.</p><p>The shoe.</p><p>The clothes.</p><p>The bag.</p><p>The blanket.</p><p>The table.</p><p>The clothes.</p><p>The cup.</p><p>The book.</p><p>The food.</p><p>Close the closet.</p><p>Put down the clothes.</p><p>Take the shoe.</p><p>Open the bag.</p><p>Tidy up the blanket.</p><p>The clothes.</p><p>The book.</p><p>The bag.</p><p>The blanket.</p><p>The towel.</p><p>Put down.</p><p>Took.</p><p>Opened.</p><p>Closed.</p><p>Threw.</p><p>Put down the box.</p><p>Threw the towel.</p><p>Put down the book.</p><p>Put down the blanket.</p><p>Open the book.</p><p>Took the phone.</p><p>Closed the laptop.</p><p>Took the pillow. Threw the clothes.</p><p>The bag.</p><p>The towel.</p><p>The clothes.</p><p>The book.</p><p>The blanket.</p><p>The book.</p><p>The towel.</p><p>The blanket.</p><p>The box.</p><p>The bag.</p><p>Ate the sandwich.</p><p>Took the clothes. Put down the bag.</p><p>Put down the towel.</p><p>Sat on the sofa.</p><p>Put down the book.</p><p>Put down the dish.</p><p>Closed the laptop.</p><p>Took the pillow.</p><p>Opened the book.</p><p>Took the book.</p><p>Took.</p><p>Opened.</p><p>Closed.</p><p>Threw.</p><p>Put down.</p><p>Took.</p><p>Closed.</p><p>Threw.</p><p>Opened.</p><p>Put down.</p><p>Close the refrigerator. Put down the towel. Put down the phone. Open the bag. Take the book.</p><p>Put down.</p><p>Take.</p><p>Close.</p><p>Open.</p><p>Throw.</p><p>The book.</p><p>The bag.</p><p>The clothes.</p><p>The box.</p><p>The table.</p><p>The clothes.</p><p>The book.</p><p>The bag.</p><p>The box.</p><p>The blanket.</p><p>The box.</p><p>The cup.</p><p>The food.</p><p>The clothes.</p><p>The book.</p><p>Put down the clothes.</p><p>Take the dish.</p><p>Throw the clothes.</p><p>Open the book.</p><p>Throw the bag.</p><p>Throw the towel. Open the bag. Put down the clothes.</p><p>Open the closet. Hold the shoe.</p><p>The bag.</p><p>The closet.</p><p>The box.</p><p>The door.</p><p>The towel.</p><p>The laptop.</p><p>The clothes.</p><p>The blanket.</p><p>The box.</p><p>The shoe.</p><p>Close the closet.</p><p>Put down the blanket.</p><p>Close the door.</p><p>Take the food.</p><p>Tidy up the closet.   Open the bag. Take the book.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Before debiasing After debiasing</head><p>Put down.</p><p>Take.</p><p>Close.</p><p>Open.</p><p>Throw.</p><p>The book.</p><p>The bag.</p><p>The clothes.</p><p>The box.</p><p>The table.</p><p>The clothes.</p><p>The book.</p><p>The bag.</p><p>The box.</p><p>The blanket.</p><p>The box.</p><p>The cup.</p><p>The food.</p><p>The clothes.</p><p>The book.</p><p>Put down the clothes.</p><p>Take the dish.</p><p>Throw the clothes.</p><p>Open the book.</p><p>Throw the bag.</p><p>Throw the towel. Open the bag. Put down the clothes.</p><p>Open the closet. Hold the shoe.</p><p>The bag.</p><p>The closet.</p><p>The box.</p><p>The door.</p><p>The towel.</p><p>The laptop.</p><p>The clothes.</p><p>The blanket.</p><p>The box.</p><p>The shoe.</p><p>Close the closet.</p><p>Put down the blanket.</p><p>Close the door.</p><p>Take the food.</p><p>Tidy up the closet.</p><p>Question Templates (T) resampling. Figure <ref type="figure" target="#fig_4">2</ref> top and bottom right show the results of before and after the debiasing on answers and breaking shortcuts in action combinations. We notice the trend that the STAR dataset has more balanced distributions after the debiasing stage. As shown in Figure <ref type="figure" target="#fig_4">2</ref> bottom left, We control the frequency of entities and actions in options so that each option has a fair chance to be correct.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Grammar Correctness and Correlation</head><p>The questions and answers in STAR are generated automatically but in the form of natural language. To validate grammar correctness, we apply grammar checkers <ref type="bibr" target="#b2">[3,</ref><ref type="bibr" target="#b32">33]</ref> to perform grammar checking and correction for word typos, tense issues, or syntactic structures. The initial grammar correctness of generated questions and answers is 87%. After three rounds of iterative corrections, the correctness achieved the expected level (improved to 98%).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Rationality and Consistency</head><p>The real-world source videos are noisy and quality-limited because recorders captured the videos by personal phones or cameras in various indoor environments. To confirm the relevance and quality of generated situation videos, questions, and candidate choices, we evaluate STAR through rationality and consistency by human annotation. We perform statistical analysis through a majority vote on labeled results. Three Amazon MTurk crowd-workers labeled each question. The rationality measures if a question-answer sample and the associated situation has ill-posed, semantic misaligned, or data missing issues. For each question, annotators need to label rationality by observing both questions, candidate choices, and situation videos. Here are rationality statistics in terms of four question types (from interaction to feasibility): 89.9%, 87.2%, 78.5%, and 77.5%. Consistency was calculated by the matching ratios between human-labeled options and generated options overall questions. If there is no matched correct or wrong option, this sample is none of the above makes sense. The consistency statistics of four types of questions (from interaction to feasibility) are the following: 82.5%, 85.3%, 80.4%, and 78.5%. Finally, we only keep the samples that satisfy rationality and consistency in our dataset.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Baseline Evaluation</head><p>To evaluate STAR thoroughly, we test various baseline models and analyze their strengths and weaknesses in situated reasoning. In the evaluation, a model needs to select a correct answer from the four provided candidate options for a given question. We adopt the average answer accuracy of overall questions to measure the model performance. In Table <ref type="table">2</ref>, we present the performances of each model individually according to the four question types. For each question, we calculate answer accuracy per question by comparing all option correctness between ground-truth and predicted results. We select representative methods for our question-answering task as competitive baselines, which include Q-type models, blind models, vision-language models, and video question-answering models. Table <ref type="table">2</ref>: Question-answering accuracy results of four question types on STAR (average accuracy per question). Video QA models perform better, but significant headroom remains for further exploration.</p><p>Q-type (Random) <ref type="bibr" target="#b20">[21]</ref> randomly selects a choice as answer.</p><p>Q-type (Frequent) <ref type="bibr" target="#b20">[21]</ref> chooses the highest frequency answer of each question type in the train set.</p><p>Blind Model (LSTM or BERT) is a language-only model. We uses an LSTM <ref type="bibr" target="#b14">[15]</ref> or transformerbased model BERT <ref type="bibr" target="#b7">[8]</ref> to encode question and choices and a MLP to predict the answer.</p><p>CNN+LSTM <ref type="bibr" target="#b47">[47]</ref> takes the final state of an LSTM to capture language and visual context.</p><p>CNN+BERT reimplements VL-BERT model <ref type="bibr" target="#b29">[30]</ref> for video QA.</p><p>LCGN <ref type="bibr" target="#b16">[17]</ref> iteratively uses location-aware GCN to model object's spatial-temporal relations.</p><p>HCRN <ref type="bibr" target="#b25">[26]</ref> is a recent video question answering model, which involves hierarchical conditional relation networks for better representation relation learning.</p><p>ClipBERT <ref type="bibr" target="#b26">[27]</ref> is a recent state-of-the-art framework that enables end-to-end learning for video-andlanguage tasks including video question answering by employing sparse sampling.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Comparison Analysis</head><p>According to Table <ref type="table">2</ref>, we can conclude that STAR is a challenging task since different types of models have diverse performances, and the average level overall baselines are still not good enough.</p><p>From the results of the basic models, we can observe that the benchmark has no option biases and follows the random probability distribution naturally. The Q-type (Random) provides about 25% accuracy by randomly selecting a correct answer in four options. The Q-type (Frequent) obtain a lower performance, which indicates that the design of frequent distractors successfully influences the inference probability. With external linguistic representation as knowledge, blind models perform better than basic models only. The vision-language models can grasp the course-grained visual and language representations and achieve preliminary improvements. Nevertheless, the improvements are limited. Because simple vision-language models are good at representation but not for video question answering tasks. From simple visual-language to video QA models, about 5.03% significant increases can be observed on average accuracy. The best average accuracy achieves 36.79% by the ClipBERT. Such advantages are reasonable since they explicitly extract object interactions (LCGN) or better visual representations (HCRN and ClipBERT). We notice that although these models are better, the main improvements are from easier tasks instead of complex tasks (prediction or feasibility). These models are still struggling in reasoning tasks, although capturing vision-language interactions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Diagnostic Model Evaluation</head><p>STAR emphasizes that ideal situation reasoning relies on visual perception, situation abstraction, and logical reasoning abilities. However, exploring the challenges and characteristics of STAR from the perspectives is not trivial. To provide more insights, we design a neuro-symbolic framework Neuro-Symbolic Situated Reasoning (NS-SR) as a diagnostic model (shown in Figure <ref type="figure" target="#fig_5">3</ref>), which can disentangle visual perception, situation abstraction, language understanding, and symbolic reasoning. More details about implementations, evaluation, and examples are in the supplementary material.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Model Design</head><p>Video Parser This is a visual perception module consists of a set of detectors, where we obtain human-centric/object-centric interactions from video keyframe inputs. An object detector (Faster R-CNN, X101-FPN <ref type="bibr" target="#b36">[37]</ref>) is used to detect objects/persons and ResNeXt-50 <ref type="bibr" target="#b43">[43]</ref> is used to extracts visual representation for each entity. We detect relationships by VCTree with TDE-sum <ref type="bibr" target="#b39">[39]</ref>) and extract relationship representations via GloVe <ref type="bibr" target="#b33">[34]</ref>. A pose parser (AlphaPose <ref type="bibr" target="#b9">[10]</ref>) is used to extract skeletons of motions. For the tasks with query actions (e.g., feasibility/sequence) in questions only, we adopt a pretrained action recognizer MoViNets <ref type="bibr" target="#b22">[23]</ref> to recognize seen actions in the situation video as preconditions. The video parser is trained on the situation video keyframes from the training set to obtain bounding box regions or visual features.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Transformers-based Action Transition Model</head><p>To distill structured cues from the dynamic realworld situations for further reasoning, we propose a transition model to process and predict the present and future situations in the form of hypergraphs.</p><p>Situation Hypergraph Encoder: NS-SR performs dynamic state transitions over situation hypergraphs. The encoder constructs "initial" situation hypergraphs by connecting detected entities or relationships and encodes graphs to a structured hypergraph token sequence. Differ from existing token representations for transformers, the token sequence describes the structures of a top-down situation hypergraph and implies situation segments, subgraph segments, and entities in graphs. Suppose given t situation segments &lt; s 0 , ..., s T &gt;, and each situation in time t comprises multiple predicate tokens and a set of triplet tokens. Each predicate denotes an appeared atomic action a j where exists hyper-edges relation connecting a connected situation subgraph in the situation s t . The triplet tokens &lt; h i , o i , r i &gt; are human-relationship-object interactions. Each situation segment is padding with zero tokens for a fixed length. We represent multiple types of embedding vectors to represent graph entities, hyper-edges, segments, and situations and sum their embeddings as a token embedding: token embedding, type or hyperedge embedding, situation embedding, position embedding, and segment embedding. The module details are in the supplementary material Section 4.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Dynamics Transformer</head><p>Model. The dynamics model is designed to dynamically predict action states or relationships by learning the relations among the input data types in given situation videos. The model architecture is a multiple-layers of stacked transformers with down-stream task predictors. We use transformer blocks (implemented like VisualBERT <ref type="bibr" target="#b29">[30]</ref>) to calculate self-attention scores for input token sequence with multiple heads. The attentions describe the "connections" of each potential relationship between two nodes in situation graphs (e.g., action hyper-edges or human-relationship- object triplets etc..). Because the self-attention inner structures of transformers correspond with token pairs, the whole attention over input tokens performs a dynamic relation modeling. The neighbored node connections are summed into a single node. The aggregated effect will be stored in the current state in time t and applied to the prediction for the missing information in the current step or the state next time t + 1. Such dynamic attention modeling deals with all possible relations as implicit connections. It would be more robust while relationships are unknown or some of the visual clues are not reliable. Meanwhile, we also adopt this model to predict the entities in unseen situations for prediction questions or feasibility questions.</p><p>Graph Sequence Decoder We set up three self-supervision tasks: action type prediction, human-object relationship type prediction, and masked token modeling (for objects or persons). The first two tasks use classifiers to predict action hyper-edges or relationships using MLPs with pooled global representations of all states in previous situations. Although recent perception models can achieve high accuracy in some datasets, some objects or human poses in our situation videos are blurred or invisible for the STAR videos. The masked token modeling aims to enhance the representation robustness by reconstructing their embedding vectors.</p><p>Language Parser Language Parser parses each question to a functional program <ref type="bibr" target="#b21">[22,</ref><ref type="bibr" target="#b47">47]</ref> in the form of a program sentence. The functional program (Supplementary material Figure <ref type="figure">5</ref> and Table <ref type="table">6</ref>) is composed of a series of nested operations. We defined five different types of atomic operations (e.g. query function) in the benchmark to construct step-by-step reasoning programs. We use an attentionbased Seq2Seq model <ref type="bibr" target="#b1">[2]</ref> to parse the input questions into corresponding programs. Since our dataset questions are single-select, we use two models to parse the questions and choices individually. Each model consists of a bidirectional LSTM encoder plus an LSTM decoder <ref type="bibr" target="#b48">[48]</ref>. We use two hidden layers of 256 hidden units and an embedding layer to get 300-dimensional word vectors for both the encoder and decoder.</p><p>Program Executor We design a Program Executor to answer questions by executing programs on discrete hypergraphs (inspired by the work in <ref type="bibr" target="#b21">[22]</ref>). It explicitly conducts the symbolic reasoning for the answering and plays the role of the reasoning engine in NS-SR. Our executor takes the program and the predicted situation hypergraph as symbolic and discrete inputs and orderly executes the mentioned functional operations in the program on the hypergraph. We implemented the predefined operations based on the entities and relations in structured situation hypergraphs (Supplementary material Table <ref type="table">5</ref> and<ref type="table">6</ref>). Each operation inputs certain entities or relationships and outputs the predictions as the inputs of the next reasoning step or the final answer prediction. Taking hypergraphs as inputs, the reasoning starts from the cues (object, motion, or other basic data types) in questions as the initial query, then passes through all the operations iteratively and outputs the answer finally.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Result Analysis</head><p>Due to the modularization of NS-SR, we can explore the core challenges of STAR by an outcomecontrolled evaluation under perfect/imperfect switching settings (details in the supplementary material), as shown in Table <ref type="table" target="#tab_2">3</ref>. Specifically, we first use all ground-truths with a symbolic reasoning module to build an oracle model, achieving the op-line accuracy (100%). This is not surprising since all questions can be answered based on perfect situation hyper-graphs and programs. Then, we remove distinct perfect conditions individually by replacing each disentangled module of NS-SR for comparisons. The final row is the performance for the version without using any ground-truths.</p><p>Situation Abstraction: This setting learns situation hyper-graphs by transformer-based action transition model but adopts ground-truths of the video parser (in the form of incomplete hypergraphs) and the program parser for simulation. Although having the perfect visual perception and reasoning logic, the model without perfect structured situation abstraction dropped about 55.95%. This illustrates the situation structure abstraction challenging is the bottleneck of ideal situated reasoning in STAR.</p><p>Visual Perception: The noticeable drops show that visual perception has a significant impact on situated reasoning. The accuracy gap between the model (using object and relationship detection) and the situation abstraction variant 13.39% is smaller than the oracle version but still significant. It denotes existing vision models struggle in real-world situations, although made remarkable progress in other tasks. And situated reasoning requires well-performed visual perception. Compared to the variants between the oracle variant, the degrades of removing relationship ground-truths larger than removing object ground-truths, which means the relationship detection has more difficulties.</p><p>Language Understanding: The performance without using perfect programs has slight decrease (within 1%) that implies the language perception in STAR is not difficult. It makes sense because we simplify the linguistic complexity and pays more attentions on visually-relevant reasoning challenges.</p><p>Without Ground-Truths: This setting uses the entire architecture in NS-SR: the video parser provides detection and poses extraction results for visual perception; the program parser provides programs parsed from given questions and options. The results are not good enough now, which shows enough remaining space for further exploration. We suggest that future directions should focus on improving the visual perception and situation abstraction on real-world videos.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusions</head><p>Towards reasoning in real-world situations, we introduce a new benchmark STAR to explore how to reason accordingly. Besides perception, it integrates bottom-up situation abstraction and logical reasoning. The situation abstraction provides a unified and structured abstraction for dynamic situations, and logical reasoning adopts aligned questions, programs, and data types. We design a situated reasoning task that requires systems to learn from dynamic situations and reasonable answers for the four types of questions in specific situations: interaction, sequence, prediction, and feasibility.</p><p>Our experiments demonstrate that situated reasoning is still challenging to states-of-art methods. Moreover, we design a new diagnostic model with neural-symbolic architecture to explore situated reasoning. Although the situated reasoning mechanism is not fully developed, the results show the challenges of our benchmark and indicate promising future directions. We believe STAR benchmark will open up many new opportunities for real-world situated reasoning.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: A representative example in the benchmark STAR. STAR aims at evaluating the skills in real-world situation recognition, abstraction, and reasoning. Q, A, and S indicate questions, answers, and situation data types with palace-holders. Answers in green (bold font) or red mean correct or incorrect. Masked situations are unseen for prediction or feasibility questions. Best viewed in color.</figDesc><graphic coords="2,108.00,72.00,396.01,218.18" type="bitmap" /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head></head><label></label><figDesc>Ate the sandwich. Took the clothes. Put down the bag. Put down the towel. Sat on the sofa. Put down the book. Put down the dish. Closed the laptop. Took the pillow. Opened the book. Took the book. Close the refrigerator. Put down the towel. Put down the phone.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Top: The bar charts show answer distribution comparison for before and after debiasing. T: question templates; INT/SEQ/PRE/FEA: four our question types. Bottom Left: The bar charts show answer distribution among options, which shows STAR has a balanced distribution on each template. Bottom Right: The two Sankey figures illustrate the compositionality distribution change of the key components within QA pairs after breaking shortcuts. Flows mean the number of the co-occurred key components. The left subfigure shows a heavily unbalanced distribution because of the existing QA shortcuts, but the right subfigure break such shortcuts distribution after processing.</figDesc><graphic coords="6,95.11,375.26,112.45,108.94" type="bitmap" /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>Figure 3 :</head><label>3</label><figDesc>Figure 3: The architecture overview of NS-SR. It use a video parser to perceive entities, relationships and human-object interactions for visual situations. The present situation is sent to a transition model to learn complete situation abstraction and predict future situations in forms of a situation hypergraph. A program parser parses the question and options into a set of nested functions. The generated hypergraph fed to a symbolic program executor to get the answer. Best viewed in color.</figDesc><graphic coords="9,118.91,71.76,372.35,219.04" type="bitmap" /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head></head><label></label><figDesc>All comparison models are trained from scratch on STAR training and validation sets, and tested on the STAR test set (implementation and setting details are in the supplementary material).</figDesc><table><row><cell>Model Name</cell><cell>Interaction</cell><cell cols="2">Question Type Sequence Prediction</cell><cell>Feasibility</cell></row><row><cell>Q-type (Random) [21]</cell><cell>25.06</cell><cell>24.93</cell><cell>24.79</cell><cell>24.81</cell></row><row><cell>Q-type (Frequent) [21]</cell><cell>19.09</cell><cell>19.45</cell><cell>12.90</cell><cell>18.31</cell></row><row><cell>Blind Model (LSTM) [15]</cell><cell>32.24</cell><cell>32.17</cell><cell>28.56</cell><cell>28.41</cell></row><row><cell>Blind Model (BERT) [8]</cell><cell>32.68</cell><cell>34.21</cell><cell>29.98</cell><cell>29.26</cell></row><row><cell>CNN-LSTM [47]</cell><cell>33.25</cell><cell>32.67</cell><cell>30.69</cell><cell>30.43</cell></row><row><cell>CNN-BERT [30]</cell><cell>33.59</cell><cell>37.16</cell><cell>30.95</cell><cell>30.84</cell></row><row><cell>LCGN [17]</cell><cell>39.01</cell><cell>37.97</cell><cell>28.81</cell><cell>26.98</cell></row><row><cell>HCRN [26]</cell><cell>39.10</cell><cell>38.17</cell><cell>28.75</cell><cell>27.27</cell></row><row><cell>ClipBERT [27]</cell><cell>39.81</cell><cell>43.59</cell><cell>32.34</cell><cell>31.42</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 3 :</head><label>3</label><figDesc>Performance comparison on STAR via the variants of NS-SR. GT: ground-truth, Det: detection, Obj: object, Rel: relationships, and Graph: hypergraphs.</figDesc><table><row><cell>NS-SR Model Variants</cell><cell cols="4">Question Type Interaction Sequence Prediction Feasibility</cell></row><row><cell>oracle version (all GT)</cell><cell>100.00</cell><cell>100.00</cell><cell>100.00</cell><cell>100.00</cell></row><row><cell>w/o perfect hypergraphs (Obj GT, Rel GT, Graph Det)</cell><cell>42.61</cell><cell>46.26</cell><cell>43.44</cell><cell>43.88</cell></row><row><cell>w/o perfect visual perception (Obj GT, Rel Det, Graph Det)</cell><cell>37.47</cell><cell>38.69</cell><cell>38.49</cell><cell>38.17</cell></row><row><cell>w/o perfect visual perception (Obj Det, Rel Det, Graph Det)</cell><cell>30.89</cell><cell>31.77</cell><cell>30.24</cell><cell>29.74</cell></row><row><cell>w/o perfect language understanding (Graph GT)</cell><cell>99.97</cell><cell>99.98</cell><cell>99.98</cell><cell>99.97</cell></row><row><cell>w/o GT</cell><cell>30.88</cell><cell>31.76</cell><cell>30.23</cell><cell>29.73</cell></row></table></figure>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div><head>Acknowledgments and Disclosure of Funding</head><p>We thank <rs type="person">David Cox</rs>, <rs type="person">Jessie Rosenberg</rs>, <rs type="person">Luke Inglis</rs>, <rs type="person">John Cohn</rs> for their helping and advice. Thanks also to <rs type="person">Jingwei Ji</rs> for the discussion and <rs type="person">Steven Purdy</rs> for the legal advice. This work was supported by <rs type="funder">MIT-IBM Watson AI Lab</rs> and its member company <rs type="funder">Nexplore</rs>, <rs type="funder">ONR MURI</rs>, <rs type="programName">DARPA Machine Common Sense program</rs>, <rs type="funder">ONR</rs> (<rs type="grantNumber">N00014-18-1-2847</rs>), and <rs type="funder">Mitsubishi Electric</rs>.</p></div>
+			</div>
+			<listOrg type="funding">
+				<org type="funding" xml:id="_hue6p5E">
+					<orgName type="program" subtype="full">DARPA Machine Common Sense program</orgName>
+				</org>
+				<org type="funding" xml:id="_asRBcE2">
+					<idno type="grant-number">N00014-18-1-2847</idno>
+				</org>
+			</listOrg>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Vqa: Visual question answering</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Antol</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Agrawal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Mitchell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Batra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">L</forename><surname>Zitnick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Parikh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ICCV</title>
+		<imprint>
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<author>
+			<persName><forename type="first">D</forename><surname>Bahdanau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Cho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Bengio</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1409.0473</idno>
+		<title level="m">Neural machine translation by jointly learning to align and translate</title>
+		<imprint>
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title level="m" type="main">bakwc/jamspell</title>
+		<author>
+			<persName><surname>Bakwc</surname></persName>
+		</author>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Situated learning: Legitimate peripheral participation</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bloch</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Man</title>
+		<imprint>
+			<biblScope unit="volume">29</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="487" to="489" />
+			<date type="published" when="1994">1994</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Situated cognition and the culture of learning</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">S</forename><surname>Brown</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Collins</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Duguid</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Educational researcher</title>
+		<imprint>
+			<biblScope unit="volume">18</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="32" to="42" />
+			<date type="published" when="1989">1989</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Grounding physical concepts of objects and events through dynamic visual reasoning</title>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Mao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K.-Y</forename><forename type="middle">K</forename><surname>Wong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">B</forename><surname>Tenenbaum</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Gan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Learning Representations</title>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Situated cognition: Stepping out of representational flatland</title>
+		<author>
+			<persName><forename type="first">W</forename><forename type="middle">J</forename><surname>Clancey</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">AI Communications The European Journal on Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="issue">2/3</biblScope>
+			<biblScope unit="page" from="109" to="112" />
+			<date type="published" when="1991">1991</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<title level="m" type="main">Pre-training of deep bidirectional transformers for language understanding</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M.-W</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Toutanova</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bert</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1810.04805</idno>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title level="m" type="main">Dynamic visual reasoning by learning differentiable physics models from video and language</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Ding</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Du</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">B</forename><surname>Tenenbaum</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Gan</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+			<publisher>NeurIPS</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">RMPE: Regional multi-person pose estimation</title>
+		<author>
+			<persName><forename type="first">H.-S</forename><surname>Fang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y.-W</forename><surname>Tai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Lu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ICCV</title>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Vqs: Linking segmentations to questions and answers for supervised attention in vqa and question-focused semantic segmentation</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Gan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Gong</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ICCV</title>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="1811" to="1820" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Cater: A diagnostic dataset for compositional actions and temporal reasoning</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Girdhar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Ramanan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ICLR</title>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Making the v in vqa matter: Elevating the role of image understanding in visual question answering</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Khot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Summers-Stay</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Batra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Parikh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">CVPR</title>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Agqa: A benchmark for compositional spatio-temporal reasoning</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Grunde-Mclaughlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Krishna</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Agrawala</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition</title>
+		<meeting>the IEEE/CVF Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Long short-term memory</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Hochreiter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Schmidhuber</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Neural Computation</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="issue">8</biblScope>
+			<biblScope unit="page" from="1735" to="1780" />
+			<date type="published" when="1997">1997</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Ptr: A benchmark for part-based conceptual, relational, and physical reasoning</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Hong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Yi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Tenenbaum</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Torralba</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Gan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Advances in Neural Information Processing Systems</title>
+		<imprint>
+			<biblScope unit="volume">34</biblScope>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Language-conditioned graph networks for relational reasoning</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Rohrbach</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Darrell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Saenko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ICCV</title>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Gqa: A new dataset for real-world visual reasoning and compositional question answering</title>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">A</forename><surname>Hudson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">CVPR</title>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Tgif-qa: Toward spatio-temporal reasoning in visual question answering</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Jang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Kim</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">CVPR</title>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Action genome: Actions as compositions of spatio-temporal scene graphs</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Ji</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Krishna</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Fei-Fei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">C</forename><surname>Niebles</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">CVPR</title>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Clevr: A diagnostic dataset for compositional language and elementary visual reasoning</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Johnson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Hariharan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Van Der Maaten</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Fei-Fei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">Lawrence</forename><surname>Zitnick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Girshick</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">CVPR</title>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Inferring and executing programs for visual reasoning</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Johnson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Hariharan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Van Der Maaten</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Hoffman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Fei-Fei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">Lawrence</forename><surname>Zitnick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Girshick</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE International Conference on Computer Vision</title>
+		<meeting>the IEEE International Conference on Computer Vision</meeting>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="2989" to="2998" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Movinets: Mobile video networks for efficient video recognition</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Kondratyuk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Yuan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Tan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Brown</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Gong</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition</title>
+		<meeting>the IEEE/CVF Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+			<biblScope unit="page" from="16020" to="16030" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Visual genome: Connecting language and vision using crowdsourced dense image annotations</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Krishna</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Groth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Johnson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Hata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Kravitz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Kalantidis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L.-J</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">A</forename><surname>Shamma</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International journal of computer vision</title>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">The situation calculus: A case for modal logic</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Lakemeyer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Logic, Language and Information</title>
+		<imprint>
+			<biblScope unit="volume">19</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="431" to="450" />
+			<date type="published" when="2010">2010</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Hierarchical conditional relation networks for video question answering</title>
+		<author>
+			<persName><forename type="first">T</forename><forename type="middle">M</forename><surname>Le</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Le</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Venkatesh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Tran</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">CVPR</title>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Less is more: Clipbert for video-and-language learning via sparse sampling</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Gan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><forename type="middle">L</forename><surname>Berg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bansal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition</title>
+		<meeting>the IEEE/CVF Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+			<biblScope unit="page" from="7331" to="7341" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Tvqa: Localized, compositional video question answering</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bansal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><forename type="middle">L</forename><surname>Berg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">EMNLP</title>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<monogr>
+		<title level="m" type="main">Tvqa+: Spatio-temporal grounding for video question answering</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><forename type="middle">L</forename><surname>Berg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bansal</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1904.11574</idno>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<monogr>
+		<title level="m" type="main">Visualbert: A simple and performant baseline for vision and language</title>
+		<author>
+			<persName><forename type="first">L</forename><forename type="middle">H</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Yatskar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Yin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C.-J</forename><surname>Hsieh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K.-W</forename><surname>Chang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1908.03557</idno>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<monogr>
+		<title level="m" type="main">Situations, actions, and causal laws</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1963">1963</date>
+		</imprint>
+		<respStmt>
+			<orgName>STANFORD UNIV CA DEPT OF COMPUTER SCIENCE</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Technical report</note>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Marioqa: Answering questions by watching gameplay videos</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Mun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Hongsuck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Seo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Jung</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Han</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ICCV</title>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<monogr>
+		<author>
+			<persName><forename type="first">K</forename><surname>Omelianchuk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Atrasevych</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Chernodub</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Skurzhanskyi</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2005.12592</idno>
+		<title level="m">Gector-grammatical error correction: Tag, not rewrite</title>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Glove: Global vectors for word representation</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pennington</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Empirical Methods in Natural Language Processing (EMNLP)</title>
+		<imprint>
+			<date type="published" when="2014">2014</date>
+			<biblScope unit="page" from="1532" to="1543" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Reasoning about action and change</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Prendinger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Schurz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of logic, language and information</title>
+		<imprint>
+			<biblScope unit="volume">5</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="209" to="245" />
+			<date type="published" when="1996">1996</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">The frame problem in the situation calculus: A simple solution (sometimes) and a completeness result for goal regression</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Reiter</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Artificial and Mathematical Theory of Computation</title>
+		<imprint>
+			<publisher>Citeseer</publisher>
+			<date type="published" when="1991">1991</date>
+			<biblScope unit="page" from="359" to="380" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Faster r-cnn: Towards real-time object detection with region proposal networks</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Ren</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Girshick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Sun</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="s">Advances in Neural Information Processing Systems</title>
+		<editor>
+			<persName><forename type="first">C</forename><surname>Cortes</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">N</forename><surname>Lawrence</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">D</forename><surname>Lee</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">M</forename><surname>Sugiyama</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">R</forename><surname>Garnett</surname></persName>
+		</editor>
+		<imprint>
+			<biblScope unit="volume">28</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Curran Associates</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Inc</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">What actions are needed for understanding human actions in videos</title>
+		<author>
+			<persName><forename type="first">G</forename><forename type="middle">A</forename><surname>Sigurdsson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Russakovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Gupta</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE international conference on computer vision</title>
+		<meeting>the IEEE international conference on computer vision</meeting>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="2137" to="2146" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">Unbiased scene graph generation from biased training</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Tang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Niu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Shi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition</title>
+		<meeting>the IEEE/CVF Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="page" from="3716" to="3725" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">Movieqa: Understanding stories in movies through question-answering</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Tapaswi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Stiefelhagen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Torralba</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Urtasun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Fidler</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">CVPR</title>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Actions˜transformations</title>
+		<author>
+			<persName><forename type="first">X</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Farhadi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Gupta</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE conference on Computer Vision and Pattern Recognition</title>
+		<meeting>the IEEE conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="page" from="2658" to="2667" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<monogr>
+		<title level="m" type="main">Reasoning about action using a possible models approach</title>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">S</forename><surname>Winslett</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1988">1988</date>
+		</imprint>
+		<respStmt>
+			<orgName>Department of Computer Science, University of Illinois at Urbana-Champaign</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<monogr>
+		<title level="m" type="main">Aggregated residual transformations for deep neural networks</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Girshick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Dollár</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Tu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>He</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1611.05431</idno>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Video question answering via gradually refined attention over appearance and motion</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Xiao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhuang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 25th ACM international conference on Multimedia</title>
+		<meeting>the 25th ACM international conference on Multimedia</meeting>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="1645" to="1653" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">Just ask: Learning to answer questions from millions of narrated videos</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Miech</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Sivic</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Laptev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Schmid</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE/CVF International Conference on Computer Vision</title>
+		<meeting>the IEEE/CVF International Conference on Computer Vision</meeting>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+			<biblScope unit="page" from="1686" to="1697" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">A dataset and architecture for visual reasoning with a working memory</title>
+		<author>
+			<persName><forename type="first">G</forename><forename type="middle">R</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Ganichev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X.-J</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Shlens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Sussillo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ECCV</title>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">Clevrer: Collision events for video representation and reasoning</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Yi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Gan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Kohli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Torralba</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">B</forename><surname>Tenenbaum</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ICLR</title>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<monogr>
+		<title level="m" type="main">Neural-symbolic vqa: Disentangling reasoning from vision and language understanding</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Yi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Gan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Torralba</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Kohli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">B</forename><surname>Tenenbaum</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1810.02338</idno>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">From recognition to cognition: Visual commonsense reasoning</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Zellers</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Bisk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Farhadi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Choi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition</title>
+		<meeting>the IEEE/CVF Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="6720" to="6731" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<analytic>
+		<title level="a" type="main">Visual7w: Grounded question answering in images</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Groth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bernstein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Fei-Fei</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">CVPR</title>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

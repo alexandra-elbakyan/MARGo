@@ -1,0 +1,3206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">DeepSeek-VL: Towards Real-World Vision-Language Understanding</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability  status="unknown">
+					<licence/>
+				</availability>
+				<date type="published" when="2024-03-11">11 Mar 2024</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Haoyu</forename><surname>Lu</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">DeepSeek-AI</orgName>
+							</affiliation>
+						</author>
+						<author role="corresp">
+							<persName><forename type="first">Wen</forename><surname>Liu</surname></persName>
+							<email>liuwen@deepseek.com</email>
+							<affiliation key="aff0">
+								<orgName type="department">DeepSeek-AI</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Bo</forename><surname>Zhang</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">DeepSeek-AI</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Bingxuan</forename><surname>Wang</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">DeepSeek-AI</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Kai</forename><surname>Dong</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">DeepSeek-AI</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Bo</forename><surname>Liu</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">DeepSeek-AI</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Jingxiang</forename><surname>Sun</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">DeepSeek-AI</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Tongzheng</forename><surname>Ren</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">DeepSeek-AI</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Zhuoshu</forename><surname>Li</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">DeepSeek-AI</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Hao</forename><surname>Yang</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">DeepSeek-AI</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Yaofeng</forename><surname>Sun</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">DeepSeek-AI</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Chengqi</forename><surname>Deng</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">DeepSeek-AI</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Hanwei</forename><surname>Xu</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">DeepSeek-AI</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Zhenda</forename><surname>Xie</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">DeepSeek-AI</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Chong</forename><surname>Ruan</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">DeepSeek-AI</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">DeepSeek-VL: Towards Real-World Vision-Language Understanding</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2024-03-11">11 Mar 2024</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">587EDDFBC91CD42DEEFC478BA52E5633</idno>
+					<idno type="arXiv">arXiv:2403.05525v2[cs.AI]</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.8.2-SNAPSHOT" ident="GROBID" when="2025-01-24T14:30+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>We present DeepSeek-VL, an open-source Vision-Language (VL) Model designed for real-world vision and language understanding applications. Our approach is structured around three key dimensions:</p><p>• Data Construction: We strive to ensure our data is diverse, scalable and extensively covers real-world scenarios including web screenshots, PDFs, OCR, charts, and knowledge-based content (expert knowledge, textbooks), aiming for a comprehensive representation of practical contexts. Further, we create a use case taxonomy from real user scenarios and construct an instruction-tuning dataset accordingly. The fine-tuning with this dataset substantially improves the model's user experience in practical applications.</p><p>• Model Architecture: Considering efficiency and the demands of most real-world scenarios, DeepSeek-VL incorporates a hybrid vision encoder that efficiently processes high-resolution images (1024 x 1024) within a fixed token budget, while maintaining a relatively low computational overhead. This design choice ensures the model's ability to capture critical semantic and detailed information across various visual tasks.</p><p>• Training Strategy: We posit that a proficient Vision-Language Model should, foremost, possess strong language abilities. To ensure the preservation of LLM capabilities during pretraining, we investigate an effective VL pretraining strategy by integrating LLM training from the beginning and carefully managing the competitive dynamics observed between vision and language modalities. Starting with a focus on text, we gradually adjust the ratio to facilitate a balanced integration of both modalities. The DeepSeek-VL family (both 1.3B and 7B models) showcases superior user experiences as a vision-language chatbot in real-world applications, achieving state-of-the-art or competitive performance across a wide range of visual-language benchmarks at the same model size while maintaining robust performance on language-centric benchmarks. We have made both 1.3B and 7B models publicly accessible to foster innovations based on this foundation model.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.">Introduction</head><p>The remarkable success of large language models (LLMs) <ref type="bibr">(Anthropic, 2023;</ref><ref type="bibr" target="#b19">Google, 2023;</ref><ref type="bibr" target="#b55">OpenAI, 2022</ref><ref type="bibr">OpenAI, , 2023a) )</ref> has fueled the demand for a versatile interface that can handle multiple modalities beyond language. In response to this growing demand, we have seen an emergence of Large Multimodal Models (LMMs) like GPT-4V (OpenAI, 2023b) and Gemini <ref type="bibr" target="#b66">(Team et al., 2023)</ref>, which serve as versatile assistants capable of comprehending and acting upon instructions that span vision and language. These models exhibit considerable promise in executing complex, diverse real-world tasks, enabling more natural and human-like interactions.</p><p>Recently, there has been a surge of open-source large multimodal models aimed at narrowing the gap with proprietary counterparts. Substantial strides have been made, especially in benchmark performance, yet a significant divide persists between the majority of open-source models and state-of-the-art closed-source models <ref type="bibr" target="#b5">(Bai et al., 2023;</ref><ref type="bibr" target="#b6">Bavishi et al., 2023;</ref><ref type="bibr" target="#b56">OpenAI, 2023b;</ref><ref type="bibr" target="#b66">Team et al., 2023)</ref> when it comes to real-world performance and user experience. It remains challenging for the open-source community to develop models with robust general multimodal capabilities for real-world applications.</p><p>The performance gap between the most open-source models and the proprietary models is largely pronounced in real-world scenarios, primarily due to the following reasons:</p><p>• Many open-source solutions allocate a significant proportion of computational resources to the instruction tuning phase. However, the experience of training powerful language models underscores the importance of extensive pretraining in the development of general intelligence. To imbue multimodal models with rich world knowledge, there should be an emphasis on comprehensive pretraining that leverages a broad spectrum of visionlanguage data.</p><p>• A common practice is to amalgamate various academic datasets during instruction tuning.</p><p>While such an approach may yield good benchmark results, it often falls short in providing an authentic real-world usage experience.</p><p>• In terms of model architecture, prior works mostly adapt a vision transformer, typically text-aligned, to a pre-trained language model. However, most of these models operate on a relatively low resolution, e.g., 336×336 or 448× 448. The intricacies of complex realworld scenarios, such as optical character recognition or tiny object discernment, demand high-resolution processing capability.</p><p>• While some models <ref type="bibr">(01-ai, 2024;</ref><ref type="bibr">Lin et al., 2023a;</ref><ref type="bibr" target="#b64">Sun et al., 2023;</ref><ref type="bibr">Wang et al., 2023b)</ref> have begun to exploit pretraining, they often overlook the preservation of language skills. Often, there is a degradation of language capability after prolonged multimodal training. Since we aim for a generalist that possesses strong capabilities in both modalities, there should be a training strategy that well preserves the language capability when developing the new modality ability.</p><p>In light of these, we present DeepSeek-VL, an open-source large multimodal model, which is built upon the DeepSeek language model series. We develop the model in the pursuit of adept performance in real-world scenarios, which involves extensive pretraining, careful data curation based on a use case taxonomy, model architecture design for high-resolution processing, and a training strategy that balances the multi-modalities. On top of these, we develop a training methodology that steers the model scaling, from 1B to 7B. These comprehensive explorations bring a significant performance advantage in practical settings, compared to other large multimodal models (LMMs) of similar size.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Prompt</head><p>What art style is evident in this image?</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response</head><p>The art style evident in this image is Impressionism. This can be determined by several visual clues present: Brushwork: The painting exhibits a loose, visible brushstroke technique which is characteristic of Impressionist art. The strokes are not smooth or blended but rather they create a sense of movement and texture.</p><p>Color Palette: The use of bright, vibrant colors that seem to capture the light and atmosphere of the scene without precise detail is typical of Impressionist painters. The sky's blue with white clouds, the warm tones on the cliffs, and the varied hues used for the boats all contribute to this impressionistic approach.</p><p>Subject Matter: The subject matter itself-a coastal landscape with figures and boats-is common in Impressionist paintings, which often depicted scenes from daily life and nature.</p><p>Lack of Detail: There is a lack of fine detail in the depiction of objects such as the boats and figures, which suggests an emphasis on capturing the overall mood and impression of the scene rather than meticulous realism.</p><p>Light and Shadow: The play of light and shadow is another hallmark of Impressionist works. In this painting, we see how the artist has captured the interplay of sunlight on the water and rocks, creating a dynamic effect. These elements together strongly suggest that the artwork belongs to the Impressionist genre.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Prompt</head><p>Which bathroom is the bedroom A closer to?</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response</head><p>Bedroom A is closer to Bathroom A. This can be determined by observing the floor plan provided in the image. The layout of the rooms and bathrooms are clearly marked with labels, allowing us to identify their relative positions. Bedroom A is located on the left side of the floor plan, while Bathroom A is situated directly below it, towards the bottom-left corner of the image. This positioning indicates that there is no other bathroom between them, making Bathroom A the closest one for Bedroom A. </p><formula xml:id="formula_0">Prompt 描述图片 Response 这幅图片是Minecraft官方网站的生动欢迎界面。背景是 一片辽阔的蓝天，点缀着朵朵蓬松的白云。下方是一个 充满活力的像素艺术世界，特色是一个村庄、一片茂密 的森林和一条蜿蜒的小路。 在图片的中心，一个绿色的按钮吸引着注意力，上面用 粗体白色字母写着"获取Minecraft"。这个按钮似乎邀 请观看者加入游戏并开始他们的Minecraft冒险。 在图片的顶部，一段文字热情地欢迎观众来到官方 Minecraft网站。它写道："欢迎来到官方 Minecraft网 站！加入我们的社区，了解如何玩这款游戏，加入我们 最大的社区之一，并在今天开始创造吧！"这段文字传 达了游戏的包容性和社区精神，鼓励新玩家探索和创造。 总的来说，这幅图片捕捉到了Minecraft世界的精髓一它 的无限可能性以及与他人的互动乐趣。</formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Prompt</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response</head><p>To fetch something from the fridge, I would follow these steps: Approach the refrigerator: The refrigerator is located on the right side of the kitchen island. It's a stainless steel model with a freezer compartment at the bottom and an ice maker dispenser above it. Open the refrigerator door: To open the refrigerator door, I would use my hands to grasp the handle or pull bar located on the front edge of the refrigerator door. This action should be done carefully to avoid any accidental bumps into other items in the kitchen. Locate the desired item: Once inside the refrigerator, I would scan through the shelves and compartments for the specific item I am looking for. The refrigerator has multiple shelves and drawers that are likely organized by type of food or drink. Retrieve the item: After locating the desired item, I would reach out and grab it using one hand while ensuring not to disturb the organization of the contents. If the item is placed on a shelf or drawer, I would lift it up gently to remove it without knocking anything over. Close the refrigerator door: After retrieving the item, I would close the refrigerator door securely using the handle or pull bar. This ensures that the cold air remains trapped within the appliance and maintains its temperature efficiency. Return to the task at hand: With the item retrieved from the fridge, I can now proceed with whatever activity I was doing before, such as cooking or preparing a meal.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Prompt</head><p>Can you translate the flowchart to a python code?</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response</head><p>The flowchart provided is a simple decision-making process that compares two variables, x and y, to determine which one has the greater value. The steps are as follows: 1. Start with an input for variable 'x' and get its next input. 2. Repeat step 1 for variable 'y. 3. Compare 'x' and 'y' using the "x &gt; y" condition. If true, it means 'X' is greater than 'y', so put the maximum of these two values into the output. If false, it means 'x' is not greater than 'y', so put the maximum of 'x' and 'y' into the output. 4. Finally, end the program by putting the max value into the output.</p><p>Here is how you can translate this flowchart into Python code:</p><p>In this Python code, we define a function called max_of_two that takes two arguments, x and y, and returns the maximum of these two values. We then call this function with the appropriate inputs and print the result.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Prompt</head><p>Please generate the latex code of the formula in the image.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response</head><p>A_n = a_0 \left[ 1 + \frac{3}{4} \sum_{k=1}^{n} \left( \frac{4}{9} \right)^k \right]</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Prompt</head><p>Tell me the main contribution of this paper.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response</head><p>The main contribution of this paper, as stated in the abstract, is to develop a cognitive model that integrates individual differences into human-automated vehicle interaction. The authors aim to provide insights into how humans interact with new technologies and propose a framework for understanding these interactions. They also discuss potential pitfalls associated with using a one-size-fits-all model and explain how modeling individual differences can help design effective user interfaces and interventions. Additionally, they conduct a simulation study to demonstrate possible benefits from incorporating individual differences into the design process. This conclusion is drawn directly from the text under the "ABSTRACT" section, where it outlines the purpose and contributions of the research.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Prompt</head><p>Which direction of paper is the most likely source of the table in the picture.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response</head><p>The image shows a graph with various lines representing different models' validation log perplexity over the length of the validation sequence, which is measured in x10^3. The title "C4 language modeling (large model)" suggests that this graph pertains to a study or analysis related to large-scale natural language processing tasks, specifically focusing on language modeling using a C4 dataset. To determine the most likely direction of paper from which the table originated, we should look for visual clues in the image: 1.Graph Style: The graph has a clear and professional appearance, suggesting it could be part of an academic paper or technical report.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>2.Data Representation:</head><p>The use of multiple lines with markers such as squares, diamonds, and circles indicates comparisons between different models or methods. This kind of data representation is common in research papers where different experimental results are presented side by side for comparison.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>3.Title and Content:</head><p>The title provides context about the nature of the content -it mentions "language modeling" and "large model," indicating that the paper deals with computational linguistics or machine learning topics. 4.Legend: There is a legend at the bottom left that matches the colors of the lines to their respective models. This is typical in scientific graphs to help readers understand what each line represents without having to refer back to the text.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>5.Axis Labels:</head><p>The axes have labels that are consistent with scientific notation ("Validation sequence length" and "Validation log perplexity"). These labels suggest that the paper is intended for an audience familiar with these terms, which would include researchers or students in fields like computer science or engineering. 6.Font and Formatting: The font used for the title and axis labels appears to be sans-serif, which is often used in modern publications due to its readability and clean design. Based on these observations, the most likely source of the table in the picture is a publication from a field related to artificial intelligence, machine learning, or computational linguistics. It could be a journal article, conference proceedings, a thesis, or even a presentation slide from a seminar or workshop. The style and content align well with scholarly work in those domains. DeepSeek-VL's pretraining dataset is compiled from a variety of sources, including but not limited to Common Crawl, Web Code, E-books, Educational Materials, and arXiv Articles. This collection thoroughly encompasses real-world scenarios such as web screenshots, PDFs, OCR, charts, and knowledge-based content (expertise, textbooks), aiming for a broad and practical representation while remaining scalable.</p><p>While our pretraining data encompasses a wide array of world knowledge, we meticulously curate our instruction-tuning dataset to reflect real-world usage scenarios. To achieve this, we manually gather authentic test cases for GPT-4V and Gemini from the Internet. These cases have been systematically organized into a comprehensive taxonomy. We use this structured taxonomy to choose prompts for each test image, ensuring a practical and relevant instruction tuning dataset. This taxonomy is also used to create an evaluation dataset that effectively assesses real-world performance.</p><p>The visual module is designed to optimize the utilization of high-resolution visual inputs while remaining within a fixed token budget to manage inference costs effectively. As such, we employ a hybrid vision encoder, which combines a text-aligned encoder for coarse semantic extraction at 384 × 384 resolution with a high-resolution encoder that captures detailed visual information at 1024 × 1024 resolution. By fusing these two encoders, our hybrid approach efficiently condenses a 1024×1024 resolution image (which suffices in most use cases) into 576 tokens. This token count strikes a balance between rich visual representation and token economy, making it feasible for both text-image interleaving and multi-turn inference scenarios.</p><p>During the pretraining of multimodal models, a common challenge encountered is the potential degradation of language capabilities when the training process is overly reliant on vision-language data. Our research reveals that maintaining a significant proportion of language data-specifically, at least 70%-is essential to preserve the integrity of language knowledge within the model. This balance is critical for achieving a robust multimodal capability that does not compromise language performance. Moreover, we introduce a novel "modality warm-up" strategy. This approach carefully adjusts the ratio of modalities during training, gradually incorporating more vision-language data. The careful tuning of the modality ratio along with the warm-up strategy results in a balanced performance of both modalities.</p><p>When iterating on our model, We conduct experiments on a small scale before scaling to a larger model size. However, a smaller model, e.g., 1B model, cannot demonstrate reasonable performance on benchmarks <ref type="bibr" target="#b58">(Schaeffer et al., 2024)</ref> and faithfully reflect the model's performance. We adopt two approaches to address this. First, we modify the evaluation protocol from multichoice to compare the perplexity of options. Also, to prevent the instruction following ability from becoming the bottleneck, we mix a small proportion of instruction tuning data during the pretraining phase. In this way, we can achieve reasonable performance using the 1B model and more accurately measure the impact of each iteration during the experiment.</p><p>Through extensive evaluations of general vision and language benchmarks, the DeepSeek-VL family showcases superior user experiences in real-world applications and achieves state-ofthe-art or competitive performance across a wide range of visual-language benchmarks at the same model size, while maintaining robust language-centric performance. To foster innovation and enable a wide range of applications, we have made two versions of our ours, 1.3B and 7B, publicly accessible, in the hope of facilitating the needs of varying computational capabilities.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.">Data Construction</head><p>A diverse and large dataset is the most important ingredient of visual language model training. Our dataset can be divided into two parts: Vision-Language pretraining Data and Vision-Language Supervised Fine-Tuning Data. VL pretraining Data is composed of visual-text data from various sources, aimed at enhancing the model's fundamental cross-modal understanding capabilities; while VL Supervised Fine-Tuning Data has a relatively smaller size and aims to teach the model to complete specific downstream tasks. By design, VL pretraining Data is used to warm up the vision-language adaptor in training stage 1 and jointly pretrain the visionlanguage model in stage 2, and VL Supervised Fine-Tuning Data is exploited in training stage 3, i.e., vision language supervised fine-tuning.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1.">Vision-Language pretraining Data</head><p>The pretraining dataset utilized in our study encompasses a diverse range of publicly accessible sources, in addition to a selection of proprietary data. We provide a comprehensive overview of the data sources employed during the joint vision and language pretraining stage in Table <ref type="table">1</ref>. Such a dataset can facilitate LLM's comprehension of the entities portrayed in the images.</p><p>Furthermore, we present a detailed breakdown of the complete dataset, which is organized into the following categories:</p><p>Interleaved image-text data enable the models to have a better capability for in-context learning of multi-modality inputs, and we utilize three public datasets MMC4 <ref type="bibr" target="#b87">(Zhu et al., 2024)</ref>, Wiki <ref type="bibr" target="#b9">(Burns et al., 2023)</ref>, Wikihow <ref type="bibr" target="#b75">(Yang et al., 2021)</ref> and Epub textbooks.</p><p>Image caption data come from three high-quality image-text paired datasets: Capsfusion <ref type="bibr">(Yu et al., 2023a)</ref>, TaiSu <ref type="bibr">(Liu et al., 2022b) and</ref><ref type="bibr">Detailed Caption (echo840, 2024)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Table and chart data enable the models to learn the capability for general table and chart image understanding. It encompasses a diverse range of public data sources, including</head><p>Chart2text <ref type="bibr" target="#b25">(Kantharaj et al., 2022)</ref>, Geo170K <ref type="bibr" target="#b17">(Gao et al., 2023)</ref>, Unichart <ref type="bibr" target="#b52">(Masry et al., 2023)</ref>, Ureader <ref type="bibr" target="#b76">(Ye et al., 2023)</ref>, M-paper <ref type="bibr" target="#b23">(Hu et al., 2023)</ref>, ScienceQA <ref type="bibr">(Lu et al., 2022b)</ref>, ScreenQA <ref type="bibr" target="#b22">(Hsiao et al., 2022)</ref>, SciGraphQA-295K <ref type="bibr" target="#b33">(Li and Tajbakhsh, 2023)</ref>, Paper2figure100k <ref type="bibr" target="#b57">(Rodriguez et al., 2023)</ref>, Widget Captioning <ref type="bibr" target="#b34">(Li et al., 2020)</ref>, Screen2words <ref type="bibr" target="#b71">(Wang et al., 2021)</ref>, and Refexp <ref type="bibr" target="#b51">(Mao et al., 2016)</ref>.</p><p>Web Code data empowers models with the capability to reconstruct code from graphical interfaces or visual plots. Leveraging Websight (HuggingFaceM4, 2024) for UI Inverse Rendering, we adopted a strategy akin to that used in MATCHA <ref type="bibr">(Liu et al., 2022a)</ref> for visual plots inverse rendering. This involved the processing of approximately 1.46 million Jupyter notebooks from the Stack dataset <ref type="bibr" target="#b27">(Kocetkov et al., 2023)</ref>. By extracting these notebooks and collating all diagrams along with their corresponding preceding code segments, we succeeded in curating a collection featuring 2 million pairs of images and codes. For better data quality, we filter 1.1 million instances, each comprising a singular image coupled with a minimum of 5 lines of code, to constitute our primary training dataset. Document Optical Character Recognition (OCR) data facilitates the recognition of optical characters at the document level, even in challenging real-world scenarios. To the best of our knowledge, there is currently no publicly available large-scale dataset encompassing both English and Chinese documents. Despite the existence of the publicly accessible small-scale dataset Latex-OCR <ref type="bibr" target="#b7">(Blecher, 2024)</ref>, we additionally constructed a comprehensive English and Table <ref type="table">1</ref> | Summary of datasets used in the joint vision and language pretraining stage.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Category Dataset Ratio</head><p>Interleaved image-text MMC4 <ref type="bibr" target="#b87">(Zhu et al., 2024)</ref> 13.1% Wikipedia EN&amp; CN <ref type="bibr">(Foundation)</ref> Wikihow <ref type="bibr" target="#b75">(Yang et al., 2021)</ref> in-house PDF and Epub textbooks</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Image caption</head><p>Capsfusion <ref type="bibr">(Yu et al., 2023a)</ref> 11.1% TaiSu <ref type="bibr">(Liu et al., 2022b</ref><ref type="bibr">) Detailed Caption (echo840, 2024)</ref> Table <ref type="table"></ref>and<ref type="table">chart</ref> Chart2text <ref type="bibr" target="#b25">(Kantharaj et al., 2022)</ref> 2.1% Geo170K <ref type="bibr" target="#b17">(Gao et al., 2023)</ref> Ureader <ref type="bibr" target="#b76">(Ye et al., 2023)</ref> Unichart <ref type="bibr" target="#b52">(Masry et al., 2023)</ref> M-paper <ref type="bibr" target="#b23">(Hu et al., 2023)</ref> ScienceQA <ref type="bibr">(Lu et al., 2022b)</ref> ScreenQA <ref type="bibr" target="#b22">(Hsiao et al., 2022)</ref> SciGraphQA-295K <ref type="bibr" target="#b33">(Li and Tajbakhsh, 2023)</ref> Paper2figure100k <ref type="bibr" target="#b57">(Rodriguez et al., 2023)</ref> Widget Captioning <ref type="bibr" target="#b34">(Li et al., 2020)</ref> Screen2words <ref type="bibr" target="#b71">(Wang et al., 2021)</ref> Refexp <ref type="bibr" target="#b51">(Mao et al., 2016)</ref> Web Code Websight (HuggingFaceM4, 2024) 0.4% python plots scraped from GitHub notebook</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Scene text OCR</head><p>ArT <ref type="bibr" target="#b12">(Chng et al., 2019)</ref> 1.2% MLT-17 <ref type="bibr" target="#b54">(Nayef et al., 2017)</ref> LSVT <ref type="bibr" target="#b65">(Sun et al., 2019)</ref> UberText <ref type="bibr" target="#b84">(Zhang et al., 2017)</ref> Coco-text <ref type="bibr" target="#b70">(Veit et al., 2016)</ref> RCTW-17 <ref type="bibr" target="#b60">(Shi et al., 2017)</ref> ReCTS <ref type="bibr">(Zhang et al., 2019)</ref> TextOCR <ref type="bibr" target="#b62">(Singh et al., 2021)</ref> OpenVINO <ref type="bibr" target="#b29">(Krylov et al., 2021)</ref> HierText <ref type="bibr" target="#b46">(Long et al., 2022)</ref> Document OCR arXiv rendered markdown <ref type="bibr" target="#b8">(Blecher et al., 2023)</ref> 2.1%</p><p>Text-only corpus DeepSeek-LLM 2T text copus (DeepSeek-AI, 2024) 70.0%</p><p>Chinese document OCR dataset. It is comprised of two parts: 1): arXiv Articles: We collected source code and compiled PDFs from 1.4 million arXiv articles. Utilizing pre-processing tools from Nougat <ref type="bibr" target="#b8">(Blecher et al., 2023)</ref>, we rendered these articles into paired images and texts; 2): E-books and Educational Materials: We cleaned 860K English and 180K Chinese e-books from Anna's Archive (Anna's Archive, 2024) alongside millions of K-12 education exam questions. Subsequently, we employed HTML rendering tools <ref type="bibr">(Kulkarni and Truelsen)</ref> to convert these HTML files with different templates into paired image and text formats.</p><p>Scene text OCR data augment the capability of the model to recognize and extract text from images in which the text is integrated into the environment. The dataset is composed of multiple Table <ref type="table">2</ref> | Summary of data used in our joint vision and language supervised fine-tuning stage.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Class Dataset Ratio</head><p>In-house Data SFT data based on taxonomy (Figure <ref type="figure" target="#fig_3">3</ref>) 10.5%</p><p>General Multi-modality ShareGPT4V <ref type="bibr" target="#b11">(Chen et al., 2023)</ref> 35.5% LAION-GPTV (LAION, 2023) LVIS-Instruct4V <ref type="bibr">(Wang et al., 2023a)</ref> textOCR-GPT4V <ref type="bibr" target="#b10">(Carter, 2024)</ref> LLaVA1.6-GPT4V <ref type="bibr">(Liu et al., 2024a)</ref> IconQA <ref type="bibr" target="#b47">(Lu et al., 2021)</ref> Table <ref type="table"></ref>and<ref type="table">chart</ref> Ureader <ref type="bibr" target="#b76">(Ye et al., 2023)</ref> 4.1% Geo170K <ref type="bibr" target="#b17">(Gao et al., 2023)</ref> ScienceQA <ref type="bibr">(Lu et al., 2022b)</ref> Web Code Screen-to-code <ref type="bibr" target="#b1">(Abi, 2024)</ref> 2.0% ScreenQA <ref type="bibr" target="#b22">(Hsiao et al., 2022)</ref> Text-only SFT DeepSeek-LLM (DeepSeek-AI, 2024) 47.9% public datasets, including ArT <ref type="bibr" target="#b12">(Chng et al., 2019)</ref>, MLT-17 <ref type="bibr" target="#b54">(Nayef et al., 2017)</ref>, LSVT <ref type="bibr" target="#b65">(Sun et al., 2019)</ref>, UberText <ref type="bibr" target="#b84">(Zhang et al., 2017)</ref>, Coco-text <ref type="bibr" target="#b70">(Veit et al., 2016)</ref>, RCTW-17 <ref type="bibr" target="#b60">(Shi et al., 2017)</ref>, ReCTS <ref type="bibr">(Zhang et al., 2019)</ref>, TextOCR <ref type="bibr" target="#b62">(Singh et al., 2021)</ref>, OpenVINO <ref type="bibr" target="#b29">(Krylov et al., 2021)</ref> and HierText <ref type="bibr" target="#b46">(Long et al., 2022)</ref>.</p><p>Text-only corpus serves to maintain proficiency in language-centric tasks. In this study, we employ the same text corpus with DeepSeek-LLM (DeepSeek-AI, 2024).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.">Supervised Fine-tuning Data</head><p>The supervised fine-tuning datasets utilized in our study encompass a diverse range of multimodality and language data sources, including well-known open-source shared gpt4v datasets such as ShareGPT4V <ref type="bibr" target="#b11">(Chen et al., 2023)</ref>, LAION-GPTV (LAION, 2023), LVIS-Instruct4V <ref type="bibr">(Wang et al., 2023a)</ref>, textOCR-GPT4V <ref type="bibr" target="#b10">(Carter, 2024)</ref>, LLaVA1.6-GPT4V <ref type="bibr">(Liu et al., 2024a)</ref> and IconQA <ref type="bibr" target="#b47">(Lu et al., 2021)</ref>. Additionally, we incorporate partial table and chart data extracted from pretraining datasets such as Ureader <ref type="bibr" target="#b76">(Ye et al., 2023)</ref>, ScreenQA <ref type="bibr" target="#b22">(Hsiao et al., 2022)</ref>, Geo170K <ref type="bibr" target="#b17">(Gao et al., 2023)</ref>, and ScienceQA <ref type="bibr">(Lu et al., 2022b)</ref>. Moreover, we integrate the UI Code dataset obtained from Screen-to-code <ref type="bibr" target="#b1">(Abi, 2024)</ref> tasks. To enhance the quality of our multi-modality SFT data, we have also curated a portion of high-quality in-house multi-modality SFT data, some of which are in the Chinese language. Our in-house instruction-tuning dataset is meticulously designed to reflect real-world usage scenarios and cover a wide range of tasks. We start by collecting a diverse set of authentic test cases for GPT-4V and Gemini from various online sources. These test cases are then carefully analyzed and organized into a comprehensive taxonomy, which encompasses multiple categories, such as recognition, conversion, analysis, reasoning, evaluation, and safety, as detailed in Table <ref type="table" target="#tab_1">3</ref>. This structured taxonomy serves as a guideline for selecting representative prompts for each test image, ensuring that our instruction-tuning dataset is both practical and relevant to real-world applications. Moreover, this taxonomy is also employed to construct a balanced and comprehensive evaluation dataset, which allows us to effectively assess the model's performance across different tasks and categories. By following this systematic approach, we ensure that the categories covered by our in-house multi-modality SFT data are well-aligned with the taxonomy and representative of real-world usage scenarios.  Furthermore, we include the text-only SFT data employed in DeepSeek-LLM (DeepSeek-AI, 2024) as part of our joint vision and language SFT data.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">Approach</head><p>3.1. Architecture</p><p>Our system contains three modules: a hybrid vision encoder, a vision adaptor, and a language model. We introduce each part in this section.</p><p>Hybrid Vision Encoder. We employ SigLIP as the vision encoder to extract high-level semantic feature representations from visual inputs. However, we observe that a single SigLIP encoder struggles to address all real-world questions comprehensively. Vision encoders in the CLIP family, including SigLIP, are primarily designed for semantic visual representations but are challenged by ambiguous encoding, resulting in visually distinct images being encoded as similar due to what is referred to as "CLIP-blind pairs" <ref type="bibr" target="#b67">Tong et al. (2024)</ref>. Meanwhile, the CLIP family of models is limited by its relatively low-resolution inputs (e.g., 224 x 224, 336 x 336, 384 x 384, 512 x 512), which hinders their ability to handle tasks requiring more detailed low-level features like dense OCR and visual grounding task.</p><p>To address these limitations, recent researches <ref type="bibr">(Lin et al., 2023b;</ref><ref type="bibr" target="#b67">Tong et al., 2024;</ref><ref type="bibr" target="#b74">Wei et al., 2023)</ref> have advocated for the integration of additional vision-only self-supervised encoders, to enhance the visual grounding capabilities of multi-modality models. Building upon previous motivations, we additionally utilize a vision-only encoder based on the SAM-B <ref type="bibr" target="#b26">(Kirillov et al., 2023)</ref>, a pre-trained ViTDet <ref type="bibr" target="#b35">(Li et al., 2022)</ref> image encoder to process low-level features, which accepts high-resolution 1024 x 1024 image inputs. In addition to the SAM-B encoder, we retain the SigLIP-L vision encoder with low-resolution 384 x 384 image inputs. Consequently, our hybrid vision encoder combines the SAM-B and SigLIP-L encoders, efficiently encoding high-resolution 1024 x 1024 images while preserving both semantic and detailed information. Specifically, a high-resolution SAM-B vision encoder first resizes the image into 1024 x 1024 and results in a 64 x 64 x 256 feature map.</p><p>In the case of a high-resolution feature map of size, 64 x 64 x 256 generated by SAM-B, the VL Adaptor initially interpolates it into a size of 96 x 96 x 256. Subsequently, it employs two convolutional layers with a stride of 2, producing a feature map of 24 x 24 x 1024, and reshapes it to 576 x 1024. Alongside this, the low-resolution feature map of size 576 x 1024 generated by SigLIP-L is concatenated with the high-resolution features, resulting in 576 visual tokens with 2048 dimensions. These visual tokens possess a substantial capacity for enhancing high-level semantic visual recognition and low-level visual grounding tasks. Then they undergo GeLU activation and are directed through an embedding layer to establish a connection with the language model. Vision-Language Adaptor. We employ a two-layer hybrid MLP to bridge the vision encoder and the LLM. Initially, distinct single-layer MLPs are used to process high-resolution features and low-resolution features separately. Subsequently, these features are concatenated along their dimensions and then transformed into the LLM's input space through another layer of MLP.</p><p>Language Model. Our language model is built upon DeepSeek LLM (DeepSeek-AI, 2024) whose micro design largely follows the design of LLaMA <ref type="bibr">(Touvron et al., 2023a,b)</ref>, adopting a Pre-Norm structure with RMSNorm (Zhang and Sennrich, 2019) function and using SwiGLU <ref type="bibr" target="#b59">(Shazeer, 2020)</ref> as the activation function for the Feed-Forward Network (FFN), with an intermediate layer dimension of 8 3 𝑑 𝑚𝑜𝑑𝑒𝑙 . It also incorporates Rotary Embedding <ref type="bibr">(Su et al.</ref>,</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Prompt</head><p>Is the cyclist on the left or right side of the woman's handbag?</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response</head><p>The cyclist is on the left side of the woman's handbag. This can be determined by observing the relative positions of the objects in the image:</p><p>1. The woman is holding a handbag that is positioned to her right side, as we view the image.</p><p>2. There is a cyclist depicted on the road behind the woman and to her left when looking at the image.</p><p>3. The cyclist appears to be moving away from the viewpoint, given their direction and the motion blur effect on their wheels 4. The cyclist is further down the road compared to the woman, which supports the conclusion that they are on the left side of the handbag based on our perspective. These visual clues confirm that the cyclist is indeed con the left side of the woman's handbag.  Stage 2 is the crucial part of the joint vision and language pretraining, where both VL adaptor and language model are trainable. Stage 3 is the supervised fine-tuning phase, during which the low-resolution vision encoder SigLIP-L, VL adaptor, and language model will be trained.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2.">Training Pipelines</head><p>We train our DeepSeek-VL in three consecutive stages as shown in Figure <ref type="figure" target="#fig_3">3</ref>: vision-language adaptor warmup, joint vision-language pretraining, and supervised fine-tuning. We currently focus on visual understanding capabilities and only calculate the next token prediction loss on the language part.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2.1.">Stage 1: Training Vision-Language Adaptor</head><p>The primary objective of this stage is to establish a conceptual link between visual and linguistic elements within the embedding space, thereby facilitating the comprehensive understanding of depicted entities in the images by the Large Language Model (LLM). Consistent with prior research conducted by LLaVA <ref type="bibr">(Liu et al., 2024b)</ref> and Instruct-BLIP <ref type="bibr" target="#b14">(Dai et al., 2023)</ref>, we adopt a similar approach in which both the vision encoder and the LLM remain frozen during this stage, while solely allowing the trainable parameters within the vision-language adaptor. We utilize a dataset comprising 1.25 million image-text paired captions obtained from ShareGPT4V, along with 2.5 million Document OCR rendering pairs to train the VL adaptor.</p><p>Nevertheless, compared to Large Language Models (LLMs), vision-language adaptors (e.g., a 2-layer MLP) have a significantly smaller parameter capacity. This limitation in model capacity restricts the capabilities that can be learned during this stage. A natural question arises: Can the law of data scaling be effective at this stage? To address this question, we conducted a simple experiment in Table <ref type="table" target="#tab_6">8</ref>. The results demonstrate that expanding the data scale at this stage does not provide benefits and may even lead to inferior performance. Consequently, we proceed to unfreeze the Large Language Model (LLM) and investigate efficient vision-language pretraining approaches during stage 2.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2.2.">Stage 2: Joint Vision-Language pretraining</head><p>In this stage, we explore effective pretraining strategies which can be considered as an additional stage to enable Large Language Models (LLMs) to comprehend multimodal inputs. We keep the vision encoder frozen and optimize the language model and VL adaptor.</p><p>Initially, we attempt to directly train the LLM with multimodal data. However, we find while the metrics for multimodal performance incrementally improved, there is a stark and severe decline in language metrics as illustrated in Figure <ref type="figure">4</ref> (Multimodal:Language=100%:0%),. This underscores the inherent challenge in directly conducting multimodal pretraining on the foundation of an LLM, revealing a critical trade-off between enhancing multimodal abilities and preserving linguistic proficiency.</p><p>We hypothesize that the observed phenomenon stems from two primary factors: firstly, the majority of multimodal corpora, are overly simplistic and exhibit a significant divergence from the complexity and distribution of linguistic data. Secondly, there appears to be a competitive dynamic between multimodal and linguistic modalities, leading to what can be described as catastrophic forgetting of language capabilities within the LLM.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Joint Language-multimodal Training</head><p>To address this challenge, we devise a straightforward yet effective joint language-multimodal training strategy. During training, we not only engage in multimodal data training but also incorporate a large proportion of language data into the training. This approach aims to balance the training focus, mitigating the adverse effects observed. We conduct experiments on the DeepSeek-VL 1B model in Figure <ref type="figure">4</ref> to explore the impact of varying the modality mixing ratios.</p><p>The analysis of the graph yields several key conclusions: (1). Integrating language data significantly alleviates the decline in language capabilities, demonstrating a substantial improvement in the model's linguistic performance. (2). The inclusion of language data does not lead to a significant loss in multimodal performance, indicating that the model retains its multimodal processing abilities. (3). The performance of different modalities is strongly correlated with their respective proportions in the training dataset, substantiating the competitive relationship between the two modalities. Ultimately, we opt for a training ratio of language to multimodal data of roughly 7:3 for our final model. This ratio enables the model to maintain its language capabilities while simultaneously achieving better pretraining on multimodal data, effectively balancing the development of both language and multimodal proficiencies.</p><p>Scaling Vision-Language Pretraining Nevertheless, the pretraining stage of the model incurs a substantial computational cost, and performing iterations on the 7B model requires an excessive amount of computing power and time. One suitable strategy involves conducting experiments on a smaller model, specifically the 1.3B model, and subsequently scaling it up to the 7B model. Fortunately, we have observed that a significant portion of the outcomes obtained from the 1.3B models can be effectively transferred to the 7B model through the utilization of SFT (e.g., the encoder design). However, during the stage 2 training phase, we have encountered considerable fluctuations in the generative metrics of the 1.3B model, rendering it challenging to supervise the training process effectively. And this has been discussed in <ref type="bibr" target="#b58">Schaeffer et al. (2024)</ref>, "sharp and unpredictable changes might be induced by the researcher's choice of measurement, even though the model family's per-token error rate changes smoothly, continuously and predictably with increasing scale." Subsequent experiments have led us to identify the root causes of this issue: the limited capacity of the 1.3B model and the absence of SFT data within the training dataset, both of which hinder the model's ability to accurately follow instructions. Even when the model possesses knowledge of the correct options, it struggles to generate them precisely. Figure <ref type="figure">4</ref> | Comparative performance results on different modality fusion ratio on training stage 2. An excessively large proportion of multimodal data (multimodal:language=100%:0%) leads to significant forgetting of language capabilities in LLMs. A suitable ratio (multimodal:language=70%:30%) can effectively mitigate the issue of language forgetting while simultaneously enhancing the model's multimodal abilities.</p><p>To mitigate these challenges, we adopte a dual-pronged approach. Firstly, we employ the Multi-choice PPL methodology to monitor the model's progress. This involves inputting not only the prompt and image into the network but also all the answer associated with the question. Subsequently, we calculate the PPL for each answer position (e.g., A, B, C, D) and select the option deemed correct by the model as the final answer. Secondly, we introduce SFT data into the training dataset at a minimal proportion, allowing the model to acquire some proficiency in following instructions. The combination of these two approaches ensures the maintenance of stable training metrics for the 1.3B model and bring better performance after stage3.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2.3.">Stage 3: Supervised Fine-tuning</head><p>In this phase, we finetune the pretrained DeepSeek-VL model with instruction-based fine-tuning to bolster its ability to follow instructions and engage in dialogue, culminating in the creation of the interactive DeepSeek-VL-Chat model. We optimize the language model, VL adaptor, and Prompt Explain the code, step by step.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response -DeepSeek-VL</head><p>The code provided is a Python function that calculates the longest palindrome substring of a given string. The function takes in two parameters, which are not defined within this snippet but presumably represent the input strings to be processed.</p><p>Here's a step-by-step explanation of how the code works: 1. It defines a helper function called longestPalIndrome with two arguments, self (which is likely a reference to an object or class instance) and s. This function returns a value, which we can assume is the length of the longest palindrome substring found in s. 2. The main function starts by checking if the length of s is less than 1. If true, it immediately returns sas there is no palindrome substring for empty or single character strings.</p><p>3. Next, it initializes variables Max_Len and Max_Str to store the maximum length of a palindrome substring found so far. 4. A loop (for i in range(len(s)-1):) iterates over all possible starting points of substrings in s. For each starting point i, another nested loop (for j in range(i+1, len(s))) checks whether the substring from index i to j forms a palindrome. The condition if j -i + 1 &gt; Max_Len and s[i:j] == s[j:i][::-1] ensures that the substring is both longer than the current maximum length and reads the same backward as forward. If this condition is met, it updates Max_Len and Max_Str with the new maximum length and substring. 5. After iterating through all possible substrings, the function returns Max_Str, which contains the longest palindrome substring found. 6. Finally, the line return Max_Str indicates that the function will return the result of its computation.</p><p>This function uses dynamic programming principles to find the longest palindromic subsequence efficiently by storing intermediate results and avoiding redundant calculations. hybrid vision encoder with the vision-language SFT data as shown in Table <ref type="table">2</ref>, SAM-B remains frozen due to the limited GPU memory. We only supervise answers and special tokens and mask the system and user prompts. To guarantee the model's comprehensive proficiency in dialogue, we utilize a blend of multimodal data and pure text dialogue data used in DeepSeek-LLM. This approach ensures the model's versatility across various dialogue scenarios.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3.">Hyperparameters and Infrastructures</head><p>The detailed hyperparameters of all stages are illustrated in Table <ref type="table">4</ref>. We train and evaluate our DeepSeek-VL with HAI-LLM (High-flyer, 2023), a lightweight and efficient distributed training framework. Since we use visual encoders to convert images into embedding vectors and then treat image embeddings and text embeddings uniformly, we can easily adapt pipeline parallelism to VL model training: all we need to do is to view visual encoders and text embedding as a single module and take it as the first layer of the resulting model. This very first layer has a complicated model structure and precludes standard tensor parallelism technique, but luckily it requires relatively small computation compared to upper standard transformer blocks. We therefore simply recompute the visual encoder forward pass in all tensor parallel ranks. The existence of visual encoders also leads to non-uniform execution time across model layers, so we re-divide model layers between pipeline parallelism ranks to achieve better load balance and throughput. The upper layers of DeepSeek-VL are exactly the same as those in DeepSeek-LLM. With such minor modification, we can now perform canonical 3D parallelism techniques as in Megatron <ref type="bibr" target="#b28">(Korthikanti et al., 2023;</ref><ref type="bibr" target="#b53">Narayanan et al., 2021;</ref><ref type="bibr" target="#b61">Shoeybi et al., 2019)</ref> and overlap computation and communication as in DeepSeek-LLM (DeepSeek-AI, 2024). DeepSeek-VL-7B consumed 5 days on a cluster of 64 nodes, each comprising 8 Nvidia A100 GPUs, while DeepSeek-VL-1B consumed 7 days on a setup involving 16 nodes. AdamW(𝛽 1 = 0.9, 𝛽 2 = 0.95) AdamW(𝛽 1 = 0.9, 𝛽 2 = 0. </p><formula xml:id="formula_1">× ✓ × × ✓ × Pipeline parallelism × × × × ✓ ✓</formula><p>Table <ref type="table">4</ref> | Detailed hyperparameters of our DeepSeek-VL.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.">Evaluation</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.">Public Multimodal Benchmarks Evaluation</head><p>We evaluate our models on a series of public benchmarks:</p><p>Multimodal comprehensive understanding datasets: MMMU <ref type="bibr" target="#b79">(Yue et al., 2023)</ref>, CM-MMU <ref type="bibr" target="#b82">(Zhang et al., 2024)</ref>, MMBench <ref type="bibr">(Liu et al., 2023a)</ref>, MMBench-CN <ref type="bibr">(Liu et al., 2023a)</ref>, SeedBench <ref type="bibr">(Li et al., 2023a)</ref> and MMV <ref type="bibr">(Yu et al., 2023b)</ref>. We compare DeepSeek-VL with competitors on MMB/MMC-dev as current official test download link is no longer active.</p><p>Chart/table understanding datasets: OCRBench <ref type="bibr">(Liu et al., 2023b)</ref>; Hallucination datasets: POPE <ref type="bibr">(Li et al., 2023b)</ref>; Scientific problem datasets: ScienceQA <ref type="bibr">(Lu et al., 2022a)</ref> and MathVista <ref type="bibr" target="#b50">(Lu et al., 2023)</ref>.</p><p>We apply generation-based evaluation with greedy decoding. The generation-based evaluation here refers to letting the model generate free texts and parsing results from generated texts. The comparative results, as illustrated in Table <ref type="table">5</ref>, show that DeepSeek-VL-7B surpasses most open-source models of similar size across a wide range of benchmarks.</p><p>DeepSeek-VL outperforms open-source models of similar size in benchmarks such as MMB, MMC, and SEEDbench, even approaching proprietary models (DeepSeek-VL vs. GPT-4V = 70.4 vs. 71.6 on seedbench), demonstrating its powerful natural image comprehension capability. The model also surpasses all open-source models in mathematical logic, but still lags significantly behind proprietary models like . This difference could be attributed to the variance in base model sizes.</p><p>Furthermore, as shown in Table <ref type="table">6</ref>, DeepSeek-VL-1.3B significantly outperforms models of comparable size. It demonstrates superior performance compared to leading open-source models in the MMB benchmark test, while utilizing only close to half the parameters (1.3B vs. 2.7B), indicating its robust natural image comprehension capability. DeepSeek-VL-1.3B even achieves comparable results to 7B open-source models on MathVista, further validating the powerful logical understanding capabilities of the DeepSeek-VL family. Table <ref type="table">7</ref> | The performance on language benchmarks. model prediction. Perplexity-based evaluation helps to distinguish subtle probability difference between model predictions and avoids discontinuity of exact match style evaluation. We apply generation-based evaluation with greedy decoding for GSM8K and AGIEval. The generationbased evaluation here refers to letting the model generate free texts and parsing results from generated texts. We apply language-modeling-based evaluation for Pile-test, which means calculating the bits-per-byte on the test corpus. And the results are illustrated in Table <ref type="table">7</ref> It can be observed that across the majority of language benchmarks, DeepSeek-VL performs comparably to, or even surpasses, DeepSeek-7B. For instance, it achieves scores of 68.4 vs. 68.5 on HellaSwag, which serves as a general benchmark for evaluating general language ability. DeepSeek-VL outperforms DeepSeek-7B on metrics such as MMLU and AGIEval, indicating that multimodal training methods may even aid in language tasks. Nevertheless, DeepSeek-VL-7B shows a certain degree of decline in mathematics (GSM8K), which suggests that despite efforts to promote harmony between vision and language modalities, there still exists a competitive relationship between them. This could be attributed to the limited model capacity (7B), and larger models might alleviate this issue significantly. Overall, DeepSeek-VL strives to achieve the goal of minimizing declines in language capability while addressing these challenges.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3.">Human Evaluation</head><p>To further explore the capabilities of our DeepSeek-VL, we independently construct a dataset for manual evaluation. This dataset comprises 100 questions, divided into seven categories, each encompassing specific tasks. These categories and tasks are same as our taxonomy for the in-house SFT data, as shown in Table <ref type="table" target="#tab_1">3</ref>. This approach ensures that the tasks we test are universal and encompass the majority of use cases for multimodal models.</p><p>Moreover, based on the categories and tasks described in existing reports, we collect similar image materials and developed prompts. The sources for these image materials include royaltyfree image communities and photographs taken by the researchers. This methodical collection and prompt formulation process ensures our dataset is both comprehensive and representative of real-world multimodal model applications.</p><p>We compare our DeepSeek-VL-7B with InternLM-XComposer2-VL, CogVLM and GPT-4V as shown in Figure <ref type="figure" target="#fig_6">6</ref> (and we also provide visualization results in Appendix A). GPT-4V demonstrates exceptional performance across most dimensions. All open-source models are still far behind GPT-4V in logical reasoning, highlighting the necessity of scaling up the size of Large Language Models (LLMs). DeepSeek-VL-7B achieves better results in overall performance, reaching outcomes close to GPT-4V in Recognition, Conversion, and Commonsense Reasoning.   In addition, we conduct a comparative assessment using GPT-4V to evaluate the performance of DeepSeek-VL against other models across a set of 99 test samples designed for human evaluation. Following <ref type="bibr" target="#b85">(Zheng et al., 2024)</ref>, we show GPT-4V the question and the answers from two different models and ask GPT-4V to determine which one is better or declare a tie. The results indicate a preference for DeepSeek-VL's responses in the majority of cases, as GPT-4V tends to rate the quality of DeepSeek-VL's answers more favorably. As illustrated in Figure <ref type="figure" target="#fig_7">7</ref>, DeepSeek-VL is judged to be superior in over 60% of instances when compared to opensource multimodal models, including Fuyu-8B, CogVLM-17B, and InternLM-XComposer2-VL. Moreover, in comparison with other proprietary models, such as GPT-4V itself, DeepSeek-VL demonstrates comparably exceptional performance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.4.">Ablation Study</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Scale Up Projector Training</head><p>We expand the dataset for stage 1 (projector warmup) and subsequently apply supervised fine-tuning. The results, depicted in Figure <ref type="figure">8</ref>, demonstrate that augmenting the training data volume does not enhance performance at this stage. This implies that the projector's capacity is inherently constrained, rendering it incapable of capturing the extensive knowledge necessary for multimodal tasks.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Training Stage</head><p>In Table <ref type="table" target="#tab_7">9</ref>, we examine the contributions of each stage to the model's performance. It's evident that combining stage 1, stage 2, and stage 3 yields significantly better results across all metrics compared to combining stage 1 and stage 3 alone, demonstrating the effectiveness of multimodal pretraining. Additionally, the combination of stage 2 and stage 3 still slightly lags behind the combined performance of stage 1, stage 2, and stage 3, indicating that vision-language adaptor warmup stage remains meaningful.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Modality Group Training</head><p>When mixing language and multimodal data, we observe that directly blending them at the batch level significantly reduces training efficiency. This inefficiency arises because each batch gradient backpropagation process waits for the slowest sample to complete. As a result, the predominantly faster-to-process pure language data ends up waiting for the multimodal samples to finish, leading to a decrease in overall training efficiency.</p><p>To address this issue, we experiment with grouping different modalities of data at each global step, sampling distinct modalities separately. This approach involves organizing the training data so that batches are composed either entirely of language data or entirely of multimodal data at different training steps, rather than mixing them within the same batch.</p><p>The results are shown in Figure <ref type="figure">8</ref>, we observe that this method does not compromise the model's performance while enhancing the model's training efficiency by 20%. This strategy effectively circumvents the bottleneck caused by the disparate processing times between modalities, optimizing the training workflow.</p><p>Modality Warmup Considering that our approach involves multimodal training on the foundation of a language model, directly mixing multimodal data in a fixed proportion from the outset can destabilize the model. To counteract this issue, we propose a simple yet effective modality warm-up strategy. Initially, we set the language data ratio to 1, and then gradually decrease it to the target ratio for the final model training (e.g., 0.7).</p><p>Our experiments, as illustrated in Figure <ref type="figure">9</ref>, demonstrate that this strategy effectively prevents a significant decline in language capabilities at the beginning of training, while also yielding comparatively superior outcomes in the final phases for both the language and multimodal domains. This gradual adaptation enables the model to more seamlessly adjust to the incorporation of multimodal data, thereby improving overall training stability and performance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Vision Encoder Selection</head><p>In order to better acquire and utilize image information, we compare the training loss of different vision encoders under our training settings except for reducing training steps of stage 2 to 8000 for efficiency. As illustrated in Figure <ref type="figure" target="#fig_1">10</ref>, the incorporation of vision-only self-supervised encoders has been found to significantly enhance performance on training loss. To more effectively process high-resolution images, our research ultimately adopts a hybrid vision encoder strategy, combining SigLIP with SAM for our model's implementation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Vision-Language Adaptor Design</head><p>To improve the efficiency of extracting information from the visual encoder while adhering to current token length constraints, adjustments can be made to the Vision-Language adaptor in two main ways: the method used to combine visual features and the design of the MLP adaptor.</p><p>Previous studies <ref type="bibr" target="#b67">(Tong et al., 2024)</ref> have indicated that combining visual features along the sequence dimension can lead to better model performance, although this comes with the trade-off of increased computational requirements due to a longer sequence of visual feature tokens. As demonstrated in the top section of visual features along the image's width or height dimensions before sequence concatenation, in order to keep the sequence length constant, does not achieve better results compared to simply merging them along the embedding dimension in most metrics. In terms of the adaptor architecture, employing separate MLP adaptors for each vision feature encoder allows for more precise adjustments to the specific values and distribution patterns of visual features, facilitating smoother model training. Conversely, using a shared MLP adaptor for different vision encoders contributes to adequate feature fusion. We adopt a mixed strategy and report stable and improved performance, as outlined in the lower section of Table <ref type="table" target="#tab_9">10</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.">Conclusion, Limitation, and Future Work</head><p>In this technical report, we have introduced DeepSeek-VL, a series of Multimodal Large Language Models, available in scales of 1.3B and 6.7B parameters. This report has unveiled the limitations inherent in the predominant projector-based pretraining methodologies, setting the stage for the innovative approach adopted by DeepSeek-VL. By prioritizing a joint vision and language (VL) pretraining phase, DeepSeek-VL transcends traditional models by ensuring that the integration of multimodal data does not compromise the linguistic capabilities of the Large Language Models (LLMs). This is achieved through a strategic warm-up data ratio and the introduction of a hybrid vision encoder, which together enable the efficient processing of high-resolution images without losing sight of semantic richness.</p><p>The incorporation of a hybrid vision encoder, capable of handling 1024 x 1024 images within a constrained token budget, underscores our commitment to preserving the nuanced details and semantic integrity across diverse tasks. As a result, DeepSeek-VL emerges as a pioneering model that not only meets but exceeds the standards set by generalist models in its class. It showcases exceptional performance across a wide range of visually-centric benchmarks while sustaining formidable proficiency in language-centric evaluations.</p><p>In making DeepSeek-VL publicly available, we aim to catalyze further innovation and exploration within the research community, providing a robust foundation upon which future studies can build. This gesture of openness is intended to facilitate the collective advancement of our understanding and capabilities in handling multimodal data.</p><p>Looking ahead, we are excited to announce plans to scale up DeepSeek-VL to larger sizes, incorporating Mixture of Experts (MoE) technology. This forthcoming expansion promises to further enhance the model's efficiency and effectiveness, opening up new horizons for research and application in the field of AI.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>You are a home robot. Now you are at the kitchen, this is what you can see from there. To fetch something from the fridge, what should you do?</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 1 |</head><label>1</label><figDesc>Figure1| DeepSeek-VL possesses general multimodal understanding capabilities, capable of processing logical diagrams, web pages, formula recognition, scientific literature, natural images, and embodied intelligence in complex scenarios.</figDesc><graphic coords="4,30.20,530.59,116.68,172.69" type="bitmap" /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 2 |</head><label>2</label><figDesc>Figure 2 | Visualization results. DeepSeek-VL is capable of capturing tiny object and giving organized explanations.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Figure 3 |</head><label>3</label><figDesc>Figure 3 | Our training pipelines consist of three stages. Stage 1 involves training the Vision-Language (VL) adaptor while keeping the hybrid vision encoder and language model fixed.Stage 2 is the crucial part of the joint vision and language pretraining, where both VL adaptor and language model are trainable. Stage 3 is the supervised fine-tuning phase, during which the low-resolution vision encoder SigLIP-L, VL adaptor, and language model will be trained.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Figure 5 |</head><label>5</label><figDesc>Figure 5 | Visualization results. DeepSeek-VL can understand Python code and provide detailed and organized explanations.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head></head><label></label><figDesc>10 -3 3 × 10 -5 2.0 × 10 -5 1.0 × 10 -3 4.2 × 10 -5 2.0 × 10 -</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_6"><head>Figure 6 |</head><label>6</label><figDesc>Figure 6 | Human evaluation results on InternLM-XComposer2-VL (Dong et al., 2024), CogVLM (Wang et al., 2023b), DeepSeek-VL and GPT-4V (OpenAI, 2023b).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_7"><head>Figure 7 |</head><label>7</label><figDesc>Figure 7 | GPT-4V-based Evaluation Results of DeepSeek-VL vs. Other Models: The chart depicts results from a GPT-4V-based assessment across 99 test samples, demonstrating DeepSeek-VL's favorable outcomes against both open-source and proprietary models.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 3 |</head><label>3</label><figDesc>Our</figDesc><table /><note><p>taxonomy for the in-house SFT data. The categories covered by our high-quality in-house multi-modality SFT data are comprehensively represented in this taxonomy.</p></note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 8 |</head><label>8</label><figDesc>Comparative directly SFT performance results on scaling up stage 1 data. The results demonstrate that expanding the data scale at this stage does not yield benefits, or even results in worse performance.</figDesc><table><row><cell cols="2">Stage 1, Training Step</cell><cell>MMB</cell><cell cols="2">MMC</cell><cell>SEED</cell><cell>POPE</cell><cell>MMMU</cell><cell>Average</cell></row><row><cell></cell><cell>2K</cell><cell>59.0</cell><cell>54.0</cell><cell></cell><cell>61.8</cell><cell>82.3</cell><cell>30.3</cell><cell>57.5</cell></row><row><cell></cell><cell>8K</cell><cell>58.0</cell><cell>45.0</cell><cell></cell><cell>58.5</cell><cell>84.9</cell><cell>29.2</cell><cell>55.1</cell></row><row><cell></cell><cell>20K</cell><cell>56.0</cell><cell>52.3</cell><cell></cell><cell>59.0</cell><cell>81.7</cell><cell>28.6</cell><cell>55.5</cell></row><row><cell></cell><cell>80K</cell><cell>58.1</cell><cell>55.0</cell><cell></cell><cell>58.6</cell><cell>78.6</cell><cell>27.9</cell><cell>55.6</cell></row><row><cell>Stage 1</cell><cell>Stage 2</cell><cell>Stage 3</cell><cell>MMB</cell><cell>MMC</cell><cell>SEED</cell><cell>POPE</cell><cell>MMMU</cell><cell>Average</cell></row><row><cell>✓</cell><cell></cell><cell>✓</cell><cell>59.4</cell><cell>54.2</cell><cell>61.4</cell><cell>82.5</cell><cell>29.2</cell><cell>57.4</cell></row><row><cell></cell><cell>✓</cell><cell>✓</cell><cell>63.4</cell><cell>60.5</cell><cell>65.9</cell><cell>87.1</cell><cell>31.8</cell><cell>61.7</cell></row><row><cell>✓</cell><cell>✓</cell><cell>✓</cell><cell>64.3</cell><cell>61.3</cell><cell>66.7</cell><cell>87.6</cell><cell>32.2</cell><cell>62.4</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 9 |</head><label>9</label><figDesc>Analysis of model performance across training stages.</figDesc><table><row><cell>2.170</cell><cell>Pile-test w/o group by modality w/ group by modality</cell><cell>50.0</cell><cell>MMBench w/o group by modality w/ group by modality</cell><cell>42</cell><cell>MMBench_CN w/o group by modality w/ group by modality</cell></row><row><cell>2.165</cell><cell></cell><cell>47.5</cell><cell></cell><cell>40</cell><cell></cell></row><row><cell></cell><cell></cell><cell>45.0</cell><cell></cell><cell>38</cell><cell></cell></row><row><cell>2.160 PPL</cell><cell></cell><cell>40.0 42.5 Accuracy</cell><cell></cell><cell>34 36 Accuracy</cell><cell></cell></row><row><cell>2.155</cell><cell></cell><cell>37.5</cell><cell></cell><cell>32</cell><cell></cell></row><row><cell>2.150</cell><cell></cell><cell>32.5 35.0</cell><cell></cell><cell>28 30</cell><cell></cell></row><row><cell></cell><cell>0 2000 4000 6000 8000 10000 12000 14000 16000 Step</cell><cell></cell><cell>0 2000 4000 6000 8000 10000 12000 14000 16000 Step</cell><cell></cell><cell>0 2000 4000 6000 8000 10000 12000 14000 16000 Step</cell></row><row><cell cols="6">Figure 8 | Comparative analysis of modality warmup on language (Pile-test) and multimodal</cell></row><row><cell cols="6">(MMBench and MMBench_CN) benchmarks demonstrates that modality grouping consistently</cell></row><row><cell cols="6">surpasses the non-grouped modality approach in language tasks, while simultaneously preserv-</cell></row><row><cell cols="6">ing performance on multimodal tasks on training stage 2 (Multimodal:Language=60%:40%).</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 10 |</head><label>10</label><figDesc>Table 10, reducing the sequence length by stacking Comparative analysis of different vision encoders on training losses in stage 2. Comparison of different adaptor architectures using SigLIP and SAM as hybrid vision encoder, Hybrid MLP are used for sequence concatenation experiments. Bolded entries represent the best results, while underlined entries denote the second-best results. For calculating the average score, we divide the OCRBench by the total number of questions.</figDesc><table><row><cell>2.6</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell cols="2">CLIP SigLIP SigLIP+DINO SigLIP+SAM</cell></row><row><cell>2.4</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>2.2 Loss</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>2.0</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>1.8</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>0</cell><cell>1000</cell><cell>2000</cell><cell>3000</cell><cell>4000 Step</cell><cell>5000</cell><cell>6000</cell><cell>7000</cell><cell>8000</cell></row><row><cell>Figure 10 | Architecture</cell><cell cols="9">MMB MMC SEED POPE ScienceQA MMMU OCRB Average</cell></row><row><cell cols="2">Sequence Concatenation:</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>Token Pooling -W</cell><cell>61.2</cell><cell>59.6</cell><cell>61.6</cell><cell>86.5</cell><cell>57.7</cell><cell></cell><cell>31.6</cell><cell>304</cell><cell>55.5</cell></row><row><cell>Token Pooling -H</cell><cell>59.9</cell><cell>58.3</cell><cell>61.6</cell><cell>83.8</cell><cell>55.0</cell><cell></cell><cell>32.0</cell><cell>291</cell><cell>54.2</cell></row><row><cell cols="2">Embedding Concatenation:</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>Hybrid MLP</cell><cell>61.7</cell><cell>60.1</cell><cell>62.9</cell><cell>87.8</cell><cell>56.6</cell><cell></cell><cell>31.3</cell><cell>309</cell><cell>55.9</cell></row><row><cell>Shared MLP</cell><cell>62.0</cell><cell>58.9</cell><cell>62.5</cell><cell>86.6</cell><cell>54.7</cell><cell></cell><cell>30.2</cell><cell>318</cell><cell>55.2</cell></row><row><cell>Separate MLP</cell><cell>57.5</cell><cell>58.7</cell><cell>63.1</cell><cell>86.5</cell><cell>56.6</cell><cell></cell><cell>29.0</cell><cell>299</cell><cell>54.5</cell></row></table></figure>
+		</body>
+		<back>
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2.">Public Language Benchmarks Evaluation</head><p>We evaluate our models on the following public language benchmarks:</p><p>Multi-subject multiple-choice datasets including MMLU <ref type="bibr" target="#b20">(Hendrycks et al., 2020)</ref>.</p><p>Language understanding and reasoning datasets including HellaSwag <ref type="bibr" target="#b80">(Zellers et al., 2019)</ref>.</p><p>Language modeling datasets including Pile <ref type="bibr" target="#b18">(Gao et al., 2020)</ref>.</p><p>Math datasets including GSM8K <ref type="bibr" target="#b13">(Cobbe et al., 2021)</ref>.</p><p>Code datasets including MBPP <ref type="bibr" target="#b4">(Austin et al., 2021)</ref>.</p><p>Standardized exams including AGIEval <ref type="bibr" target="#b86">(Zhong et al., 2023)</ref>.</p><p>We apply perplexity-based evaluation to datasets that require answers to be chosen from several options. These datasets include HellaSwag and MMLU. The perplexity-based evaluation here refers to calculating the perplexity of each option and selecting the lowest one as the </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A. Appendix</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response -DeepSeek-VL</head><p>The image is a line graph that compares the performance of two different learning rate schedulers, namely the Multi Step Learning Rate Scheduler and the Cosine Learning Rate Scheduler. The x-axis represents the number of processed tokens in billions, ranging from 0 to 100 billion. The y-axis represents the training loss, which ranges from 2.0 to 3.0.</p><p>The blue line represents the Multi Step Learning Rate Scheduler with three steps of increasing rates: (80% + 10% + 10%). This line starts at a high point near 3.0 on the y-axis when the number of processed tokens is 0 billion, indicating a higher initial loss. As the number of processed tokens increases, this line shows a steep decline in training loss, suggesting rapid improvement in model performance as more data is processed. However, after approximately 40 billion processed tokens, the line begins to level off, indicating diminishing returns on further processing.</p><p>The orange line represents the Cosine Learning Rate Scheduler. It also starts at a high point near 3.0 when the number of processed tokens is 0 billion but has a much smoother descent than the blue line. This suggests a slower but steady decrease in training loss as more tokens are processed. After around 60 billion processed tokens, this line levels off as well, similar to the blue line.</p><p>Both lines show a general trend of decreasing training loss as the number of processed tokens increases, indicating improved model performance over time. However, the Multi Step Learning Rate Scheduler appears to achieve lower losses more quickly compared to the Cosine Learning Rate Scheduler, especially in the early stages of processing tokens.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response -Open-source Model 1</head><p>Line 1 expresses the number of tokens, following a nonlinear trend. Line 2 starts at value 80, then is decreasing and increases by 10% until reaching a value where it then increases by 10%, before it flattens out. Line 3 also starts in increasing part, then has some constant decreases between different points, and after that express an increasing part.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response -Open-source Model 2</head><p>The image displays a line graph comparing the training losses of two different learning rates schedulers: the Multi Step Learning Rate Scheduler (80% + 10% = 10%) and the Cosine Learning Rate Scheduler. The y-axis represents the training loss in terms of billions, ranging from approximately 2.2 to 3.0. The x-axis represents the number of processed tokens, with a range from 0 to 100. The Multi Step Learning Rate Scheduler's line is blue, showing a sharp decline initially and then stabilizing. The Cosine Learning Rate Scheduler's line is orange, showing a more gradual decline.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Prompt</head><p>Help me find the bug.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response -Open-source Model 1</head><p>The function name in the code is "find_max_in_sequence", but it has not actually been called as the condition of the if-statement checks for 'not sequence' instead of 'if not sequence'. The actual line where the function should be called is missing from the provided code.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response -Open-source Model 2</head><p>The bug in the code is that the condition for returning 'None' is set to 'if not sequence', which is incorrect. The correct condition should be 'if not max_value', to ensure that the function returns 'None' when the sequence is not found or when the max value is not found within the sequence.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response -DeepSeek-VL</head><p>The image shows a piece of code written in Python, which is intended to find the maximum value in a sequence. The function definition starts with "def" indicating that this is a new function being defined. The name of the function is "find_max_in_sequence". The first line checks if the input is not a sequence; if it is, the function returns None. This is an important check because functions should only operate on sequences (like lists or tuples) and not other types of data structures. If the input is not a sequence, the function will return no result, which can be useful for handling invalid inputs. Next, there's a statement defining what a sequence is: max_value = sequence [1]. This seems incorrect as it assigns the index 1 to max_value instead of the actual element at position 1 in the sequence. Then we have a loop that iterates over each number in the sequence. It uses an "if" condition to check whether the current number (num) is greater than the current maximum value (max_value). If true, it updates max_value to be equal to num. This part of the code appears correct, as it correctly compares each number against the current maximum value and updates the maximum when necessary. Finally, after the loop ends, the function returns the updated max_value, which contains the maximum value found in the sequence. Based on the visual clues provided by the code snippet, the bug lies in the assignment of max_value where it incorrectly assigns the index 1 rather than the value at that index in the sequence. The corrected version would look like this: max_value = sequence[0]. This error could potentially lead to unexpected results if the sequence has more than one element, as the function might fail to find the maximum value due to the wrong assignment of max_value.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response -DeepSeek-VL</head><p>The coin is a 10 Baht coin from Thailand.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response -Open-source Model 1</head><p>The coin is an Asian coin, which features a cityscape on it.   Please note that the "A" column in the original table seems to be empty or not fully visible in the image provided. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Response</head></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<ptr target="https://huggingface.co/01-ai/Yi-VL-34B" />
+		<title level="m">Yi-34B vision language model</title>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<author>
+			<persName><surname>Abi</surname></persName>
+		</author>
+		<ptr target="https://github.com/abi/screenshot-to-code" />
+		<title level="m">Screenshot to code</title>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<ptr target="https://annas-archive.org/" />
+		<title level="m">Anna&apos;s Archive</title>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+	<note>Anna&apos;s archive</note>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">Introducing Claude</title>
+		<ptr target="https://www.anthropic.com/index/introducing-claude" />
+		<imprint>
+			<date type="published" when="2023">2023</date>
+			<publisher>Anthropic</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">Program synthesis with large language models</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Austin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Odena</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Nye</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bosma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Michalewski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Dohan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Cai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Terry</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Le</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2108.07732</idno>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<author>
+			<persName><forename type="first">J</forename><surname>Bai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Bai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Tan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhou</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2308.12966</idno>
+		<title level="m">Qwen-vl: A versatile vision-language model for understanding, localization, text reading, and beyond</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title level="m" type="main">Introducing our multimodal models</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Bavishi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Elsen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Hawthorne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Nye</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Odena</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Somani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Taşırlar</surname></persName>
+		</author>
+		<ptr target="https://www.adept.ai/blog/fuyu-8b" />
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<author>
+			<persName><forename type="first">L</forename><surname>Blecher</surname></persName>
+		</author>
+		<ptr target="https://github.com/lukas-blecher/LaTeX-OCR" />
+		<title level="m">Latex-ocr</title>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">GitHub repository</note>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title level="m" type="main">Nougat: Neural optical understanding for academic documents</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Blecher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Cucurull</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Scialom</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Stojnic</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2308.13418</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">A suite of generative tasks for multi-level multimodal webpage understanding</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Burns</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Srinivasan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Ainslie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Brown</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><forename type="middle">A</forename><surname>Plummer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Saenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Ni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Guo</surname></persName>
+		</author>
+		<ptr target="https://openreview.net/forum?id=rwcLHjtUmn" />
+	</analytic>
+	<monogr>
+		<title level="m">The 2023 Conference on Empirical Methods in Natural Language Processing (EMNLP)</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<author>
+			<persName><forename type="first">J</forename><surname>Carter</surname></persName>
+		</author>
+		<ptr target="https://huggingface.co/datasets/jimmycarter/textocr-gpt4v" />
+		<title level="m">Textocr-gpt4v</title>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<author>
+			<persName><forename type="first">L</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Dong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Lin</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2311.12793</idno>
+		<title level="m">Sharegpt4v: Improving large multi-modal models with better captions</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Icdar2019 robust reading challenge on arbitrary-shaped text-rrc-art</title>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">K</forename><surname>Chng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">C</forename><surname>Ng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Ni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Fang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Han</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Ding</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">2019 International Conference on Document Analysis and Recognition (ICDAR)</title>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="1571" to="1576" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<monogr>
+		<title level="m" type="main">Training verifiers to solve math word problems</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Cobbe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Kosaraju</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bavarian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Jun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Kaiser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Plappert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Tworek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Hilton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Nakano</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2110.14168</idno>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title level="m" type="main">Instructblip: Towards general-purpose vision-language models with instruction tuning</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">M H</forename><surname>Tiong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Fung</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Hoi</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<author>
+			<persName><forename type="first">Deepseek-Ai</forename><forename type="middle">X</forename><surname>Lm</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Dong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Cao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Ouyang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Wei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Duan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Cao</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2401.02954</idno>
+		<idno>arXiv:2401.16420</idno>
+		<ptr target="https://github" />
+		<title level="m">Internlm-xcomposer2: Mastering free-form text-image composition and comprehension in vision-language large model</title>
+		<imprint>
+			<date type="published" when="2024">2024. 2024</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+	<note>Deepseek llm: Scaling open-source language models with longtermism</note>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<author>
+			<persName><forename type="first">W</forename><surname>Foundation</surname></persName>
+		</author>
+		<ptr target="https://dumps.wikimedia.org" />
+		<title level="m">Wikimedia downloads</title>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<author>
+			<persName><forename type="first">J</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Pi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Ye</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Zhong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Hong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Han</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Li</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2312.11370</idno>
+		<title level="m">Solving geometric problem with multi-modal large language model</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">The Pile: An 800GB dataset of diverse text for language modeling</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Biderman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Black</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Golding</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Hoppe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Foster</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Phang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Thite</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Nabeshima</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2101.00027</idno>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<title level="m" type="main">An important next step on our AI journey</title>
+		<author>
+			<persName><surname>Google</surname></persName>
+		</author>
+		<ptr target="https://blog.google/technology/ai/bard-google-ai-search-updates/" />
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<title level="m" type="main">Measuring massive multitask language understanding</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Hendrycks</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Burns</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Basart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Zou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Mazeika</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Steinhardt</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2009.03300</idno>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<ptr target="https://www.high-flyer.cn/en/blog/hai-llm" />
+		<title level="m">High-flyer</title>
+		<imprint>
+			<publisher>高效且轻量的大模型训练工具</publisher>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">Hai-llm</note>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<author>
+			<persName><forename type="first">Y.-C</forename><surname>Hsiao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Zubach</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Wang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2209.08199</idno>
+		<title level="m">Screenqa: Large-scale question-answer pairs over mobile app screenshots</title>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<monogr>
+		<title level="m" type="main">mplugpaperowl: Scientific diagram analysis with the multimodal large language model</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Shi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Ye</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Ye</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Yan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Qian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Huang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2311.18248</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<ptr target="https://huggingface.co/datasets/HuggingFaceM4/WebSight" />
+		<title level="m">Websight dataset</title>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+	<note>HuggingFaceM4</note>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Chart-totext: A large-scale benchmark for chart summarization</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kantharaj</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">T</forename><surname>Leong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Masry</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Thakkar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Hoque</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Joty</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/2022.acl-long.277</idno>
+		<ptr target="https://aclanthology.org/2022.acl-long.277" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics</title>
+		<title level="s">Association for Computational Linguistics</title>
+		<editor>
+			<persName><forename type="first">S</forename><surname>Muresan</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">P</forename><surname>Nakov</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">A</forename><surname>Villavicencio</surname></persName>
+		</editor>
+		<meeting>the 60th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2022-05">May 2022</date>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="4005" to="4023" />
+		</imprint>
+	</monogr>
+	<note>: Long Papers)</note>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<monogr>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kirillov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Mintun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Ravi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Mao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Rolland</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Gustafson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Xiao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Whitehead</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">C</forename><surname>Berg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W.-Y</forename><surname>Lo</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2304.02643</idno>
+		<title level="m">Segment anything</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">The stack: 3 tb of permissively licensed source code</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Kocetkov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><forename type="middle">B</forename><surname>Allal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Mou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">M</forename><surname>Ferrandis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Jernite</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Mitchell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Hughes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Wolf</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Bahdanau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Werra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>De Vries</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Transactions on Machine Learning Research</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Reducing activation recomputation in large transformer models</title>
+		<author>
+			<persName><forename type="first">V</forename><forename type="middle">A</forename><surname>Korthikanti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Casper</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Lym</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Mcafee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Andersch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Shoeybi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Catanzaro</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of Machine Learning and Systems</title>
+		<meeting>Machine Learning and Systems</meeting>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+			<biblScope unit="volume">5</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Open images v5 text annotation and yet another mask text spotter</title>
+		<author>
+			<persName><forename type="first">I</forename><surname>Krylov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Nosov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Sovrasov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Asian Conference on Machine Learning</title>
+		<imprint>
+			<publisher>PMLR</publisher>
+			<date type="published" when="2021">2021</date>
+			<biblScope unit="page" from="379" to="389" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<monogr>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kulkarni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Truelsen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ashish</forename><surname>Kulkarni</surname></persName>
+		</author>
+		<ptr target="https://wkhtmltopdf.org/" />
+		<title level="m">wkhtmltopdf</title>
+		<editor>
+			<persName><forename type="first">Jakob</forename><surname>Truelsen</surname></persName>
+		</editor>
+		<imprint>
+			<date type="published" when="2024-02-22">2024-02-22</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<author>
+			<persName><surname>Laion</surname></persName>
+		</author>
+		<ptr target="https://huggingface.co/datasets/laion/gpt4v-dataset" />
+		<title level="m">Gpt-4v dataset</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<monogr>
+		<author>
+			<persName><forename type="first">B</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Ge</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Ge</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Shan</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2307.16125</idno>
+		<title level="m">Seed-bench: Benchmarking multimodal llms with generative comprehension</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<monogr>
+		<title level="m" type="main">Scigraphqa: A large-scale synthetic multi-turn question-answering dataset for scientific graphs</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Tajbakhsh</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<monogr>
+		<title level="m" type="main">Widget captioning: Generating natural language description for mobile user interface elements</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zheng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Guan</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2010.04295</idno>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Exploring plain vision transformer backbones for object detection</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Mao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Girshick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>He</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">European Conference on Computer Vision</title>
+		<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2022">2022</date>
+			<biblScope unit="page" from="280" to="296" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<monogr>
+		<title level="m" type="main">Evaluating object hallucination in large vision-language models</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Du</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><forename type="middle">X</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J.-R</forename><surname>Wen</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2305.10355</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<monogr>
+		<title level="m" type="main">Vila: On pre-training for visual language models</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Yin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Ping</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Molchanov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Tao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Mao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Kautz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Shoeybi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Han</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2312.07533</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<monogr>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Qiu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Xiao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Qiu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Shao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Chen</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2311.07575</idno>
+		<title level="m">Sphinx: The joint mixing of weights, tasks, and visual embeddings for multi-modal large language models</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<monogr>
+		<author>
+			<persName><forename type="first">F</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Piccinno</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Krichene</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Pang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Altun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Collier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">M</forename><surname>Eisenschlos</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2212.09662</idno>
+		<title level="m">Matcha: Enhancing visual language pretraining with math reasoning and chart derendering</title>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<monogr>
+		<title level="m" type="main">Llava-next: Improved reasoning, ocr, and world knowledge</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Shen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><forename type="middle">J</forename><surname>Lee</surname></persName>
+		</author>
+		<ptr target="https://llava-vl.github.io/blog/2024-01-30-llava-next/" />
+		<imprint>
+			<date type="published" when="2024-01">January 2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Visual instruction tuning</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><forename type="middle">J</forename><surname>Lee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Advances in neural information processing systems</title>
+		<imprint>
+			<biblScope unit="volume">36</biblScope>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Taisu: A 166m large-scale high-quality dataset for chinese vision-language pre-training</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Ge</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Qiao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Peng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+		<editor>
+			<persName><forename type="first">S</forename><surname>Koyejo</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">S</forename><surname>Mohamed</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">A</forename><surname>Agarwal</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">D</forename><surname>Belgrave</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">K</forename><surname>Cho</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">A</forename><surname>Oh</surname></persName>
+		</editor>
+		<imprint>
+			<biblScope unit="volume">35</biblScope>
+			<biblScope unit="page" from="16705" to="16717" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Curran Associates</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Inc</surname></persName>
+		</author>
+		<ptr target="https://proceedings.neurips.cc/paper_files/paper/2022/file/6a386d703b50f1cf1f61ab02a15967bb-Paper-Datasets_and_Benchmarks.pdf" />
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<monogr>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Duan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Yuan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Liu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2307.06281</idno>
+		<title level="m">Mmbench: Is your multi-modal model an all-around player?</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<monogr>
+		<title level="m" type="main">On the hidden mystery of ocr in large multimodal models</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Peng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Jin</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2305.07895</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">Towards end-to-end unified scene text detection and layout analysis</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Long</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Qin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Panteleev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Bissacco</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Fujii</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Raptis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition</title>
+		<meeting>the IEEE/CVF Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<monogr>
+		<title level="m" type="main">Iconqa: A new benchmark for abstract diagram understanding and visual language reasoning</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Qiu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Liang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S.-C</forename><surname>Zhu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2110.13214</idno>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">Learn to explain: Multimodal reasoning via thought chains for science question answering</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Mishra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Qiu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K.-W</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S.-C</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Tafjord</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kalyan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The 36th Conference on Neural Information Processing Systems (NeurIPS)</title>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">Learn to explain: Multimodal reasoning via thought chains for science question answering</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Mishra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Qiu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K.-W</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S.-C</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Tafjord</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kalyan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Advances in Neural Information Processing Systems</title>
+		<imprint>
+			<biblScope unit="volume">35</biblScope>
+			<biblScope unit="page" from="2507" to="2521" />
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<monogr>
+		<title level="m" type="main">Mathvista: Evaluating mathematical reasoning of foundation models in visual contexts</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Bansal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Hajishirzi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Cheng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K.-W</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Galley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Gao</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2310.02255</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<analytic>
+		<title level="a" type="main">Generation and comprehension of unambiguous object descriptions</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Mao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Toshev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Camburu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">L</forename><surname>Yuille</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Murphy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE conference on computer vision and pattern recognition</title>
+		<meeting>the IEEE conference on computer vision and pattern recognition</meeting>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="page" from="11" to="20" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<monogr>
+		<title level="m" type="main">Unichart: A universal vision-language pretrained model for chart comprehension and reasoning</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Masry</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Kavehzadeh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><forename type="middle">L</forename><surname>Do</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Hoque</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Joty</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2305.14761</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<analytic>
+		<title level="a" type="main">Efficient large-scale language model training on gpu clusters using megatron-lm</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Narayanan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Shoeybi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Casper</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Legresley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Patwary</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Korthikanti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Vainbrand</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Kashinkunti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Bernauer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Catanzaro</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis</title>
+		<meeting>the International Conference for High Performance Computing, Networking, Storage and Analysis</meeting>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+			<biblScope unit="page" from="1" to="15" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b54">
+	<analytic>
+		<title level="a" type="main">Icdar2017 robust reading challenge on multi-lingual scene text detection and script identification-rrc-mlt</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Nayef</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Yin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Bizid</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Choi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Feng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Karatzas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">U</forename><surname>Pal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Rigaud</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Chazalon</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">2017 14th IAPR international conference on document analysis and recognition (ICDAR)</title>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1454" to="1459" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b55">
+	<monogr>
+		<title level="m" type="main">Chatgpt: Optimizing language models for dialogue</title>
+		<author>
+			<persName><surname>Openai</surname></persName>
+		</author>
+		<ptr target="https://openai.com/blog/chatgpt.OpenAI.GPT-4technicalreport" />
+		<imprint>
+			<date type="published" when="2022">2022. 2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b56">
+	<monogr>
+		<title level="m" type="main">Gpt-4v(ision) system card</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Openai</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023b</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b57">
+	<analytic>
+		<title level="a" type="main">Ocr-vqgan: Taming text-within-image generation</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">A</forename><surname>Rodriguez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Vazquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Laradji</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Pedersoli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Rodriguez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision</title>
+		<meeting>the IEEE/CVF Winter Conference on Applications of Computer Vision</meeting>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+			<biblScope unit="page" from="3689" to="3698" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b58">
+	<analytic>
+		<title level="a" type="main">Are emergent abilities of large language models a mirage</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Schaeffer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Miranda</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Koyejo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Advances in Neural Information Processing Systems</title>
+		<imprint>
+			<biblScope unit="volume">36</biblScope>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b59">
+	<monogr>
+		<author>
+			<persName><forename type="first">N</forename><surname>Shazeer</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2002.05202</idno>
+		<title level="m">Glu variants improve transformer</title>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b60">
+	<analytic>
+		<title level="a" type="main">Icdar2017 competition on reading chinese text in the wild (rctw-17)</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Shi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Yao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Liao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Cui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Belongie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Bai</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">2017 14th iapr international conference on document analysis and recognition (ICDAR)</title>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1429" to="1434" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b61">
+	<monogr>
+		<author>
+			<persName><forename type="first">M</forename><surname>Shoeybi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Patwary</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Puri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Legresley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Casper</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Catanzaro</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1909.08053</idno>
+		<title level="m">Megatron-lm: Training multi-billion parameter language models using model parallelism</title>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b62">
+	<analytic>
+		<title level="a" type="main">Textocr: Towards largescale end-to-end reasoning for arbitrary-shaped scene text</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Pang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Toh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Galuba</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Hassner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE/CVF conference on computer vision and pattern recognition</title>
+		<meeting>the IEEE/CVF conference on computer vision and pattern recognition</meeting>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+			<biblScope unit="page" from="8802" to="8812" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b63">
+	<analytic>
+		<title level="a" type="main">Roformer: Enhanced transformer with rotary position embedding</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Su</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Ahmed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Pan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Bo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Neurocomputing</title>
+		<imprint>
+			<biblScope unit="volume">568</biblScope>
+			<biblScope unit="page">127063</biblScope>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b64">
+	<monogr>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Cui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Wang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2307.05222</idno>
+		<title level="m">Generative pretraining in multimodality</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b65">
+	<analytic>
+		<title level="a" type="main">Icdar 2019 competition on large-scale street view text with partial labeling-rrc-lsvt</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Ni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C.-K</forename><surname>Chng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">C</forename><surname>Ng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Han</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Ding</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Karatzas</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">2019 International Conference on Document Analysis and Recognition (ICDAR)</title>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="1557" to="1562" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b66">
+	<monogr>
+		<title level="m" type="main">Gemini: a family of highly capable multimodal models</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Team</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Anil</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Borgeaud</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J.-B</forename><surname>Alayrac</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Soricut</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Schalkwyk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">M</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Hauth</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2312.11805</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b67">
+	<monogr>
+		<author>
+			<persName><forename type="first">S</forename><surname>Tong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Lecun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Xie</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2401.06209</idno>
+		<title level="m">Eyes wide shut? exploring the visual shortcomings of multimodal llms</title>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b68">
+	<monogr>
+		<author>
+			<persName><forename type="first">H</forename><surname>Touvron</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Lavril</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Izacard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Martinet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M.-A</forename><surname>Lachaux</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Lacroix</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Rozière</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Hambro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Azhar</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2302.13971</idno>
+		<title level="m">Open and efficient foundation language models</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b69">
+	<monogr>
+		<title level="m" type="main">Llama 2: Open foundation and fine-tuned chat models</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Touvron</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Martin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Stone</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Albert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Almahairi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Babaei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Bashlykov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Batra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Bhargava</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Bhosale</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Bikel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Blecher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Canton-Ferrer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Cucurull</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Esiobu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Fernandes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Fu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Fu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Fuller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Goswami</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Hartshorn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Hosseini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Hou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Inan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Kardas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Kerkez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Khabsa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Kloumann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Korenev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">S</forename><surname>Koura</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Lachaux</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Lavril</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Liskovich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Mao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Martinet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Mihaylov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Mishra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Molybog</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Nie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Poulton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Reizenstein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Rungta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Saladi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Schelten</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Silva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><forename type="middle">M</forename><surname>Smith</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Subramanian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><forename type="middle">E</forename><surname>Tan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Tang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Taylor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Williams</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">X</forename><surname>Kuan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Yan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Zarov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Fan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Kambadur</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Narang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Rodriguez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Stojnic</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Edunov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Scialom</surname></persName>
+		</author>
+		<idno type="DOI">10.48550/arXiv.2307.09288</idno>
+		<ptr target="https://doi.org/10.48550/arXiv.2307.09288" />
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b70">
+	<monogr>
+		<author>
+			<persName><forename type="first">A</forename><surname>Veit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Matera</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Neumann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Matas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Belongie</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1601.07140</idno>
+		<title level="m">Coco-text: Dataset and benchmark for text detection and recognition in natural images</title>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b71">
+	<analytic>
+		<title level="a" type="main">Screen2words: Automatic mobile ui summarization with multimodal learning</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Grossman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Li</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The 34th Annual ACM Symposium on User Interface Software and Technology</title>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+			<biblScope unit="page" from="498" to="510" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b72">
+	<monogr>
+		<author>
+			<persName><forename type="first">J</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Meng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Weng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y.-G</forename><surname>Jiang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2311.07574</idno>
+		<title level="m">To see is to believe: Prompting gpt-4v for better visual instruction tuning</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b73">
+	<monogr>
+		<title level="m" type="main">Cogvlm: Visual expert for pretrained language models</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Lv</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Hong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Qi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Ji</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Song</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2311.03079</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b74">
+	<monogr>
+		<title level="m" type="main">Vary: Scaling up the vision vocabulary for large vision-language models</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Wei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Kong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Ge</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Han</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Zhang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2312.06109</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b75">
+	<monogr>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Panagopoulou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Lyu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Yatskar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Callison-Burch</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2104.05845</idno>
+		<title level="m">Visual goal-step inference using wikihow</title>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b76">
+	<monogr>
+		<title level="m" type="main">Ureader: Universal ocr-free visually-situated language understanding with multimodal large language model</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Ye</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Ye</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Yan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Tian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Qian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2310.05126</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b77">
+	<monogr>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Cui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Cao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Liu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2310.20550</idno>
+		<title level="m">Capsfusion: Rethinking image-text data at scale</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b78">
+	<monogr>
+		<title level="m" type="main">Mm-vet: Evaluating large multimodal models for integrated capabilities</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Wang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2308.02490</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b79">
+	<monogr>
+		<title level="m" type="main">Mmmu: A massive multi-discipline multimodal understanding and reasoning benchmark for expert agi</title>
+		<author>
+			<persName><forename type="first">X</forename><surname>Yue</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Ni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Zheng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Stevens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Ren</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Sun</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2311.16502</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b80">
+	<analytic>
+		<title level="a" type="main">HellaSwag: Can a machine really finish your sentence?</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Zellers</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Holtzman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Bisk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Farhadi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Choi</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/p19-1472</idno>
+		<ptr target="https://doi.org/10.18653/v1/p19-1472" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 57th Conference of the Association for Computational Linguistics, ACL 2019</title>
+		<editor>
+			<persName><forename type="first">A</forename><surname>Korhonen</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">D</forename><forename type="middle">R</forename><surname>Traum</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">L</forename><surname>Màrquez</surname></persName>
+		</editor>
+		<meeting>the 57th Conference of the Association for Computational Linguistics, ACL 2019<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019-08-02">July 28-August 2, 2019. 2019</date>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="4791" to="4800" />
+		</imprint>
+	</monogr>
+	<note>Long Papers</note>
+</biblStruct>
+
+<biblStruct xml:id="b81">
+	<analytic>
+		<title level="a" type="main">Root mean square layer normalization</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Sennrich</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Advances in Neural Information Processing Systems</title>
+		<imprint>
+			<biblScope unit="volume">32</biblScope>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b82">
+	<monogr>
+		<author>
+			<persName><forename type="first">G</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Du</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Liang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Zheng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Cheng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Guo</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2401.11944</idno>
+		<title level="m">Cmmmu: A chinese massive multi-discipline multimodal understanding benchmark</title>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b83">
+	<analytic>
+		<title level="a" type="main">Icdar 2019 robust reading challenge on reading chinese text on signboard</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Liao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Yang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">2019 international conference on document analysis and recognition (ICDAR)</title>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="1577" to="1581" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b84">
+	<analytic>
+		<title level="a" type="main">Uber-text: A largescale dataset for optical character recognition from street-level imagery</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Gueguen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Zharkov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Seifert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Kadlec</surname></persName>
+		</author>
+		<ptr target="http://sunw.csail.mit.edu/abstract/uberText.pdf" />
+	</analytic>
+	<monogr>
+		<title level="m">SUNw: Scene Understanding Workshop -CVPR 2017</title>
+		<meeting><address><addrLine>Hawaii, U.S.A.</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b85">
+	<analytic>
+		<title level="a" type="main">Judging llm-as-a-judge with mt-bench and chatbot arena</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Zheng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W.-L</forename><surname>Chiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Sheng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Zhuang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhuang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Xing</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Advances in Neural Information Processing Systems</title>
+		<imprint>
+			<biblScope unit="volume">36</biblScope>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b86">
+	<monogr>
+		<title level="m" type="main">AGIEval: A human-centric benchmark for evaluating foundation models</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Zhong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Cui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Liang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Saied</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Duan</surname></persName>
+		</author>
+		<idno type="DOI">10.48550/arXiv.2304.06364</idno>
+		<ptr target="https://doi.org/10.48550/arXiv.2304.06364" />
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b87">
+	<analytic>
+		<title level="a" type="main">Multimodal c4: An open, billion-scale corpus of images interleaved with text</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Hessel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Awadalla</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">Y</forename><surname>Gadre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Dodge</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Fang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Schmidt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><forename type="middle">Y</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Choi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Advances in Neural Information Processing Systems</title>
+		<imprint>
+			<biblScope unit="volume">36</biblScope>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>
