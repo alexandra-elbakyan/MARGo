@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main"></title>
+				<funder ref="#_XytPWKD">
+					<orgName type="full">Spanish Ministry of Education and Science</orgName>
+				</funder>
+				<funder>
+					<orgName type="full">Basque Government (Programa de Formación de Investigadores del Departamento de Educación, Universidades e Investigación)</orgName>
+				</funder>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability  status="unknown">
+					<licence/>
+				</availability>
+				<date type="published" when="2024-01-22">22 Jan 2024</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Languages and Information Systems</orgName>
+								<orgName type="institution">University of the Basque Country</orgName>
+								<address>
+									<addrLine>Donostia-San Sebastián</addrLine>
+									<postCode>20018</postCode>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2024-01-22">22 Jan 2024</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">E6E12D18771C9FEDEE72CD6BAEFB8C68</idno>
+					<idno type="arXiv">arXiv:2401.11865v1[cs.AI]</idno>
+					<note type="submission">Manuscript received June 6, 2011.</note>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.8.2-SNAPSHOT" ident="GROBID" when="2025-01-24T14:30+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract/>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Towards Semantic Interoperability of Electronic Health Records</head><p>Idoia Berges, Jesús Bermúdez and Arantza Illarramendi</p><p>Abstract-Although the goal of achieving semantic interoperability of Electronic Health Records (EHRs) is pursued by many researchers, it has not been accomplished yet. In this paper we present a proposal that smoothes out the way towards the achievement of that goal. In particular our work focuses on medical diagnoses statements. In summary the main contributions of our ontology-based proposal are the following: First, it includes a canonical ontology whose EHR-related terms focus on semantic aspects. As a result, their descriptions are independent of languages and technology aspects used in different organizations to represent EHRs. Moreover, those terms are related to their corresponding codes in well-known medical terminologies. Second, it deals with modules that allow obtaining rich ontological representations of EHR information managed by proprietary models of health information systems. The features of one specific module are shown as reference. Third, it considers the necessary mapping axioms between ontological terms enhanced with so-called path mappings. That feature smoothes out structural differences between heterogeneous EHR representations, allowing proper alignment of information.</p><p>Index Terms-Electronic Health Record, Semantic Interoperability, Ontology.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>I. INTRODUCTION</head><p>I N 2009 the European Community presented a long-term research and deployment roadmap that provides the key steps for achieving semantic interoperability in the area of healthcare <ref type="bibr" target="#b0">[1]</ref>. The incorporation some years ago of Electronic Health Records to the healthcare institutions may be seen as the first step towards the achievement of the goal, since, apart from local advantages over manual records such as avoiding legibility problems, they favour a fast exchange of clinical data between different organizations. However, the fact that most healthcare institutions have developed their health information systems in an autonomous way has resulted in a proliferation of heterogeneous health information systems, each one with its own proprietary model for representing and storing EHR information, which hinders the task of interoperating with each other.</p><p>In many areas, the adoption of knowledge representation standards stands out as the most usual approach to solve interoperability problems. This happens also in the healthcare area, where some standards such as openEHR <ref type="bibr" target="#b2">[2]</ref>, ISO 13606 <ref type="bibr" target="#b3">[3]</ref> and HL7-CDA <ref type="bibr" target="#b4">[4]</ref> are under development for this purpose. All three follow a dual model-based methodology for representing EHR information: the Reference Model defines basic structures such as List, Table, etc., while the Archetype Model defines knowledge elements (such as Respiration Rate) by using and constraining the elements of the Reference Model. Although the idea of using a standard may seem suitable for the considered goal, we think that interoperability does not mean to have a unique representation but a semantically acknowledgeable equivalent one. This would relieve healthcare institutions from being forced to use one standard in the representation of their knowledge and moreover, since several standards are being developed for the same purpose, the interoperability problem will remain unsolved unless these standards merge into a single one. Currently, some research is being done on the latter issue <ref type="bibr" target="#b5">[5]</ref>.</p><p>In this paper we present a proposal to move towards the notion of full semantic interoperability of heterogeneous EHRs, which states that when one particular system receives some EHR information from another healthcare institution, the received information can be seamlessly integrated into its underlying repository because the differences in the language, in the representation of the information and in the storing systems do not cause any misunderstanding <ref type="bibr" target="#b0">[1]</ref>. Two general approaches for interoperability among systems are described in <ref type="bibr" target="#b6">[6]</ref>: Using a canonical model to which the particular models are linked or aligning the particular models two by two. The proposal presented in this paper is sustained in the former approach. More precisely, it is an ontology-based approach where OWL2 <ref type="bibr" target="#b7">[7]</ref> ontologies are used as representation models. In general, ontologies have been considered relevant for several purposes such as: enabling reuse of domain knowledge, allowing the analysis of domain knowledge and sharing common understanding of the meaning of information <ref type="bibr" target="#b8">[8]</ref>. Our approach benefits from the latter advantage and additionally it provides the following ones:</p><p>• It favors the notion of semantic interoperability: The use of a formal ontology as canonical conceptual model allows to focus on aspects that are independent of the languages or technologies used to describe EHRs. • It favors the notion of extensibility to different models:</p><p>The framework comprises two kinds of ontologies which represent the definitions of clinical terms that appear in EHRs at different levels of abstraction. The canonical contains ontological definitions of EHR statements and the application ontologies contain specializations of the definitions of the canonical ontology according to the standards mentioned previously or according to proprietary models of healthcare institutions. • It decreases the need of human intervention: The frame-work relies on a reasoning mechanism that, using axioms stated in the ontology, infers knowledge that allows the discovery of more relationships among the heterogeneous models used by the different health information systems.</p><p>Dealing with ontologies, one relevant aspect is the features of the terms that are part of them. In our scenario those terms are related to EHRs. Different kinds of information can be found in an EHR. OpenEHR divides this information into 5 subtypes <ref type="bibr" target="#b9">[9]</ref> and we also have adopted that division in the definition of our canonical ontology: Observations comprise the data that can be measured in an objective way, such as the age of a patient, his respiration rate, etc. Evaluations represent the evidence obtained from observations, for example the diagnosis of an illness. Instructions represent actions to be performed in the future such as the prescription of a medicine or the request of a laboratory test. Actions are used to model the information recorded due to the execution of an instruction and finally there is one last type to record administrative events such as admission or discharge information. In this paper we just focus on one type of evaluations, namely the diagnoses, but similar ideas to those that will be explained here for diagnoses could be also applied to the other types of information. Moreover, the terms of the application ontologies are obtained from the particular health information systems and then linked to the terms in the canonical ontology by using ontology mappings.</p><p>A certain number of works related to ours can be found at present. With regard to the benefits of taking semantics into account, some works discuss the convenience of using semantic technologies in several heathcare related issues. In <ref type="bibr" target="#b10">[10]</ref>, the handicaps for widespread adoption of semantic technologies within a care records system are pinpointed. In <ref type="bibr" target="#b11">[11]</ref> the challenges to be addressed in order to be able to use the so-called Smart Internet to enable reforms on healthcare information systems are discussed. Lastly, in <ref type="bibr" target="#b12">[12]</ref> the triplespace paradigm is suggested as semantic middleware to support pervasive access to electronic patient summaries. The works mentioned next also rely on semantic technologies for interchanging data, as opposed to other formats such as XML, which are structure-based. More specifically, related to the topic of facilitating semantic interoperability between heterogeneous health information systems, the following works deal only with the interoperability between standard-based health information systems: <ref type="bibr" target="#b13">[13]</ref> provides a solution to achieve semantic interoperability between systems that have been developed under the HL7 reference model and which requires that the source system has some prior knowledge about the target system. In <ref type="bibr" target="#b14">[14]</ref> ontology mappings are proposed between pairs of archetype-based models. In <ref type="bibr" target="#b15">[15]</ref> a model-driven engineering approach that transforms archetypes of the ISO 13606 standard into OWL models is presented. Finally, authors in <ref type="bibr" target="#b16">[16]</ref> describe an approach to translate from the Archetype Definition Language (ADL <ref type="bibr" target="#b17">[17]</ref>) to OWL, they also present some techniques to map archetypes to formal ontologies and show the convenience of using semantic rules on the resulting representation in order to guide the execution of primary care guidelines. In this paper we present a wider approach since apart from the interoperability of standard-based systems we deal also with interoperability considering proprietary models. Some other works that tackle the problem of semantic interoperability of EHRs from a different perspective are the following: In <ref type="bibr" target="#b18">[18]</ref> a semantic conceptualization model for an EHR system is presented. This still early work is more oriented towards the accessibility, use and management of the EHR at a local level, but it also aims at providing a base in order to solve the interoperability problem from a semantic point of view. In <ref type="bibr" target="#b19">[19]</ref> the hypothesis that semantic technologies are potential bridging technologies between the EHRs and medical terminologies -as well as a possible representation of the combined semantics of systems to be integrated-is raised and some experimental study is made on this issue. We also promote the connection between the semantic representation of EHR statements and their codes in well-known terminologies. Finally, in <ref type="bibr" target="#b20">[20]</ref> authors discuss how advanced middleware, such as Enterprise Middleware Bus, and semantic web services can assist in solving interoperability issues between eHealth systems.</p><p>The rest of the paper is divided as it follows: In Section II the global architecture of the framework is presented, and extensive details about the canonical ontology and the auxiliary modules DB2OntoModule and MappingModule are given. The feasibility of the solution is shown in Section III, and finally, conclusions are discussed in Section IV.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>II. GLOBAL ARCHITECTURE</head><p>In Fig. <ref type="figure" target="#fig_0">1</ref> the three-layered architecture of the solution can be found. The lower layer, contains the particular underlying repository of each healthcare institution, where the information of the EHRs is stored. Associated to each kind of underlying repository, there is some kind of file (e.g. database schema, set of ADL files) where information about the structures in the repository can be found. Then, the middle layer contains one application ontology for each information system, built on top of the underlying repository. These application ontologies are created semi-automatically from the underlying repositories by some auxiliary modules (e.g. DB2OntoModule and ADL2OntoModule), or imported from an ontology repository, and describe semantically each underlying repository. Moreover, they are linked to their corresponding repositories by some Σ links that specify how to transfer information from each of the representations to the other. Finally the upper layer contains one canonical ontology. This ontology will contain the necessary classes and properties to represent the different types of information that can be found in an EHR and is linked to each of the application ontologies by some integration mappings defined by a MappingModule. Each particular healthcare institution will have only a partial view of the global framework, since with our proposal there is no need for that institution to know anything but its underlying repository, its application ontology, and the canonical ontology.</p><p>The proposed framework allows one healthcare institution to interpret on the fly clinical statements sent by another oneeven when they use proprietary formats. We support our claim on the following techniques: considered by particular health information systems, described using standards as well as proprietary models, are expressed in our approach by using OWL2 ontology axioms. Moreover, terms in those axioms are related with canonical ontology terms that focus their descriptions on language and technology independent aspects. This approach increases the opportunities of solving the interoperability issue since it relies mainly on semantic aspects. • Automated reasoning: All ontology descriptions, as well as the mappings among elements of the ontologies, are expressed in the same formalism OWL2. This uniform representation allows the use of well-known reasoners in order to derive new statements from the existing ones. Furthermore, the mismatch problem is avoided and automatic integration is facilitated. • Transfer mechanism: A process, guided by the previous two items, is implemented to transform a particular clinical statement from a healthcare institution into a corresponding clinical statement for another healthcare institution. So-called path mappings play a crucial role during the transfer process, smoothing out the structural differences between EHR representations. Finally, we are aware that the messiness of real world EHRs may sometimes hinder the task of fitting them into the presented proposal, but in our opinion this does not invalidate the advantages it can provide in many situations.</p><p>In the following subsections, the canonical ontology, the DB2OntoModule and the MappingModule are described thoroughly.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A. Canonical ontology: Representing diagnoses in OWL</head><p>The canonical ontology contains the necessary classes and properties to represent the different types of information that can be found in an EHR. Following openEHRs classification of EHR entries, we have defined in the ontology five classes to represent the general categories: Observation, Evaluation, Instruction, Action and Admin. Moreover, these five classes have been specialized to represent more specific types of entries. As we pointed out in the introduction, in this paper we deal with diagnoses, which are a special case of evaluations.</p><p>A diagnosis is defined as the act of identifying a disease from its signs and symptoms, as well as the decision reached by that act <ref type="foot" target="#foot_0">1</ref>  One advantage of working in the medical area is the existence of medical terminologies, such as SNOMED <ref type="bibr" target="#b21">[21]</ref> and LOINC <ref type="bibr" target="#b22">[22]</ref>. These terminologies cover most areas of clinical information and provide a consistent way to identify medical terms univocally, which can be very helpful at the time of gathering and exchanging clinical results. Our system takes advantage of these terminologies to enhance the definition of the classes in the canonical ontology. Thus, whenever is possible, each term in the ontology is related to its corresponding code in those terminologies:</p><formula xml:id="formula_0">ECGDiagnosis ≡ ∃loinc.{'8601-7'} ECGRecording ≡ ∃loinc.{'34534-8'} P-Axis ≡ ∃loinc.{'8626-4'}</formula><p>The use of terminological codes into the definitions of the classes in the ontology increases the chances of achieving a successful communication.</p><p>Finally, since building a canonical ontology is not an easy task, we think that efforts that are being done to define archetypes in openEHR could be reused to achieve that task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B. DB2OntoModule</head><p>Taking into account the widespread use of relational databases to store EHR records, we show in this subsection the main features of the module DB2OntoModule<ref type="foot" target="#foot_3">foot_3</ref> . This module takes as input a database schema and after applying a set of rules based on schema features, it obtains the ontological representations of those relational databases (i.e. the application ontology of that system). In the specialized literature many approaches for translating relational structures into more expressive formalisms can be found: object models, description logics and Semantic Web technologies. Some of them follow the so-called declarative approach, which first convert the relational structure into a declarative language and then the result is modified by the user to declare additional knowledge about the database (e.g <ref type="bibr" target="#b23">[23]</ref>). Our proposal also uses the declarative approach but its novel contribution relies in the large number of schema properties that it considers, allowing to make explicit more knowledge, and in the fact that it associates to the obtained classes their corresponding codes that appear in well-known medical terminologies.</p><p>In order for the DB2OntoModule to accomplish the last feature, it deals with an element called "Terminology Manager" or, in short, "TM", which has an associated function of the form getX(conceptName), where X is the name of a terminology (LOINC, SNOMED, or any other) and conceptName is the name of the relation or attribute whose terminological code is to be retrieved. For example, in the case of a relation BloodPressure(id, systolic, diastolic) the TM would contain: Once the previous steps are accomplished, the next one involves enriching the obtained descriptions by using several types of information, such as inclusion, exclusion and functional dependencies: Inclusion dependencies: Three different situations are considered (see a previous work <ref type="bibr" target="#b24">[24]</ref> from our group for more details): (1) Dependencies between key (R.K) and non-key (S.x) attributes, which indicate the existence of a foreign keys of type S.x⊆R.K. These dependencies are reflected by defining an association between the ontology classes obtained from those relations (S⊑ ∃x.R); (2) Dependencies between the keys of two relations (R.K⊆R'.K'); and (3) Dependencies between a subset of a key and a key (R.subK⊆R'.K'), which also have the corresponding reflection. Exclusion dependencies: An exclusion dependency between the keys of two relations (R.K∩R'.K'=∅) creates a new axiom of the form R⊑ ¬R' in the ontology. In addition, if there is no class in the ontology that subsumes both R and R', such new class S is created and the axioms R⊑S and R'⊑S are added. Functional dependencies: If a functional dependency of the form R.X→ R.y is detected, with X and y being a nonkey attribute set and a non-key attribute respectively, a new class X is created. Moreover, two new properties hasX and hasY are defined and the axioms R⊑ ∃hasX.X and X⊑ ∃hasY.getType(y) are added to the ontology.</p><p>Furthermore, the ontology can be enriched by using domain information for attribute values, for example, in the case of properties expressed by enumerating attribute values. For an attribute R.a whose possible values are either A1 or A2, if both have a corresponding code in the TM, classes A1 and A2 are created in the ontology. Moreover, one general class to group those two classes is created (e.g. A0) and axioms A1⊑A0, A2⊑A0, A1⊑¬A2 and R⊑ ∀a.A0 are added. However, in the case where A1 and A2 have no terminological code in the TM, class A0 is created as an enumeration of two individuals a1 and a2, and axiom R⊑ ∀a.A0 is added too.</p><p>All the previous types of considerations are applied in the following sequence: first inclusion dependencies; then when the input relational schema is not in second or third normal form, functional dependencies are used to create new classes; next exclusion dependencies are exploited and last integrity constraints and domain information for attribute values are considered. Finally, once the DB2OntoModule has performed the steps above, a candidate ontology has been created. However, we feel that it is advisable to allow the health system administrator to modify the ontology in a flexible way. For example, some common changes could be substituting ⊑ relationships with ≡ relationships, modifying the names of the terms that have been created, or adding some missing terminological code. These changes can be done manually using any well-known ontology editor.</p><p>The DB2OntoModule at work: For example, a particular registration for an ECG diagnosis may consist of four relational tables according to the following schema (all attributes are considered compulsory) Moreover, let us consider the bogus case where the attribute finding of the ECGDiagnosis table must be either "Normal ECG" or "Abnormal ECG". As a result of applying the initial steps for transforming the schema to ontology elements four new classes are created in the ontology: EGCDiagnosis, ECGObservation, ECGAxis and ECGGlobal, each with its respective LOINC code. Moreover, since the compulsory attribute P-Axis, whose type is "int", has also a LOINC code at the TM, axioms P-Axis≡ ∃loinc.{'8626-4'}, ECGAxis⊑ ∃hasP-Axis.P-Axis and P-Axis⊑ ∃value.xsd:int are created (same process for the other attributes). Then, the rules for inclusion dependencies are applied, and, for example, from the inclusion dependency ECGObservation.axis ⊆ ECGAxis.code, axiom ECGObservation⊑ ∃axis.ECGAxis is created. Moreover, information about the allowed values for the finding attribute is considered and a new class ECGFinding is created as superclass of two other classes NormalECG and AbnormalECG. Finally, manual changes are applied. For example, we have chosen to substitute some of the subclass relationships with equivalence relationships, so the created ontology has, among others, the following axioms 5  The second task of the DB2OntoModule is to create the Σ links that indicate how to transfer the information from the database to the ontology that has been created from it (and vice versa). This task was previously tackled by our research group, so we refer to the reader to <ref type="bibr" target="#b25">[25]</ref> for further technical details. 5 Throughout the paper, namespaces a: and b: will be used to refer to terms in the application ontologies of two particular systems A and B. Moreover, namespace c: or no namespace are used to indicate the terms in the canonical ontology.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>C. MappingModule</head><p>Once an application ontology of one particular system has been generated by the corresponding translator module, it must be integrated with the canonical ontology, and the mappings between the terms of that application ontology and the canonical ontology must be created. A MappingModule has been implemented for this purpose. Wide research has been done in the specialized literature about ontology mapping (e.g. <ref type="bibr" target="#b26">[26]</ref>), so working in new techniques for that same issue is out of the scope of our work. So, our MappingModule takes a pragmatic approach and receives as input a set of basic mapping axioms specifically defined by the system administrator (for example, to state that the property a:loinc is equivalent to the property c:loinc). Then, it incorporates these basic mappings into the ontologies and, with the help of a reasoner, it creates an integration mapping that relates the terms of the application ontology with those of the canonical ontology.</p><p>However, our module presents a distinguishing feature, since it considers mappings between ontology paths, which are rarely considered in other works. In order to be aware of the importance of discovering path mappings, let us compare the definitions of classes c:ECGRecording and a:ECGObservation in sections II-A and II-B respectively. Both share the same LOINC code (34534-8), so their semantics are the same. Looking at the description of c:ECGRecording , it can be seen that any individual belonging to that class will be directly related to an individual of the class c:P-Axis via the property c:comp (assume the same intuition for the other components). However, in the case of the descriptions in the application ontology of system A, it turns out that classes a:ECGObservation and a:P-Axis are not directly related, but indirectly: first a:ECGObservation is related to the class a:ECGAxis via the property a:hasAxis and then the class a:ECGAxis is related to the class a:P-Axis via the property a:hasP-Axis . Then it could be stated that there is a simple path between classes c:ECGRecording and c:P-Axis , while there is a composite path between classes a:ECGObservation and a:P-Axis .</p><p>Intuitively, those two paths could be regarded as equivalent, since their only difference is from the structural point of view caused by the heterogeneous origin of the ontologies, not from a semantic point of view. Let us show how our module deals with that aspect:</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Definition 1. An ontology path is a regular expression of the form A.(p.[B]) + where A,B represent class names and p represents property names, all from the same ontology.</head><p>Let us denote equivalences between paths with the symbol ≡ p . For instance, the aforementioned example is represented as: Although in this example an equivalence path mapping has been presented, a corresponding idea is valid for subclass path mappings (⊑ p ) and superclass path mappings (⊒ p ). In order to determine path mappings, first path mapping candidates are searched:</p><formula xml:id="formula_1">Definition 2. Let P ath C = C 0 .p 1 [C 1 ]....p n [C n ] and P ath D = D 0 .q 1 [D 1 ]....q m [D m ]</formula><p>be two ontology paths. A path mapping candidate exists between P ath C and P ath D if any of the following statements holds: A path mapping candidate becomes a proper path mapping when the semantics of both paths is found to be the same. Path mappings are useful at the time of transforming individuals from one ontology so that they meet the requirements of the target ontology. The implementation of path mappings is done by using SWRL <ref type="bibr" target="#b27">[27]</ref> rules. SWRL increases the expressivity of OWL and thus allows to model more domain knowledge than the one achieved by using OWL in its own. Moreover, since SWRL can be tightly integrated with OWL, there is no impedance mismatch between the modelling language and the rules language: SWRL rules can use directly the classes, properties and individuals defined in the OWL model. For example, the path mappings shown before would be implemented using the following rules (one in each way): As looking for all the candidate path mappings between two large ontologies might be a hard task considering both time and resources, a threshold can be established to indicate the maximum length of the paths to be searched. Some other heuristics could be applied too to discover candidate path mappings efficiently.</p><formula xml:id="formula_2">• C 0 ⊑ D 0 and C n ⊑ D m (</formula><p>So, to sum up, the integration mapping that is generated between an application ontology and the canonical ontology can be defined as it follows: Definition 3. An integration mapping is a structure I = O, G, M where O is a set of OWL2 axioms that comprises the application ontology corresponding to a healthcare institution, G is the set of OWL2 axioms for the canonical ontology, and M is a set of mapping axioms of any of the following forms:</p><formula xml:id="formula_3">• C o ⊑ Exp g , C o ⊒ Exp g or C o ≡ Exp g , where C o</formula><p>is a class name from O, and Exp g is a OWL2 class expression that uses only terms from G.</p><p>• p o ⊑ p g or p o ⊒ p g , where p o is a property name from O, and p g is property name from G.</p><p>• sameAs(i o , i g ) , where i o is the name of an individual from O, and i g is the name of an individual from G.</p><p>• P ath o ⊑ p P ath g , P ath o ⊒ p P ath g or P ath o ≡ p P ath g , where P ath o is an ontology path in O and P ath g is an ontology path in G.</p><p>The result of the engineering process of producing the set M of mapping axioms is the key for the interoperability of two different health information systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>III. FRAMEWORK AT WORK</head><p>The main contribution of our proposal is the capability of one system B of interpreting information sent by another system A on the fly, without prior peer-to-peer agreement on the semantics and syntax of the interchanged data. In this example, let us suppose that the database schema of system A is the one presented in section II-B. Moreover, in the case of system B, let us consider that it follows the HL7 standard and that different representations are used to represent ECG information depending on the result of the ECG (e.g.: ECGNormalDiag for normal ECG results, ECGAbnormalDiag when abnormalities have been detected). The work of the ADL2OntoModule and MappingModule led to the following axioms, with respect to the application ontology of system B: Moreover, let us suppose that system A wants to send to system B the following information about the ECGDiagnosis whose code is ecg01: 27, 88, 49)  σ code= ′ gl01 ′ (ECGGlobal) = (gl01, 138, 390, 39, 112, 62)   Finally, assume that some of the mapping axioms between the application ontology of system A and the canonical ontology are the following: a:loinc≡c:loinc a:snomed≡c:snomed a:finding≡c:hasFinding a:recording⊑c:hasObs a:hasAxis⊑c:comp a:value≡c:value</p><formula xml:id="formula_4">σ code= ′ ecg01 ′ (ECGDiagnosis)= (ecg01, Normal ECG, r01) σ code= ′ r01 ′ (ECGRecording)= (r01, ax01, gl01) σ code= ′ ax01 ′ (ECGAxis)= (ax01,</formula><p>The process that needs to be carried out is composed of several steps:</p><p>Step 1: Classification of the information in the application ontology. In this step the information to be sent is converted into statements about individuals generated for the application ontology of system A. For example, the main individual a:ecg01 will be an instance of the class a:ECGDiagnosis. This is a straightforward process thanks to the Σ links created by the DB2OntoModule between the storage system of system A and its application ontology. Among others, the following OWL statements (represented as triples) will be created:</p><p>(a:ecg01 rdf:type a:ECGDiagnosis) (a:r01 a:hasAxis a:ax01) (a:ecg01 a:finding a:f01) (a:ax01 rdf:type a:ECGAxis) (a:f01 a:value "Normal ECG") (a:ax01 a:hasP-Axis a:pax01) (a:ecg01 a:recording a:r01) (a:pax01 rdf:type a:P-Axis) (a:r01 rdf:type a:ECGObservation) (a:pax01 a:value 27)</p><p>Step 2: Enrichment of the local information at the application ontology. In this step implicit information (regarding the individuals) that can be inferred from the application ontology of system A is made explicit with the help of a reasoner. For example, in this step each individual inherits a terminology code from its corresponding class:</p><p>(a:ecg01 a:loinc 8601-7)</p><p>(a:ax01 a:loinc 8607-4) (a:f01 a:snomed 102593009) (a:pax01 a:loinc 8626-4) (a:r01 a:loinc 34534-8)</p><p>Step 3: Classification of the information in the canonical ontology. At this point, thanks to the equivalence, subsumption and path mappings that have been defined by the MappingModule and the help of a reasoner, the individuals are now classified as instances of the concepts of the canonical ontology. For example, given that a:ECGObservation≡∃loinc.{34534-8} and c:ECGRecording≡∃loinc.{34534-8} it is wise to think that the MappingModule will infer the equivalence mapping a:ECGObservation≡c:ECGRecording. Then, as the assertional box of the application ontology of system A contains the triple (a:r01 rdf:type a:ECGObservation), the new triple (a:r01 rdf:type c:ECGRecording) is inferred. Moreover, since triples (a:r01 rdf:type a:ECGObservation), (a:r01 a:hasAxis a:ax01) and (a:ax01 a:hasP-Axis a:pax01) exist, path rule R1 is fired and the triple (a:r01 c:comp a:pax01) is generated. The remaining new triples, some of which are shown next, can be figured out accordingly. Step 4 : Recognition at the receiver's ontology. The triples generated up to this moment are sent to system B and, thanks to the ontological mappings defined for this ontology by the MappingModule, the individuals will be recognized as instances of the classes of its application ontology. For example, due to Step 5: Storage at the receiver's system: At this point, it is straightforward to store the information into the underlying repository of system B due to the Σ links that indicate how to transform the collection of triples into a suitable HL7 document (see Fig. <ref type="figure" target="#fig_8">2</ref>). Notice that since the main individual ecg01 has been recognized as of class b:ECGNormalDiag, it is possible to choose from the HL7 entry templates of system B the one which represents only information about normal ECG results -despite in the sender's system there was only one table for storing all kind of ECG diagnoses.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>IV. CONCLUSIONS AND DISCUSSION</head><p>We have presented a semantic-based framework which allows the interoperability of medical diagnoses between health information systems, including those which were not developed following EHR standards. The feasibility of the idea has been proved through an example. To sum up, the main features of the framework presented in this paper are the following: (1) It is extensible to both standard and proprietary models, since any healthcare institution could create its own application ontology and relate it to the terms of the canonical ontology via an integration mapping. Two modules are provided in order to facilitate such a technically demanding skill: one module that facilitates the task of obtaining the definitions of the application ontology from a particular underlying system and another module that facilitates the task of linking definitions of the application ontology to definitions of the canonical ontology; (2) It uses a formal ontology as canonical conceptual model, which allows to focus on semantic aspects that are independent of the languages or technologies used to describe EHRs. As a result, it is not based on peer-to-peer transformations but on the semantic acknowledgement of one instance of a class in the source ontology as instance of another class in the target ontology; (3) The features of any specific system remain unknown to the other systems in the framework. parts of the framework, which decreases the need of human intervention.</p><p>However, there are still some challenges, such as those regarding scalability, that need to be addressed in order for this approach to be accepted widely. In the case of the DB2OntoModule, the existence of the terminology manager TM is assumed. The fact that a particular term of a database has a corresponding terminological code in the TM allows a more precise definition of that term in the application ontology. We are aware that database systems may not provide with such a set of correspondences, so syntactic and semantic similarity measures (such as Levenshtein distance 6 or WordNet 7 -based similarity) between the terms in the database and those in the terminologies would have to be applied in order to obtain a set of candidate codes. Moreover, relational databases whose schema can be consulted have been chosen as underlying repositories. In the real world data can be far messier and come from unstructured or semi-structured sources. In general, the less structured the source is, the more difficult the construction of the ontology will be. In the case of unstructured sources, machine learning and text mining algorithms could be used in order to create an ontology from input documents. For semistructured data in XML, XQuery 8 and XPath 9 could be used for extraction of relevant information, and moreover, fuzzy extensions of those languages could be used to enhance that extraction. Another technique that could be applied in semistructured sources is ILP <ref type="bibr" target="#b28">[28]</ref>. With respect to the core task of building an agreed canonical ontology, efforts devoted to classifications on standards (e.g. openEHR) or terminology taxonomies (e.g. SNOMED-CT) can be exploited and oriented towards the design of such an ontology. Finally, challenges concerning mappings between the application and canonical ontologies are diverse (e.g. variable granularity of the information, different types of data, etc.). As stated in section II-C, extensive work has already been made on this area, so the definition of a new approach is out of the scope of this paper. However, we have presented a novel contribution concerning mapping issues: the definition of the notion of path mappings and their implementation using SWRL rules. Additionally, we suggest that specific systems publish voluntarily the integration mappings between their application ontology and the canonical ontology, so that other systems could benefit from this knowledge at the time of creating their integration mapping.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Fig. 1 .</head><label>1</label><figDesc>Fig. 1. Global architecture of the solution</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head></head><label></label><figDesc>schema features, the DB2OntoModule works as follows: Relations: Relations of the relational schema are translated into OWL2 classes. Moreover, if for a given relation R, TM.getLOINC(R)=LC (being LC a particular LOINC code), a new axiom R≡ ∃loinc.{'LC'} is added to the ontology (analogously for other terminological codes). Attributes: Two options arise: (1) If for a given attribute a in R (R.a) TM.getLOINC(R.a) returns some code LC, then a new class A is created (if there is no other class which already has that code). Moreover, the axioms A≡ ∃loinc.{'LC'} and A⊑ ∃value.getType(a) are added. Finally, if attribute a is compulsory in R, the axiom R⊑ ∃hasA.A is added. (2) If there is no code for R.a in TM, a property a is created in the ontology, where Domain(a)=R and Range(a)=getType(a). Moreover, if attribute a is compulsory in R, the axiom R⊑ ∃a is added. Integrity constraints: An integrity constraint such as R.a&gt;30 adds a new axiom of type R⊑ ∃ hasA.(A and ∃value[&gt;30]) if R.a is in TM, and a new axiom of type R⊑ ∃ a[&gt;30] otherwise.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head></head><label></label><figDesc>: a:ECGDiagnosis ≡ ∃a:finding.a:ECGFinding ⊓ ∃a:recording.a:ECGObservation a:ECGDiagnosis ≡ ∃a:loinc.{8601-7} a:ECGObservation ≡ ∃a:hasAxis.a:ECGAxis ⊓ ∃a:hasGlobal.a:ECGGlobal a:ECGObservation ≡ ∃loinc.{34534-8} a:ECGAxis ≡ ∃a:hasP-Axis.a:P-Axis ⊓ ∃a:hasQRS-Axis.a:QRS-Axis ⊓ ∃a:hasT-Axis.a:T-Axis a:NormalECG ≡ a:ECGFinding ⊓ a:value.{"Normal ECG"} a:NormalECG ≡ a:snomed.{102593009}</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head></head><label></label><figDesc>a:ECGObservation.a:hasAxis[a:ECGAxis].a:hasP-Axis.[a:P-Axis] ≡p c:ECGRecording.c:comp[c:P-Axis]</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head></head><label></label><figDesc>represented as P ath C ⊑ ∼ P ath D ) • C 0 ⊒ D 0 and C n ⊒ D m (represented as P ath C ⊒ ∼ P ath D ) Moreover, if P ath C ⊑ ∼ P ath D and P ath C ⊒ ∼ P ath D then P ath C ≡ ∼ P ath D</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>R1 a :</head><label>a</label><figDesc>ECGObservation(?e) ∧ a:hasAxis(?e,?x) ∧ a:hasP-Axis(?x,?p) → c:comp(?e,?p)R2c:ECGRecording(?e) ∧ c:comp(?e,?p) ∧ c:P-Axis(?p) ∧ swrlx:createOWLThing(?e,?x) → a:hasAxis(?e,?x) ∧ a:ECGAxis(?x) ∧ a:hasP-Axis(?x,?p)</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_6"><head></head><label></label><figDesc>finding.b:ECGNormalFind ⊓ ∃b:component.b:P-Ax ⊓ ∃b:component.b:QRS-Ax ⊓ ... ⊓ ∃b:component.b:Heart-R where p1=b:ECGNormalDiag.b:component[b:P-Ax] and p2= c:ECGDiagnosis.c:hasObs[c:ECGRecording].c:comp[c:P-Axis].</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_7"><head></head><label></label><figDesc>(a:ecg01 rdf:type c:ECGDiagnosis) (a:ecg01 c:hasObs a:r01) (a:ecg01 c:loinc 8601-7) (a:r01 c:comp a:pax01) (a:ecg01 c:hasFinding a:f01) (a:pax01 rdf:type c:P-Axis) (a:f01 c:snomed 102593009) (a:pax01 c:value 27) (a:r01 rdf:type c:ECGRecording)</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_8"><head>Fig. 2 .</head><label>2</label><figDesc>Fig. 2. Excerpt of the generated HL7 entry</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>. For this reason, in addition to representing a diagnosis as a subclass of Evaluation, its definition is enhanced with two properties: hasFinding, to indicate the conclusion reached by the physician about what is happening to the patient, and hasObs, to indicate the information about the observation(s) which lead to that assessment2 . Specific diagnoses are defined as subclasses of the class Diagnosis. For example, the evidence obtained as a result of an ECG can be described by specializing the range restrictions of the properties hasFinding and hasObs. For instance, the observation that leads to an ECG diagnosis is an ECG Recording, which is made up of several components 3 : some of the components refer to information about the heart's electrical axis (i.e. the general direction of the heart's depolarization wavefront), while the others refer to information about the entire ECG.</figDesc><table><row><cell>Diagnosis ≡ Evaluation ⊓ =1 hasFinding.Finding ⊓</cell></row><row><cell>∃hasObs.Observation</cell></row></table><note><p>ECGDiagnosis ≡ Diagnosis ⊓ =1 hasFinding.ECGFinding ⊓ ∃hasObs.ECGRecording ECGRecording ≡ Observation ⊓ ∃comp.P-Axis ⊓ ∃comp.QRS-Axis ⊓ ∃comp.T-Axis ⊓ ∃comp.PR-Interval ⊓ ∃comp.QT-Interval ⊓ ∃comp.QTc-Interval ⊓ ∃comp.QRS-Duration ⊓ ∃comp.Heart-Rate</p></note></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1" xml:id="foot_0"><p>http://www.merriam-webster.com/dictionary/diagnosis</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2" xml:id="foot_1"><p>For the presentation we prefer a logic notation instead of the more verbose RDF/XML syntax.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3" xml:id="foot_2"><p>For the sake of brevity, in this example only some components of an ECG are taken into account. Please refer to<ref type="bibr" target="#b2">[2]</ref> for the whole set of components.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4" xml:id="foot_3"><p>Other modules, such as the ADL2Onto module, would be used to perform the translations between other sources and the ontology</p></note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div><p>Acknowledging and using the canonical ontology as a shared model is enough; (4) Reasoning plays a major role in several ACKNOWLEDGMENT The work of <rs type="person">Idoia Berges</rs> is supported by a grant of the <rs type="funder">Basque Government (Programa de Formación de Investigadores del Departamento de Educación, Universidades e Investigación)</rs>. This work is also supported by the <rs type="funder">Spanish Ministry of Education and Science</rs> <rs type="grantNumber">TIN2010-21387-C02-01</rs>.</p></div>
+			</div>
+			<listOrg type="funding">
+				<org type="funding" xml:id="_XytPWKD">
+					<idno type="grant-number">TIN2010-21387-C02-01</idno>
+				</org>
+			</listOrg>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">V</forename><forename type="middle">N )</forename><surname>Stroetman(ed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Kalra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Lewalle</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Rector</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">M</forename><surname>Rodrigues</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">A</forename><surname>Stroetmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Surjan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Ustun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Virtanen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">E</forename><surname>Zanstra</surname></persName>
+		</author>
+		<ptr target="http://www.levenshtein.net/7wordnet.princeton.edu/8" />
+		<imprint>
+			<biblScope unit="volume">6</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<ptr target="http://www.w3.org/TR/xquery/9http://www.w3.org/TR/xpath20/" />
+		<title level="m">Semantic Interoperability for Better Health and Safer Healthcare</title>
+		<imprint>
+			<publisher>European Commission, Tech. Rep</publisher>
+			<date type="published" when="2009-01">Jan. 2009</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<ptr target="http://www.openehr.org" />
+		<title level="m">openEHR</title>
+		<imprint>
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m">ISO 13606-1: Electronic Health Record Communication Part 1: Reference Model</title>
+		<imprint>
+			<date type="published" when="2008">2008</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">HL7-CDA</title>
+		<ptr target="http://www.hl7.org" />
+		<imprint>
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">The relationship between cen 13606, hl7 and openehr</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Schloeffel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Beale</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Hayworth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Heard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Leslie</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Health Informatics Conference, HIC 2006</title>
+		<meeting><address><addrLine>Sydney, Australia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2006">2006</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Semantic and schematic similarities between database objects: A context based approach</title>
+		<author>
+			<persName><forename type="first">V</forename><surname>Kashyap</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">P</forename><surname>Sheth</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">The Very Large Databases Journal</title>
+		<imprint>
+			<biblScope unit="volume">5</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="276" to="304" />
+			<date type="published" when="1996">1996</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<title level="m" type="main">OWL2 Web Ontology Language</title>
+		<ptr target="http://www.w3.org/TR/owl2-overview/" />
+		<imprint>
+			<date type="published" when="2009">2009</date>
+			<publisher>World Wide Web Consortium</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Ontologies: Principles, methods and applications</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Uschold</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Gruninger</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Knowledge Engineering Review</title>
+		<imprint>
+			<biblScope unit="volume">11</biblScope>
+			<biblScope unit="page" from="93" to="136" />
+			<date type="published" when="1996">1996</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">An Ontology-based Model of Clinical Information</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Beale</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Heard</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th World Congress on Health (Medical) Informatics -Building Sustainable Health</title>
+		<meeting>the 12th World Congress on Health (Medical) Informatics -Building Sustainable Health<address><addrLine>MEDINFO; Brisbane, Australia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2007">2007. 2007</date>
+			<biblScope unit="page" from="760" to="764" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Is semantic web technology ready for healthcare?</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Wroe</surname></persName>
+		</author>
+		<ptr target="http://ftp.informatik.rwth-aachen.de/Publications/CEUR-WS/Vol-194/paper2.pdf" />
+	</analytic>
+	<monogr>
+		<title level="m">Paper presented at the 3rd European Semantic Web Conference, ESWC&apos;06</title>
+		<meeting><address><addrLine>Budva, Montenegro</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2006-06">jun 2006</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">The smart internet as a catalyst for health care reform</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">H</forename><surname>Weber-Jahnke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Williams</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The Smart Internet -Current Research and Future Applications</title>
+		<imprint>
+			<date type="published" when="2010">2010</date>
+			<biblScope unit="page" from="27" to="48" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Enabling the european patient summary through triplespaces</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Krummenacher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><forename type="middle">P B</forename><surname>Simperl</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Cerizza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><forename type="middle">D</forename><surname>Valle</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><forename type="middle">J B</forename><surname>Nixon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Foxvog</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computer Methods and Programs in Biomedicine</title>
+		<imprint>
+			<biblScope unit="volume">95</biblScope>
+			<biblScope unit="issue">2-S1</biblScope>
+			<biblScope unit="page" from="33" to="43" />
+			<date type="published" when="2009">2009</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Achieving Clinical Statement Interoperability using R-MIM and Archetype-based Semantic Transformations</title>
+		<author>
+			<persName><forename type="first">O</forename><surname>Kilic</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Dogac</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Transactions on Information Technology in Biomedicine</title>
+		<imprint>
+			<date type="published" when="2009">2009</date>
+		</imprint>
+	</monogr>
+	<note>to appear</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Archetype-Based Semantic Interoperability of Web Service Messages in the Health Care Domain</title>
+		<author>
+			<persName><forename type="first">V</forename><surname>Bicer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Kilic</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Dogac</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><forename type="middle">B</forename><surname>Laleci</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Int&apos;l Journal on Semantic Web &amp; Information Systems</title>
+		<imprint>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="1" to="22" />
+			<date type="published" when="2005">2005</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">An approach for the semantic interoperability of ISO EN 13606 and openEHR archetypes</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Martínez-Costa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">M</forename><surname>Tortosa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">T</forename><surname>Fernández-Breis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Biomedical Informatics</title>
+		<imprint>
+			<biblScope unit="volume">43</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="736" to="746" />
+			<date type="published" when="2010">2010</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Integrating reasoning and clinical archetypes using owl ontologies and swrl rules</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Lezcano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M.-Á</forename><surname>Sicilia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Rodríguez-Solano</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Biomedical Informatics</title>
+		<imprint>
+			<biblScope unit="volume">44</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="343" to="353" />
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<title level="m" type="main">Archetype Definition Language</title>
+		<author>
+			<orgName type="collaboration">The openEHR Foundation</orgName>
+		</author>
+		<ptr target="http://www.openehr.org/releases/1.0.2/architecture/am/adl.pdf" />
+		<imprint>
+			<date type="published" when="2007">2007</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">On the use of an ontology to improve the interoperability and accesibility of the electronical health records (ehr)</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Prados-Suarez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Molina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Prados</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Peña</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Workshop on Semantic Interoperability</title>
+		<meeting><address><addrLine>IWSI; Rome, Italy</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2011-01">2011. jan 2011</date>
+			<biblScope unit="page" from="73" to="81" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<title level="m" type="main">Semantic web technologies in the quest for compatible distributed health records</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Hedayat</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2010-03">mar 2010</date>
+			<publisher>White Paper</publisher>
+		</imprint>
+		<respStmt>
+			<orgName>Department of Information Technology, Uppsala University</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Towards an e-health integration platform to support social security services</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>González</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Llambías</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Pazos</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">6th International Policy and Research Conference on Social Security</title>
+		<meeting><address><addrLine>Luxembourg, Luxembourg</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010-09">sep 2010</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<ptr target="http://www.ihtsdo.org/snomed-ct/" />
+		<title level="m">SNOMED</title>
+		<imprint>
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<ptr target="http://loinc.org/" />
+		<title level="m">LOINC</title>
+		<imprint>
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Cross: An OWL wrapper for reasoning on relational databases</title>
+		<author>
+			<persName><forename type="first">P.-A</forename><surname>Champin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G.-J</forename><surname>Houben</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Thiran</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="s">ER, ser. Lecture Notes in Computer Science</title>
+		<editor>
+			<persName><forename type="first">C</forename><surname>Parent</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">K.-D</forename><surname>Schewe</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">V</forename><forename type="middle">C</forename><surname>Storey</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">B</forename><surname>Thalheim</surname></persName>
+		</editor>
+		<imprint>
+			<biblScope unit="volume">4801</biblScope>
+			<biblScope unit="page" from="502" to="517" />
+			<date type="published" when="2007">2007</date>
+			<publisher>Springer</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Building a federated relational database system: An approach using a knowledge-based system</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">M</forename><surname>Blanco</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Illarramendi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Goñi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Int. J. Cooperative Inf. Syst</title>
+		<imprint>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="415" to="456" />
+			<date type="published" when="1994">1994</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Mapping among knowledge bases and data repositories: Precise definition of its syntax and semantics</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">M</forename><surname>Blanco</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Goñi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Illarramendi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Inf. Syst</title>
+		<imprint>
+			<biblScope unit="volume">24</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="275" to="301" />
+			<date type="published" when="1999">1999</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<monogr>
+		<title level="m" type="main">Ontology matching</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Euzenat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Shvaiko</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2007">2007</date>
+			<publisher>Springer-Verlag</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<monogr>
+		<ptr target="http://www.w3.org/Submission/SWRL/" />
+		<title level="m">SWRL</title>
+		<imprint>
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Inductive logic programming</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Muggleton</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">New Generation Computing</title>
+		<imprint>
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="295" to="318" />
+			<date type="published" when="1991">1991</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

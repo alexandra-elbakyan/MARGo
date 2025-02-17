@@ -1,0 +1,1749 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Understanding the planning of LLM agents: A survey</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Xu</forename><surname>Huang</surname></persName>
+							<email>xuhuangcs@mail.ustc.edu.cn</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Science and Technology of China</orgName>
+								<address>
+									<settlement>Hefei</settlement>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Weiwen</forename><surname>Liu</surname></persName>
+							<email>liuweiwen8@huawei.com</email>
+							<affiliation key="aff1">
+								<orgName type="institution">Huawei Noah&apos;s Ark Lab</orgName>
+								<address>
+									<settlement>Shenzhen</settlement>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Xiaolong</forename><surname>Chen</surname></persName>
+							<email>chenxiaolong@mail.ustc.edu.cn</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Science and Technology of China</orgName>
+								<address>
+									<settlement>Hefei</settlement>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Xingmei</forename><surname>Wang</surname></persName>
+							<email>xingmeiwang@mail.ustc.edu.cn</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Science and Technology of China</orgName>
+								<address>
+									<settlement>Hefei</settlement>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Hao</forename><surname>Wang</surname></persName>
+							<email>haowang@ustc.edu.cn</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Science and Technology of China</orgName>
+								<address>
+									<settlement>Hefei</settlement>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Defu</forename><surname>Lian</surname></persName>
+							<email>liandefu@ustc.edu.cn</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Science and Technology of China</orgName>
+								<address>
+									<settlement>Hefei</settlement>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Yasheng</forename><surname>Wang</surname></persName>
+							<email>wangyasheng@huawei.com</email>
+							<affiliation key="aff1">
+								<orgName type="institution">Huawei Noah&apos;s Ark Lab</orgName>
+								<address>
+									<settlement>Shenzhen</settlement>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Ruiming</forename><surname>Tang</surname></persName>
+							<email>tangruiming@huawei.com</email>
+							<affiliation key="aff1">
+								<orgName type="institution">Huawei Noah&apos;s Ark Lab</orgName>
+								<address>
+									<settlement>Shenzhen</settlement>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Enhong</forename><surname>Chen</surname></persName>
+							<email>cheneh@ustc.edu.cn</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Science and Technology of China</orgName>
+								<address>
+									<settlement>Hefei</settlement>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Understanding the planning of LLM agents: A survey</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+					<idno type="MD5">3D0CA243D905A0AEBA2385FA996CFB8B</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.8.2-SNAPSHOT" ident="GROBID" when="2025-01-24T14:30+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>As Large Language Models (LLMs) have shown significant intelligence, the progress to leverage LLMs as planning modules of autonomous agents has attracted more attention. This survey provides the first systematic view of LLM-based agents planning, covering recent works aiming to improve planning ability. We provide a taxonomy of existing works on LLM-Agent planning, which can be categorized into Task Decomposition, Plan Selection, External Module, Reflection and Memory. Comprehensive analyses are conducted for each direction, and further challenges for the field of research are discussed.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Autonomous agents have been recognized as intelligent entities capable of accomplishing specific tasks, via perceiving the environment, planning, and executing actions. Planning, as one of the most critical capabilities for agents, requires complicated understanding, reasoning, and decision-making progress <ref type="bibr" target="#b17">[Ghallab et al., 2004]</ref>.</p><p>Despite the abstract concept of planning, a general formulation of the planning tasks can be described as follows. Given time step t, with the environment denoted as E, the action space as A, the task goal as g, and the action at step t as a t ∈ A, the planning procedure can be expressed as the generation of a sequence of actions: p = (a0, a1, • • • , at) = plan(E, g; Θ, P).</p><p>where Θ and P represent the parameters of the LLM and the prompts for the task, respectively.</p><p>Conventional works mainly rely on symbolic methods or reinforcement learning-based methods, such as Planning Domain Definition Language (PDDL) <ref type="bibr" target="#b0">[Aeronautiques et al., 1998;</ref><ref type="bibr" target="#b25">Haslum et al., 2019]</ref> or policy learning <ref type="bibr" target="#b27">[He et al., 2015;</ref><ref type="bibr">Yao et al., 2020a]</ref>. However, those conventional methods have several limitations. Symbolic methods require conversion from flexible natural language-described problems into symbolic modeling, which may require human experts' efforts. Usually, this kind of method lacks error tolerance, resulting in failures even if there are only a few errors. Reinforcement learning (RL) methods are often combined with deep models, which serve as the policy network or reward model. While RL algorithms often require a large number of samples (interactions with the environment) to learn an effective policy, this can be impractical or costly in scenarios where collecting data is time-consuming or expensive.</p><p>In recent years, the emergence of Large Language Models (LLMs) has marked a paradigm shift. LLMs have achieved remarkable success across various domains, showcasing significant intelligence in reasoning, tool usage, planning, and instruction-following. The surprising intelligence of LLMs sheds light on employing LLMs as the cognitive core of agents, thereby offering the potential to improve planning ability. Numerous methodologies have been developed to harness the potential of LLMs for agent planning. While existing surveys have attempted to summarize techniques for LLMs <ref type="bibr">[Zhao et al., 2023a]</ref>, LLMs for decision-making <ref type="bibr">[Yang et al., 2023a]</ref>, reasoning <ref type="bibr" target="#b66">[Sun et al., 2023]</ref>, tool learning <ref type="bibr" target="#b54">[Qin et al., 2023]</ref>, and autonomous agents <ref type="bibr">[Wang et al., 2023a]</ref>, they often lack a detailed analysis of planning ability within the literature. In this survey, we analyze the latest research works and discuss the advantages and limitations, aiming to provide a systematic view of the planning ability of LLMbased agents. Existing methods are further categorized into five representative directions, with each direction undergoing comprehensive analysis. Furthermore, we have evaluated several representative methods on four benchmarks. To the best of our knowledge, this is the first work that comprehensively analyzes LLM-based agents from the planning abilities.</p><p>The subsequent sections of this paper are organized as follows. In Section 2, we categorize the works into five mainstream directions and analyze their ideas regarding planning ability. Sections 3 to 7 provide detailed discussions and analysis of each direction. Finally, Section 9 concludes the survey, offering insights into future directions in this field.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Taxonomy</head><p>As the research on the planning ability of LLM-based agents presents a flourishing scene, various methods have been proposed to exploit the upper limit of planning ability. To have a better bird's view of existing advanced works, we pick out some representative and influential works, analyzing their motivations and essential ideas. To provide a better understanding, we illustrate the analysis in Table <ref type="table" target="#tab_0">1</ref>.</p><p>According to the table, we present a novel and systematic taxonomy for LLM-based agent plannning that divides existing works into five important categories, covering task decomposition, multi-plan selection, external module-aided planning, reflection and refinement and memory-augmented planning, as illustrated in Figure <ref type="figure" target="#fig_0">1</ref>. Here we briefly summarize those five directions as below. Task Decomposition. Tasks in real life are usually complicated and multi-step, bringing severe hardness for planning. This kind of method adopts the idea of divide and conquer, decomposing the complicated into several sub-tasks and then sequentially planning for each sub-task. The process could be formulated as follows: g0, g1, • • • , gn = decompose(E, g; Θ, P);</p><formula xml:id="formula_0">p i = (a i 0 , a i 1 , • • • a i m ) = sub-plan(E, gi; Θ, P).</formula><p>Multi-plan Selection. This kind of method focuses on leading the LLM to "think" more, generating various alternative plans for a task. Then a task-related search algorithm is employed to select one plan to execute. The process could be formulated as follows:</p><formula xml:id="formula_1">P = p1, p2, • • • , pn = plan(E, g; Θ, P); p * = select(E, g, P ; Θ, F).</formula><p>where F represents the search strategies, such as some tree search algorithms <ref type="bibr" target="#b92">[Yao et al., 2023;</ref><ref type="bibr">Zhao et al., 2023b]</ref>.</p><p>External Planner-Aided Planning. This methodology is crafted to employ an external planner to elevate the planning procedure, aiming to address the issues of efficiency and infeasibility of generated plans, while the LLM mainly plays the role in formalizing the tasks. The process could be formulated as follows:</p><formula xml:id="formula_2">h = formalize(E, g; Θ, P); p = plan(E, g, h; Φ).</formula><p>where Φ denotes the external planner module, h represents the formalized information.</p><p>Reflection and Refinement. This methodology emphasizes improving planning ability through reflection and refinement.</p><p>It encourages LLM to reflect on failures and then refine the plan. The process could be formulated as follows: p0 = plan(E, g; Θ, P); ri = reflect(E, g, pi; Θ, P); pi+1 = refine(E, g, pi, ri; Θ, P); Memory-augmented Planning. This kind of approach enhances planning with an extra memory module, in which valuable information is stored, such as commonsense knowledge, past experiences, domain-specific knowledge, et al. The information is retrieved when planning, serving as auxiliary signals. The process could be formulated as follows:</p><formula xml:id="formula_3">m = retrieve(E, g; M); p = plan(E, g, m; Θ, P).</formula><p>where M represents the memory module.</p><p>The five directions are interconnected rather than mutually exclusive, often involving the concurrent adoption of multiple techniques. In the subsequent sections, we delve deeper into the five research directions concerning LLM-agent planning, elucidating their motivations, proposing representation solutions, and addressing inherent limitations.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Task Decomposition</head><p>In real-world scenarios, environments are often characterized by complexity and variability, thereby addressing complex tasks through a one-step planning process is a formidable challenge. This simplification of complicated tasks is a remarkable human ability, evident in the decomposition of one task into several simpler sub-tasks <ref type="bibr" target="#b56">[Schraagen et al., 2000]</ref>, which is analogous to the well-known algorithmic strategy called "divide and conquer", as illustrated in Eq. ( <ref type="formula">1</ref>). Task decomposition generally involves two crucial steps: firstly, decomposing the complex task, referred to as the "decompose" step, and secondly, planning for the sub-tasks, known as the "sub-plan step". Current methods for task decomposition in this domain generally fall into two categories: decomposition-first and interleaved decomposition, illustrated in Figure <ref type="figure" target="#fig_1">2</ref>.</p><formula xml:id="formula_4">Goal Sub Goal-1 … Decompose Sub Goal-2 Sub Goal-n … Sub-plan Sub Goal-1 … Sub Goal-2 Sub Goal-n … (a) Decomposition-First (b) Interleaved ① ② LLM Agent LLM Agent</formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Decomposition-First Methods</head><p>Decomposition-first methods decompose the task into subgoals first and then plan for each sub-goal successively, presented in Figure <ref type="figure" target="#fig_1">2(a)</ref>. The representative methods include HuggingGPT <ref type="bibr" target="#b58">[Shen et al., 2023]</ref>, Plan-and-Solve <ref type="bibr">[Wang et al., 2023b]</ref>, ProgPrompt <ref type="bibr" target="#b64">[Singh et al., 2023]</ref>, et al.</p><p>HuggingGPT <ref type="bibr" target="#b58">[Shen et al., 2023]</ref> utilizes various multimodal models from the Huggingface Hub to construct an intelligent agent for multimodal tasks. It is capable of handling tasks such as image generation, image classification, object recognition, video annotation, speech-to-text, et al. To facilitate collaboration between different models, the LLM acts as a controller, responsible for decomposing tasks inputted by humans, selecting models, and generating final responses. The most crucial stage is the initial task decomposition, where HuggingGPT explicitly instructs the LLM to break down the given task into sub-tasks, providing dependencies between tasks. Plan-and-Solve <ref type="bibr">[Wang et al., 2023b]</ref> improves upon the Zero-shot Chain-of-Thought <ref type="bibr" target="#b34">[Kojima et al., 2022]</ref> by transforming the original "Let's think stepby-step" into a two-step prompt instruction: "Let's first devise a plan" and "Let's carry out the plan". This zero-shot approach has achieved improvements in mathematical reasoning, common-sense reasoning, and symbolic reasoning. ProgPrompt <ref type="bibr" target="#b64">[Singh et al., 2023]</ref> translates natural language descriptions of tasks into coding problems. It symbolizes the agent's action space and objects in the environment through code, with each action formalized as a function and each object represented as a variable. Consequently, task planning is naturally transformed into function generation. When executing tasks, the agent first generates a plan in the form of function callings and then executes them step by step.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Interleaved Decomposition Methods</head><p>Interleaved decomposition involves interleaved task decomposition and sub-task planning, where each decomposition only reveals one or two sub-tasks at the current state, illustrated in Figure <ref type="figure" target="#fig_1">2(b)</ref>. Representative methods in this category include the Chain-of-Thought (CoT) series <ref type="bibr" target="#b77">[Wei et al., 2022;</ref><ref type="bibr" target="#b34">Kojima et al., 2022]</ref>, ReAct <ref type="bibr" target="#b90">[Yao et al., 2022]</ref>, PAL <ref type="bibr" target="#b14">[Gao et al., 2023]</ref>, Program-of-Thought (PoT) <ref type="bibr" target="#b8">[Chen et al., 2022]</ref>, Visual ChatGPT <ref type="bibr" target="#b79">[Wu et al., 2023]</ref>, et al.</p><p>The introduction of Chain-of-Thought (CoT) <ref type="bibr" target="#b77">[Wei et al., 2022]</ref> reveals the few-shot learning capabilities of LLM. CoT guides the LLM in reasoning about complex problems through a few constructed trajectories, leveraging the LLM's reasoning abilities for task decomposition. Subsequently, Zero-shot CoT <ref type="bibr" target="#b34">[Kojima et al., 2022]</ref> unlocks the LLM's zeroshot reasoning abilities with the magical instruction "Let's think step-by-step". In contrast to CoT, which embeds reasoning within the planning process, ReAct <ref type="bibr" target="#b90">[Yao et al., 2022]</ref> decouples reasoning and planning. It alternates between reasoning (Thought step) and planning (Action step), demonstrating significant improvements in the planning capabilities. Visual ChatGPT <ref type="bibr" target="#b79">[Wu et al., 2023]</ref> utilizes ReAct's mechanism, employing LLM as the agent's brain equipped with a series of visual models, resulting in an agent with image processing capabilities. PAL <ref type="bibr" target="#b14">[Gao et al., 2023]</ref> improves CoT by leveraging the LLM's coding abilities, guiding the LLM to generate code during reasoning. Finally, a code interpreter (such as Python) is used to comprehensively execute the codes to obtain the solution. This method proves helpful for agents in solving mathematical and symbolic reasoning problems. Program-of-Thought (PoT) <ref type="bibr" target="#b8">[Chen et al., 2022]</ref> completely formalize the reasoning process as programming. The authors also leverage a CodeX <ref type="bibr">[Chen et al., 2021b]</ref> model trained on code-related data, enhancing performance in mathematical and financial problems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Discussions</head><p>For the decomposition-first method, the advantage lies in creating a stronger correlation between the sub-tasks and the original tasks, reducing the risk of task forgetting and hallucinations <ref type="bibr" target="#b70">[Touvron et al., 2023]</ref>. However, since the sub-tasks are predetermined at the beginning, additional mechanisms for adjustment are required otherwise one error in some step will result in failure, which will be discussed in Section 6. On the other hand, interleaved decomposition and sub-planning dynamically adjust decomposition based on environmental feedback, improving the fault tolerance. However, for complicated tasks, excessively long trajectories may lead to LLM experiencing hallucinations, deviating from the original goals during subsequent sub-tasks and sub-planning.</p><p>Although task decomposition significantly enhances the ability of LLM-Agent to solve complicated tasks, challenges persist. The first challenge is the additional overhead introduced by task decomposition. Decomposing a task into multiple sub-tasks requires more reasoning and generation, incurring additional time and computational costs. On the other hand, for highly complex tasks that are decomposed into dozens of sub-tasks, the planning is constrained by the context length of the LLM, leading to the forgetting of the planning trajectories.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Multi-Plan Selection</head><p>Due to the complexity of the tasks and the inherent uncertainty of LLM, the plans generated by the LLM-Agent for a given task can be diverse. Even though LLM possesses strong reasoning abilities, a single plan generated by LLM is likely to be suboptimal or even infeasible. A more natural approach is multi-plan selection, comprising two major steps: multiplan generation and optimal plan selection.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Multi-Plan Generation</head><p>Multi-plan generation involves generating a dozen paths of plans to comprise the candidate plan set. Mainstream methods consider employing uncertainty in the decoding process of generative models.</p><p>Self-consistency <ref type="bibr">[Wang et al., 2022b]</ref> employs a simple intuition: the solutions for complex problems are rarely unique. In contrast to CoT, which generates a single path, Self-consistency obtains multiple distinct reasoning paths via sampling strategies embodied in the decoding process, such as temperature sampling, top-k sampling. Tree-of-Thought (ToT) <ref type="bibr" target="#b92">[Yao et al., 2023]</ref> proposes two strategies to generate plans (i.e. thoughts): sample and propose. The sample strategy is consistent with Self-consistency, where LLM would sample multiple plans in decoding process. The propose strategy explicitly instructs the LLM to generate various plans via few-shot examples in prompts. Graph-of-Thought (GoT) <ref type="bibr" target="#b2">[Besta et al., 2023]</ref> extends ToT by adding transformations of thoughts, which supports arbitrary thoughts aggregation. LLM-MCTS <ref type="bibr">[Zhao et al., 2023b]</ref> and RAP <ref type="bibr" target="#b23">[Hao et al., 2023]</ref> leverages LLM as the heuristic policy function for the Monte Carlo Tree Search (MCTS), where multiple potential actions are obtained by multiple calls.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Optimal Plan Selection</head><p>To select the optimal plan among the candidate plans, diverse strategies are adopted as heuristic search algorithms.</p><p>Self-consistency <ref type="bibr">[Wang et al., 2022b]</ref> applies the naive majority vote strategy, regarding the plan with the most votes as the optimal choice. Benefiting from the tree architecture, Tree-of-Thought (ToT) <ref type="bibr" target="#b92">[Yao et al., 2023]</ref> supports tree search algorithms, such as conventional BFS and DFS. When selecting a node for expansion, it uses LLM to evaluate multiple actions and chooses the optimal one. Similar with ToT, LLM-MCTS <ref type="bibr">[Zhao et al., 2023b]</ref> and RAP <ref type="bibr" target="#b23">[Hao et al., 2023]</ref> also employ a tree structure to assist in multi-plan search. Unlike ToT, they employ the Monte Carlo Tree Search (MCTS) algorithm for search. LLM A* [Xiao and <ref type="bibr">Wang, 2023]</ref> utilizes the classic A* algorithm from artificial intelligence to assist LLM in search. The Chebyshev distance from the current position to the target position serves as the heuristic cost function for selecting the optimal path.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Discussions</head><p>The scalability of multi-plan selection is notably advantageous, providing a broader exploration of potential solutions in the expansive search space. However, this advantage comes with inherent trade-offs. The increased computational demands, especially for models with large token counts or computations, pose practical challenges. This cost consideration becomes crucial, particularly in scenarios where resource constraints are a significant factor, such as the online service. Moreover, the reliance on LLM for the evaluation of plans introduces new challenges. As LLM's performance in ranking tasks is still under scrutiny, there is a need for further validation and fine-tuning of its capabilities in this specific context. The stochastic nature of LLMs adds randomness to the selection, potentially affecting the consistency and reliability of the chosen plans.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">External Planner-Aided Planning</head><p>Despite the powerful reasoning and task decomposition capabilities exhibited by Large Language Models (LLMs), challenges arise when confronted with environments featuring intricate constraints, such as mathematical problem-solving or generating admissible actions. To address challenges, several methods integrate LLMs with external planners. Such methods can be categorized into symbolic planners and neural planners based on the introduced planners.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Symbolic Planner</head><p>Symbolic planners have served as a fundamental component in the fields of automated planning for several decades. These approaches, based on well-established symbolic formalized models, such as PDDL models <ref type="bibr" target="#b0">[Aeronautiques et al., 1998;</ref><ref type="bibr" target="#b25">Haslum et al., 2019]</ref>, employ symbolic reasoning to identify optimal paths from initial states to desired goal states.</p><p>LLM+P <ref type="bibr">[Liu et al., 2023a]</ref> enhances the planning proficiency of LLMs by incorporating a PDDL-based symbolic planner. Leveraging the semantic understanding and coding capabilities of LLM, the authors organize problems into textual language prompts inputted to LLM. This prompts LLM to organize the actions within the environment and specified tasks into the format of the PDDL language. Subsequently, after obtaining a formalized description, the authors employ the Fast-Downward<ref type="foot" target="#foot_0">foot_0</ref> solver for the planning process. Building upon LLM+P, LLM-DP <ref type="bibr" target="#b10">[Dagan et al., 2023]</ref> is specifically designed for dynamic interactive environments. Upon receiving feedback from the environment, LLM processes the information, formalizes it into PDDL language, and then employs a BFS <ref type="bibr" target="#b40">[Lipovetzky et al., 2014]</ref> solver to generate a plan. LLM+PDDL <ref type="bibr" target="#b21">[Guan et al., 2023]</ref> also utilizes the PDDL language to formalize the task, incorporating an additional step for manual verification to check for potential issues in the PDDL model generated by LLM. During the planning process, the authors propose using the plan generated by LLM as an initial heuristic solution to accelerate the search process of local search planners, such as LPG <ref type="bibr" target="#b16">[Gerevini and Serina, 2002]</ref>. LLM+ASP <ref type="bibr">[Yang et al., 2023b</ref>] transforms problems described in natural language by LLM into atomic facts, converting tasks into ASP problems. Subsequently, the ASP solver CLINGO is utilized to generate plans.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Neural Planner</head><p>Neural planners are deep models trained on collected planning data with reinforcement learning or imitation learning techniques, showing effective planning abilities within the specific domain. For instance, DRRN <ref type="bibr" target="#b27">[He et al., 2015]</ref> models the planning process as a Markov Decision Process through reinforcement learning, training a policy network to obtain a deep decision model. Decision Transformer (DT) <ref type="bibr">[Chen et al., 2021a</ref>] empowers a transformer model to clone human decision-making behavior with planning data.</p><p>Well-trained neural planners exhibit excellent planning capabilities within their respective domains and demonstrate superior planning efficiency due to their smaller parameter sizes. However, when faced with complex and less frequently encountered problems, where training data is scarce, these small models tend to perform poorly due to insufficient generalization ability. Therefore, several works explore combining an LLM with a light-weight neural planner, to further enhance the planning capabilities. CALM <ref type="bibr">[Yao et al., 2020a]</ref> proposed an early approach that combines a language model with an RL-based neural planner. One language model processes textual environmental information, generating a set of candidate actions as priors based on the environmental information. A DRRN policy network is then employed to re-rank these candidate actions, ultimately selecting the optimal action. SwiftSage <ref type="bibr">[Lin et al., 2023]</ref> leverages the dual-process theory from cognitive psychology, dividing the planning process into slow thinking and fast thinking. The slow-thinking process involves complex reasoning and rational deliberation while fast-thinking resembles an instinctive response developed through long-term training. The authors utilize a DT model, trained through imitation learning, as the fast-thinking model for rapid plan generation. When errors occur during plan execution, indicating a more complex problem, the agent switches to the slow-thinking process, where LLM engages in reasoning and planning based on the current state. This combination of fast and slow thinking has proven to be highly effective in terms of efficiency.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">Discussions</head><p>For those strategies that leverage an additional planner for assistance, LLM primarily plays a supportive role. Its main functions involve parsing textual feedback and providing additional reasoning information to assist in planning, particularly when addressing complex problems. Specifically, the enhancement of LLM's capabilities in code generation empowers the potential to deal with more general tasks for symbolic artificial intelligence. Actually, a significant drawback of traditional symbolic AI systems lies in the complexity and heavy reliance on human experts in constructing symbolic models, while LLM accelerates this process, facilitating faster and more optimal establishment of symbolic models. The advantages brought by symbolic systems include theoretical completeness, stability, and interpretability. The combination of statistical AI with LLM is poised to become a major trend in the future development of artificial intelligence.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Reflection and Refinement</head><p>Reflection and refinement are indispensable components in the planning process. They enhance the fault tolerance and error correction capabilities of LLM-Agent planning. Due to existing hallucination issues and insufficient reasoning abilities for complex problems, LLM-Agents may make errors and get stuck in "thought loops" during planning due to limited feedback. Reflecting on and summarizing failures helps agents correct errors and break out of such loops in subsequent attempts.</p><p>Self-refine <ref type="bibr" target="#b45">[Madaan et al., 2023]</ref> utilizes an iterative process of generation, feedback, and refinement. After each generation, LLM generates feedback for the plan, facilitating adjustments based on the feedback. Reflexion <ref type="bibr" target="#b60">[Shinn et al., 2023]</ref> extends ReAct by incorporating an evaluator to assess trajectories. LLM generates self-reflections upon error detection, aiding in error correction. CRITIC <ref type="bibr" target="#b19">[Gou et al., 2023]</ref> uses external tools like Knowledge Bases and Search Engines to validate LLM-generated actions. It then leverages external knowledge for self-correction, significantly reducing factual errors. InteRecAgent <ref type="bibr">[Huang et al., 2023b]</ref> employs a mechanism called ReChain for self-correction. An LLM is used to evaluate the response and tool-using plan generated by the interactive recommendation agent, summarize feedback on errors, and decide whether to restart planning. LEMA <ref type="bibr">[An et al., 2023]</ref> gathers mistaken planning samples first and employs more powerful GPT-4 for correction. Those corrected samples are then used to fine-tune the LLM-Agent, resulting in significant performance improvements across various scales of the LLaMA model.</p><p>Particularly, the self-reflective strategy bears resemblance to the principles of reinforcement learning, where the agent plays the role of the decision-maker, such as the policy network. Environmental feedback triggers updates of the policy network. However, in contrast to deep reinforcement learning where updates are achieved by modifying model parameters, in the LLM agent, this update occurs through selfreflection by the LLM itself, culminating in textual verbal feedbacks. These textual feedbacks can serve as both longterm and short-term memory, influencing the agent's subsequent planning outputs through the prompts. Nevertheless, the convergence of this textual form of update currently lacks a guaranteed proof, indicating the inability to demonstrate that continual reflection can ultimately lead the LLM agent to a specified goal.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Memory-Augumented Planning</head><p>For agents, memory is a crucial pathway to enhance planning capabilities and the potential for growth. Regarding the memory mechanisms in LLM-Agents, there are currently two major approaches to enhance planning abilities through memory: RAG-based memory and embodied memory.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.1">RAG-based Memory</head><p>Retrieval Augmented Generation (RAG) <ref type="bibr" target="#b36">[Lewis et al., 2020;</ref><ref type="bibr" target="#b47">Mao et al., 2020;</ref><ref type="bibr" target="#b4">Cai et al., 2022]</ref> techniques are proposed to aid text generation with retrieved information. It is capable of enhancing the LLM with the latest knowledge, such as New Bing<ref type="foot" target="#foot_1">foot_1</ref> and Google Bard<ref type="foot" target="#foot_2">foot_2</ref> . For LLM agents, past experiences could be stored in the memory and retrieved when needed. The core idea of such methods is to retrieve task-relevant experiences from the memory during task planning. Among those methods, memories are typically stored in additional storage, and the forms are diverse, such as texts <ref type="bibr" target="#b52">[Park et al., 2023;</ref><ref type="bibr">Liu et al., 2023b;</ref><ref type="bibr" target="#b49">Packer et al., 2023;</ref><ref type="bibr">Wang et al., 2023c;</ref><ref type="bibr" target="#b100">Zhong et al., 2023]</ref>, tabular forms <ref type="bibr">[Zhang et al., 2023a]</ref>, knowledge graph <ref type="bibr" target="#b51">[Pan et al., 2024]</ref>, etc.</p><p>Generative Agents <ref type="bibr" target="#b52">[Park et al., 2023]</ref> store the daily experiences of human-like agents in text form and retrieve memories based on a composite score of recency and relevance to the current situation. Similarly, MemoryBank <ref type="bibr" target="#b100">[Zhong et al., 2023]</ref>, TiM <ref type="bibr">[Liu et al., 2023b]</ref>, and RecMind <ref type="bibr">[Wang et al., 2023c]</ref> encode each memory using a text encoding model into a vector and establish an indexing structure, such as FAISS library <ref type="bibr" target="#b31">[Johnson et al., 2019]</ref>. During retrieval, the description of the current status is used as a query to retrieve memories from the memory pool. The difference between the three lies in the way memories are updated. MemGPT <ref type="bibr" target="#b49">[Packer et al., 2023]</ref> leverages the concept of multiple levels of storage in computer architecture, abstracting the context of LLM into RAM and treating the additional storage structure as a disk. LLM can spontaneously decide whether to retrieve historical memories or save the current context to storage. REMEM-BER <ref type="bibr">[Zhang et al., 2023a]</ref> stores historical memories in the form of a Q-value table, where each record is (environment, task, action, Q-value)-tuple. During retrieval, positive and negative memories are both retrieved for LLM to generate plan based on the similarity of the environment and task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.2">Embodied Memory</head><p>Embodied memory involves finetuning the LLM with the agent's historical experiential samples, embedding memories into the model parameters. Usually the experiential samples are collected from the agents's interactions with environment, which may consist of commonsense knowledge about the environment, task-related priors, and successful or failed experiences. While the cost of training a language model with more than billions of parameters is huge, parameter-efficient fine-tuning (PEFT) techniques are leveraged to reduce cost and speed up by training a small part of parameters only, such as LoRA, QLoRA, P-tuning, et al.</p><p>CALM <ref type="bibr">[Yao et al., 2020b]</ref> utilizes ground-truth action trajectories collected from the text-world environment to finetune GPT-2 using next token prediction task, enabling it to memorize planning-related information and generalize well on planning tasks. Similarly, TDT <ref type="bibr">[Wang et al., 2022a]</ref> uses collected Markov decision process data to fine-tune Text Decision Transformer (TDT). It achieves better success rates on more challenging ScienceWorld <ref type="bibr">[Wang et al., 2022a]</ref> tasks. AgentTuning <ref type="bibr" target="#b94">[Zeng et al., 2023]</ref> organizes plan trajectories from various tasks into a dialogue form to finetune the LLaMA model, showing significant improvements in performance on unseen planning tasks. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Evaluation</head><p>Evaluating the planning capability of the agent is a critical issue in the research area. Here we investigate several mainstream benchmarking methods, categorizing them into the following types. Interactive Gaming Environments: Game environments may provide real-time multi-modal feedback based on the agent's actions, including textual and visual feedback. Currently, the most widely used gaming environment is Minecraft<ref type="foot" target="#foot_3">foot_3</ref> , where the agent needs to gather materials to create tools for obtaining more rewards. The quantity of tools created by the agent is often used as an evaluation metric. Another popular category is the text-based interactive environments, such as ALFWorld <ref type="bibr" target="#b62">[Shridhar et al., 2020]</ref>, ScienceWorld <ref type="bibr">[Wang et al., 2022a]</ref>, et al, where the agent locates in an environment described in natural language, with limited actions and locations. The success rate or the rewards obtained are commonly used as evaluation metrics. Compared with Minecraft, these text-based interactive environments are often simpler, with straightforward feedback and fewer feasible actions. Interactive Retrieval Environments: Interactive retrieval environments simulate the process of information retrieval and reasoning that humans undergo in real life. In these environments, agents are often allowed to interact with search engines and other web services, using actions such as searching keywords or executing click, forward, and backward operations to acquire more information, thereby obtaining an-swers to questions or completing information retrieval tasks. Commonly used retrieval environments include questionanswering tasks based on the Wikipedia engine <ref type="bibr" target="#b90">[Yao et al., 2022]</ref> (such as HotPotQA <ref type="bibr" target="#b84">[Yang et al., 2018]</ref> and Fever <ref type="bibr" target="#b68">[Thorne et al., 2018]</ref>) and web browsing tasks to find specific information, including WebShop, Mind2Web <ref type="bibr" target="#b12">[Deng et al., 2023]</ref>, and WebArena <ref type="bibr" target="#b102">[Zhou et al., 2023]</ref>. The task success rate is usually used as the metric. Interactive Programming Environments: Interactive programming environments simulate the interaction between programmers and computers, testing the agent's planning ability in solving computer-related problems. In these environments, agents are required to interact with computers to solve problems by writing code or instructions. They would receive various feedback including compile and runtime error messages, as well as execution results. Popular interactive programming environments involve issues related to operating systems, databases, etc., such as Agent Bench <ref type="bibr">[Liu et al., 2023c]</ref>, MiniWoB++ <ref type="bibr" target="#b33">[Kim and others, 2023]</ref>.</p><p>Most of these existing interactive environments lack finegrained evaluation, where the performance is predominantly evaluated by the final success rate. Furthermore, unlike realworld scenarios where there are often multiple paths to complete a task, there is typically only one "golden" path in most simulated environments due to the high annotation cost. Experiments. We have conducted experiments on four benchmarks to validate the performance of representative works, shown in Table <ref type="table" target="#tab_1">2</ref>. We have implemented six promptbased methods due to limited budgets, covering task decomposition, multi-path selection, and reflection. As for the benchmarks, ALFWorld, ScienceWorld, HotPotQA, and FEVER are employed, involving interactive gaming and question-answering benchmarks. Since ALFWorld and Sci-enceWorld are involved in larger action space, the zero-shot method, i.e. ZeroShot-CoT, is not applicable due to unawareness of action space. SayCan improves CoT by grounding output actions into action space with a value function, which does not apply to QA tasks because there are only two actions: SEARCH[KEYWORD] and LOOKUP <ref type="bibr">[KEYWORD]</ref>. And we set the value function as a textual embedding model bgesmall-en-v1.5 <ref type="bibr" target="#b81">[Xiao and others, 2023]</ref>. We obtain 3 actions and 5 answers each step for gaming tasks and QA tasks for CoT-SC, respectively. The round of retries in Reflexion is set to 1. We use the API of text-davinci-003 in OpenAI as LLM. (i) The performance increases with the expenses. As CoT-SC, ReAct and Reflexion are involved in multiple plans, additional thoughts, and reflections, respectively, their expenses are more than their backbone methods. Intuitively, more tokens represent more detailed thinking, resulting in performance improvements. (ii) Fewshot examples are suggested for complicated tasks. Despite that the magic instruction Let's think step by step can lead to more reasoning, ZeroShot-CoT exhibits severe performance degradation in two QA benchmarks, which demonstrates the necessity of the examples for LLM to further understand the task. (iii) Reflection plays a crucial role in improving the success rate, especially for complex tasks. Despite Reflexion con-suming about twice the tokens compared with ReAct, the improvements in complicated tasks are promising, such as ALF-World and ScienceWorld, which shows that LLM possesses the error-correcting capability.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="9">Conclusions and Future Directions</head><p>Since LLM has shown the emergence of intelligence, there has been an increasing focus on using LLM to enhance the planning capabilities of agents. The major directions are summarized in Figure <ref type="figure" target="#fig_0">1</ref>, with a detailed comparison and analysis of various methods presented in Sections 3 to 7. We also conducted experiments on four benchmarks, comparing the effectiveness of several representative methods and showing that performance increases with expenses. Despite the enhancements made by these works in planning capabilities, there are still some significant challenges.</p><p>Hallucinations. During the planning process, LLM often suffers from hallucinations, leading to irrational plans, unfaithfulness to task prompts, or failing to follow complex instructions. For instance, plans may include actions that interact with items not existed in the environment. Although these issues can be alleviated through careful prompt engineering, they reflect fundamental shortcomings in LLM <ref type="bibr">[Zhang et al., 2023b;</ref><ref type="bibr">Huang et al., 2023a]</ref>.</p><p>Feasibility of Generated Plans. LLM, being fundamentally based on statistical learning, optimizes the probability of the next word through massive data. Compared to symbolic artificial intelligence, this approach struggles to obey complex constraints, especially when dealing with less common constraints encountered during LLM training. Consequently, plans generated by LLM may lack feasibility without considering adequate preconditions. Connecting LLM with symbolic planning models without altering LLM itself is a promising future direction.</p><p>Efficiency of Generated Plans. Generating efficient plans is a crucial issue in planning. However, in existing LLM agents, planning is greedily based on generated plans from LLM output, without considering the efficiency of the generated plans. Therefore, future developments may require introducing additional efficiency evaluation modules to work in conjunction with LLM for more efficient plans.</p><p>Multi-Modal Environment Feedback. LLM is originally designed for processing textual inputs, but real-world environment feedback is often multi-modal, including images, audio, etc., which are challenging to describe in natural language. Therefore, LLM agents face limitations when handling such scenarios. Future considerations may involve integrating the development of multi-modal large models and revisiting related planning strategies.</p><p>Fine-grained Evaluation. As mentioned in Section 8, existing benchmarks mostly rely on the final completion status of tasks, lacking fine-grained step-wise evaluations. Additionally, environmental feedback is often rule-based, simplistic, and distant from real-world scenarios. A potential future direction is to leverage high-intelligence models like LLM to design more realistic evaluation environments.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Taxonomy on LLM-Agent planning.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Types of task decomposition manners.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 1 :</head><label>1</label><figDesc>A taxonomy for existing LLM-Agent planning works.</figDesc><table><row><cell>Method</cell><cell>Idea</cell><cell>LLM's task</cell><cell>Formulation</cell><cell>Representative works</cell></row><row><cell>Task Decomposition</cell><cell>Divide and Conquer</cell><cell>Task decomposition Subtask planning</cell><cell>[gi] = decompose(E, g; Θ, P); p i = sub-plan(E, gi; Θ, P)</cell><cell>CoT [2022], ReAct [2022], HuggingGPT [2023]</cell></row><row><cell>Multi-plan</cell><cell>Generate multiple plans</cell><cell>Plans generation</cell><cell>P = plan(E, g; Θ, P);</cell><cell>ToT [2023], GoT [2023],</cell></row><row><cell>Selection</cell><cell>and select the optimal</cell><cell>Plans evaluation</cell><cell>p  *  = select(E, g, P ; Θ, F)</cell><cell>CoT-SC [2022b]</cell></row><row><cell>External Planner-aided</cell><cell>Formalize tasks and utilize external planner</cell><cell>Task formalization</cell><cell>h = formalize(E, g; Θ, P); p = plan(E, g, h; Φ)</cell><cell>LLM+P [2023a], LLM+PDDL [2023]</cell></row><row><cell>Reflection &amp; Refinement</cell><cell>Reflect on experiences and refine plans</cell><cell>Plan generation Reflection Refinement</cell><cell>p0 = plan(E, g; Θ, P); ri = reflect(E, g, pi; Θ, P); pi+1 = refine(E, g, pi, ri; Θ, P)</cell><cell>Reflexion [2023], CRITIC [2023], Self-Refine [2023]</cell></row><row><cell>Memory-aided</cell><cell>Leverage memory</cell><cell>Plan generation</cell><cell>m = retrieve(E, g; M);</cell><cell>REMEMBER [2023a],</cell></row><row><cell>Planning</cell><cell>to aid planning</cell><cell>Memory extraction</cell><cell>p = plan(E, g, m; Θ, P)</cell><cell>MemoryBank [2023]</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 2 :</head><label>2</label><figDesc>Evaluation of representative prompt-based methods on four interactive benchmarks. The SR, AR and EX are abbreviations of success rate, average rewards, and expenses respectively. The expenses are calculated based on the number of consumed tokens through OpenAI's API. Z-CoT and F-CoT represent Zeroshot-CoT and Fewshot-CoT, respectively.</figDesc><table><row><cell></cell><cell cols="2">AlfWorld</cell><cell cols="2">ScienceWorld</cell><cell cols="2">HotPotQA</cell><cell cols="2">FEVER</cell></row><row><cell>Metrics</cell><cell cols="2">SR(%) EX($)</cell><cell cols="6">AR EX($) SR(%) EX($) SR(%) EX($)</cell></row><row><cell>Z-CoT</cell><cell>N/A</cell><cell>N/A</cell><cell>N/A</cell><cell>N/A</cell><cell>0.01</cell><cell>0.95</cell><cell>0.39</cell><cell>1.07</cell></row><row><cell>F-CoT</cell><cell>0.43</cell><cell cols="3">98.60 16.58 272.22</cell><cell>0.32</cell><cell>5.73</cell><cell>0.61</cell><cell>2.25</cell></row><row><cell>CoT-SC</cell><cell cols="4">0.57 105.37 15.24 274.33</cell><cell>0.33</cell><cell>7.86</cell><cell>0.62</cell><cell>3.21</cell></row><row><cell>SayCan</cell><cell cols="4">0.60 113.61 12.36 125.71</cell><cell>N/A</cell><cell>N/A</cell><cell>N/A</cell><cell>N/A</cell></row><row><cell>ReAct</cell><cell cols="4">0.57 152.18 15.05 356.03</cell><cell>0.34</cell><cell>66.00</cell><cell cols="2">0.63 22.20</cell></row><row><cell>Reflexion</cell><cell cols="4">0.71 220.17 19.39 724.48</cell><cell cols="2">0.39 112.49</cell><cell cols="2">0.68 37.26</cell></row><row><cell cols="3">7.3 Discussions</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell cols="9">The RAG-based and Fine-tuning-based memory approaches</cell></row><row><cell cols="9">enhance LLM-Agent planning capabilities, each with distinct</cell></row><row><cell cols="9">advantages and limitations. RAG-based methods offer real-</cell></row><row><cell cols="9">time, low-cost external memory updates mainly in natural</cell></row><row><cell cols="9">language text, but rely on the accuracy of retrieval algorithm.</cell></row><row><cell cols="9">Finetuning provides a larger memorization capacity through</cell></row><row><cell cols="9">parameter modifications but has high memory update costs</cell></row><row><cell cols="7">and struggles with retaining fine-grained details.</cell><cell></cell><cell></cell></row><row><cell cols="9">Memory-enhanced LLM-Agents demonstrate enhanced</cell></row><row><cell cols="9">growth and fault tolerance in planning, yet memory gener-</cell></row><row><cell cols="9">ation heavily depends on LLM's generation capabilities. Im-</cell></row><row><cell cols="9">proving weaker LLM-Agents through self-generated memory</cell></row><row><cell cols="6">remains a challenging area to explore.</cell><cell></cell><cell></cell><cell></cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1" xml:id="foot_0"><p>https://github.com/aibasel/downward/tree/release-22.12.0</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2" xml:id="foot_1"><p>https://www.bing.com/</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3" xml:id="foot_2"><p>https://bard.google.com</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4" xml:id="foot_3"><p>https://www.minecraft.net/</p></note>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title level="m" type="main">Pddl-the planning domain definition language</title>
+		<author>
+			<persName><surname>Aeronautiques</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1998">1998. 1998</date>
+		</imprint>
+		<respStmt>
+			<orgName>Tech. Rep.</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Technical Report</note>
+	<note>Constructions Aeronautiques</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Shengnan An</title>
+		<author>
+			<persName><forename type="first">An</forename></persName>
+		</author>
+		<idno type="arXiv">arXiv:2310.20689</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Learning from mistakes makes llm better reasoner</title>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Besta</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">Graph of thoughts: Solving elaborate problems with large language models</title>
+		<author>
+			<persName><forename type="first">Maciej</forename><surname>Besta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nils</forename><surname>Blach</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2308.09687</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Cai</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Recent advances in retrieval-augmented text generation</title>
+		<author>
+			<persName><forename type="first">Deng</forename><surname>Cai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yan</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lemao</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shuming</forename><surname>Shi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">SIGIR</title>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+			<biblScope unit="page" from="3417" to="3419" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Decision transformer: Reinforcement learning via sequence modeling</title>
+		<author>
+			<persName><forename type="first">Chen</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">NeurIPS</title>
+		<imprint>
+			<biblScope unit="volume">34</biblScope>
+			<biblScope unit="page" from="15084" to="15097" />
+			<date type="published" when="2021">2021. 2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<author>
+			<persName><forename type="first">Chen</forename></persName>
+		</author>
+		<idno type="arXiv">arXiv:2107.03374</idno>
+		<title level="m">Evaluating large language models trained on code</title>
+		<imprint>
+			<date type="published" when="2021">2021. 2021</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Chen</forename></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">Program of thoughts prompting: Disentangling computation from reasoning for numerical reasoning tasks</title>
+		<author>
+			<persName><forename type="first">Wenhu</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xueguang</forename><surname>Ma</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2211.12588</idno>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Dagan</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<author>
+			<persName><forename type="first">Frank</forename><surname>Gautier Dagan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Keller</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Lascarides</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2308.06391</idno>
+		<title level="m">Dynamic planning with a llm</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Deng</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<monogr>
+		<title level="m" type="main">Mind2web: Towards a generalist agent for the web</title>
+		<author>
+			<persName><forename type="first">Xiang</forename><surname>Deng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yu</forename><surname>Gu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2306.06070</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Gao</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Pal: Program-aided language models</title>
+		<author>
+			<persName><forename type="first">Luyu</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aman</forename><surname>Madaan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ICML</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+			<biblScope unit="page" from="10764" to="10799" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Alfonso Gerevini and Ivan Serina. Lpg: A planner based on local search for planning graphs with action costs</title>
+		<author>
+			<persName><forename type="first">Serina</forename><surname>Gerevini</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Aips</title>
+		<imprint>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="281" to="290" />
+			<date type="published" when="2002">2002. 2002</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Ghallab</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2004">2004</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">Automated Planning: theory and practice</title>
+		<author>
+			<persName><forename type="first">Malik</forename><surname>Ghallab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dana</forename><surname>Nau</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2004">2004</date>
+			<publisher>Elsevier</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Gou</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<title level="m" type="main">Critic: Large language models can self-correct with toolinteractive critiquing</title>
+		<author>
+			<persName><forename type="first">Zhibin</forename><surname>Gou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhihong</forename><surname>Shao</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2305.11738</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Guan</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<title level="m" type="main">Leveraging pre-trained large language models to construct and utilize world models for model-based task planning</title>
+		<author>
+			<persName><forename type="first">Lin</forename><surname>Guan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karthik</forename><surname>Valmeekam</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2305.14909</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Hao</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<title level="m" type="main">Reasoning with language model is planning with world model</title>
+		<author>
+			<persName><forename type="first">Shibo</forename><surname>Hao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yi</forename><surname>Gu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2305.14992</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Haslum</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<monogr>
+		<title level="m" type="main">An introduction to the planning domain definition language</title>
+		<author>
+			<persName><forename type="first">Patrik</forename><surname>Haslum</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nir</forename><surname>Lipovetzky</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+			<publisher>Springer</publisher>
+			<biblScope unit="volume">13</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>He</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<monogr>
+		<title level="m" type="main">Deep reinforcement learning with a natural language action space</title>
+		<author>
+			<persName><forename type="first">Ji</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianshu</forename><surname>Chen</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1511.04636</idno>
+		<imprint>
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<monogr>
+		<author>
+			<persName><surname>Huang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2311.05232</idno>
+		<title level="m">A survey on hallucination in large language models: Principles, taxonomy, challenges, and open questions</title>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<monogr>
+		<author>
+			<persName><surname>Huang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2308.16505</idno>
+		<title level="m">Recommender ai agent: Integrating large language models for interactive recommendations</title>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Johnson</forename></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Billion-scale similarity search with GPUs</title>
+		<author>
+			<persName><forename type="first">Jeff</forename><surname>Johnson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthijs</forename><surname>Douze</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hervé</forename><surname>Jégou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Transactions on Big Data</title>
+		<imprint>
+			<biblScope unit="volume">7</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="535" to="547" />
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<monogr>
+		<title level="m" type="main">Language models can solve computer tasks</title>
+		<author>
+			<persName><forename type="first">Others ; Geunwoo</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kim</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2303.17491</idno>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Kojima</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Large language models are zero-shot reasoners</title>
+		<author>
+			<persName><forename type="first">Takeshi</forename><surname>Kojima</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shixiang</forename><surname>Shane Gu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">NeurIPS</title>
+		<imprint>
+			<biblScope unit="volume">35</biblScope>
+			<biblScope unit="page" from="22199" to="22213" />
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Lewis</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Retrieval-augmented generation for knowledge-intensive nlp tasks</title>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Lewis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ethan</forename><surname>Perez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">NeurIPS</title>
+		<imprint>
+			<biblScope unit="volume">33</biblScope>
+			<biblScope unit="page" from="9459" to="9474" />
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Lin</forename></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<monogr>
+		<title level="m" type="main">Swiftsage: A generative agent with fast and slow thinking for complex interactive tasks</title>
+		<author>
+			<persName><forename type="first">Yicheng</forename><surname>Bill Yuchen Lin</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Fu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2305.17390</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Lipovetzky</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Width and inference based planners: Siw, bfs (f), and probe</title>
+		<author>
+			<persName><forename type="first">Nir</forename><surname>Lipovetzky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miquel</forename><surname>Ramirez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IPC</title>
+		<imprint>
+			<biblScope unit="page">43</biblScope>
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<monogr>
+		<title level="m" type="main">Llm+ p: Empowering large language models with optimal planning proficiency</title>
+		<author>
+			<persName><surname>Liu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2304.11477</idno>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<monogr>
+		<author>
+			<persName><surname>Liu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2311.08719</idno>
+		<title level="m">Think-inmemory: Recalling and post-thinking enable llms with long-term memory</title>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<monogr>
+		<author>
+			<persName><surname>Liu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2308.03688</idno>
+		<title level="m">Agentbench: Evaluating llms as agents</title>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Madaan</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<monogr>
+		<title level="m" type="main">Self-refine: Iterative refinement with self-feedback</title>
+		<author>
+			<persName><forename type="first">Aman</forename><surname>Madaan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Niket</forename><surname>Tandon</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2303.17651</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Mao</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<monogr>
+		<title level="m" type="main">Generation-augmented retrieval for open-domain question answering</title>
+		<author>
+			<persName><forename type="first">Yuning</forename><surname>Mao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pengcheng</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Liu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2009.08553</idno>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Packer</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<monogr>
+		<title level="m" type="main">Memgpt: Towards llms as operating systems</title>
+		<author>
+			<persName><forename type="first">Charles</forename><surname>Packer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vivian</forename><surname>Fang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2310.08560</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<analytic>
+		<title level="a" type="main">Unifying large language models and knowledge graphs: A roadmap</title>
+		<author>
+			<persName><surname>Pan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">TKDE</title>
+		<imprint>
+			<date type="published" when="2024">2024. 2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Park</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<analytic>
+		<title level="a" type="main">Generative agents: Interactive simulacra of human behavior</title>
+		<author>
+			<persName><forename type="first">Sung</forename><surname>Joon</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Park</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O'</forename><surname>Joseph</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Brien</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">SUIST</title>
+		<imprint>
+			<biblScope unit="page" from="1" to="22" />
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b54">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Qin</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b55">
+	<monogr>
+		<title level="m" type="main">Tool learning with foundation models</title>
+		<author>
+			<persName><forename type="first">Yujia</forename><surname>Qin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shengding</forename><surname>Hu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2304.08354</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b56">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Schraagen</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2000">2000</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b57">
+	<monogr>
+		<title level="m" type="main">Cognitive task analysis</title>
+		<author>
+			<persName><forename type="first">Jan</forename><surname>Maarten Schraagen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Susan</forename><forename type="middle">F</forename><surname>Chipman</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2000">2000</date>
+			<publisher>Psychology Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b58">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Shen</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b59">
+	<monogr>
+		<author>
+			<persName><forename type="first">Yongliang</forename><surname>Shen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kaitao</forename><surname>Song</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2303.17580</idno>
+		<title level="m">Hugginggpt: Solving ai tasks with chatgpt and its friends in huggingface</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b60">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Shinn</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b61">
+	<analytic>
+		<title level="a" type="main">Reflexion: Language agents with verbal reinforcement learning</title>
+		<author>
+			<persName><forename type="first">Noah</forename><surname>Shinn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Federico</forename><surname>Cassano</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">NeurIPS</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b62">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Shridhar</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b63">
+	<monogr>
+		<title level="m" type="main">Alfworld: Aligning text and embodied environments for interactive learning</title>
+		<author>
+			<persName><forename type="first">Mohit</forename><surname>Shridhar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xingdi</forename><surname>Yuan</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2010.03768</idno>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b64">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Singh</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b65">
+	<analytic>
+		<title level="a" type="main">Progprompt: Generating situated robot task plans using large language models</title>
+		<author>
+			<persName><forename type="first">Ishika</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Valts</forename><surname>Blukis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ICRA 2023</title>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2023">2023</date>
+			<biblScope unit="page" from="11523" to="11530" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b66">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Sun</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b67">
+	<monogr>
+		<author>
+			<persName><forename type="first">Jiankai</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chuanyang</forename><surname>Zheng</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2312.11562</idno>
+		<title level="m">A survey of reasoning with foundation models</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b68">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Thorne</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b69">
+	<monogr>
+		<author>
+			<persName><forename type="first">James</forename><surname>Thorne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andreas</forename><surname>Vlachos</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1803.05355</idno>
+		<title level="m">Fever: a large-scale dataset for fact extraction and verification</title>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b70">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Touvron</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b71">
+	<monogr>
+		<author>
+			<persName><forename type="first">Hugo</forename><surname>Touvron</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Louis</forename><surname>Martin</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2307.09288</idno>
+		<title level="m">Llama 2: Open foundation and fine-tuned chat models</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b72">
+	<monogr>
+		<author>
+			<persName><surname>Wang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2203.07540</idno>
+		<title level="m">Scienceworld: Is your agent smarter than a 5th grader?</title>
+		<imprint>
+			<date type="published" when="2022">2022. 2022</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b73">
+	<monogr>
+		<author>
+			<persName><surname>Wang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2203.11171</idno>
+		<title level="m">Selfconsistency improves chain of thought reasoning in language models</title>
+		<imprint>
+			<date type="published" when="2022">2022. 2022</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b74">
+	<monogr>
+		<author>
+			<persName><surname>Wang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2308.11432</idno>
+		<title level="m">A survey on large language model based autonomous agents</title>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b75">
+	<monogr>
+		<author>
+			<persName><surname>Wang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2305.04091</idno>
+		<title level="m">Plan-andsolve prompting: Improving zero-shot chain-of-thought reasoning by large language models</title>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b76">
+	<monogr>
+		<title level="m" type="main">Recmind: Large language model powered agent for recommendation</title>
+		<author>
+			<persName><surname>Wang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2308.14296</idno>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b77">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Wei</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b78">
+	<analytic>
+		<title level="a" type="main">Chainof-thought prompting elicits reasoning in large language models</title>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Wei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuezhi</forename><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">NeurIPS</title>
+		<imprint>
+			<biblScope unit="volume">35</biblScope>
+			<biblScope unit="page" from="24824" to="24837" />
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b79">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Wu</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b80">
+	<monogr>
+		<title level="m" type="main">Visual chatgpt: Talking, drawing and editing with visual foundation models</title>
+		<author>
+			<persName><forename type="first">Chenfei</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shengming</forename><surname>Yin</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2303.04671</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b81">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Xiao</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Others</forename></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b82">
+	<monogr>
+		<title level="m" type="main">C-pack: Packaged resources to advance general chinese embedding</title>
+		<author>
+			<persName><forename type="first">Xiao</forename><surname>Shitao</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b83">
+	<monogr>
+		<author>
+			<persName><forename type="first">Xiao</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wang</forename><forename type="middle">;</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hengjia</forename><surname>Xiao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peng</forename><surname>Wang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2312.01797</idno>
+		<title level="m">Llm a*: Human in the loop large language models enabled a* search for robotics</title>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b84">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Yang</forename></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b85">
+	<monogr>
+		<author>
+			<persName><forename type="first">Zhilin</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peng</forename><surname>Qi</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1809.09600</idno>
+		<title level="m">Hotpotqa: A dataset for diverse, explainable multi-hop question answering</title>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b86">
+	<monogr>
+		<author>
+			<persName><forename type="first">Yang</forename></persName>
+		</author>
+		<idno type="arXiv">arXiv:2303.04129</idno>
+		<title level="m">Foundation models for decision making: Problems, methods, and opportunities</title>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b87">
+	<monogr>
+		<title level="m" type="main">Coupling large language models with logic programming for robust and general reasoning from text</title>
+		<author>
+			<persName><forename type="first">Yang</forename></persName>
+		</author>
+		<idno type="arXiv">arXiv:2307.07696</idno>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b88">
+	<monogr>
+		<author>
+			<persName><surname>Yao</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2010.02903</idno>
+		<title level="m">Keep calm and explore: Language models for action generation in text-based games</title>
+		<imprint>
+			<date type="published" when="2020">2020. 2020</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b89">
+	<monogr>
+		<author>
+			<persName><surname>Yao</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2010.02903</idno>
+		<title level="m">Keep calm and explore: Language models for action generation in text-based games</title>
+		<imprint>
+			<date type="published" when="2020">2020. 2020</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b90">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Yao</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b91">
+	<monogr>
+		<title level="m" type="main">React: Synergizing reasoning and acting in language models</title>
+		<author>
+			<persName><forename type="first">Shunyu</forename><surname>Yao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Zhao</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2210.03629</idno>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b92">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Yao</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b93">
+	<monogr>
+		<title level="m" type="main">Tree of thoughts: Deliberate problem solving with large language models</title>
+		<author>
+			<persName><forename type="first">Shunyu</forename><surname>Yao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dian</forename><surname>Yu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2305.10601</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b94">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Zeng</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b95">
+	<monogr>
+		<title level="m" type="main">Agenttuning: Enabling generalized agent abilities for llms</title>
+		<author>
+			<persName><forename type="first">Aohan</forename><surname>Zeng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mingdao</forename><surname>Liu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2310.12823</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b96">
+	<monogr>
+		<title level="m" type="main">Large language model is semi-parametric reinforcement learning agent</title>
+		<author>
+			<persName><surname>Zhang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2306.07929</idno>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b97">
+	<monogr>
+		<author>
+			<persName><surname>Zhang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2309.01219</idno>
+		<title level="m">Siren&apos;s song in the ai ocean: A survey on hallucination in large language models</title>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b98">
+	<monogr>
+		<author>
+			<persName><surname>Zhao</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2303.18223</idno>
+		<title level="m">A survey of large language models</title>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b99">
+	<monogr>
+		<author>
+			<persName><surname>Zhao</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2305.14078</idno>
+		<title level="m">Large language models as commonsense knowledge for large-scale task planning</title>
+		<imprint>
+			<date type="published" when="2023">2023. 2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b100">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Zhong</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b101">
+	<monogr>
+		<title level="m" type="main">Memorybank: Enhancing large language models with long-term memory</title>
+		<author>
+			<persName><forename type="first">Wanjun</forename><surname>Zhong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lianghong</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qiqi</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yanlin</forename><surname>Wang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2305.10250</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b102">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Zhou</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b103">
+	<monogr>
+		<author>
+			<persName><forename type="first">Shuyan</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Frank</forename><forename type="middle">F</forename><surname>Xu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2307.13854</idno>
+		<title level="m">Webarena: A realistic web environment for building autonomous agents</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

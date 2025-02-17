@@ -1,0 +1,2082 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Reasoning about Action and Change *</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability  status="unknown">
+					<licence/>
+				</availability>
+				<date type="published" when="2024-06-28">June 28, 2024</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Florence</forename><surname>Dupin De Saint-Cyr</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">IRIT-CNRS</orgName>
+								<orgName type="institution" key="instit2">Université Paul Sabatier</orgName>
+								<address>
+									<settlement>Toulouse</settlement>
+									<country key="FR">France</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Andreas</forename><surname>Herzig</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">IRIT-CNRS</orgName>
+								<orgName type="institution" key="instit2">Université Paul Sabatier</orgName>
+								<address>
+									<settlement>Toulouse</settlement>
+									<country key="FR">France</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Jérôme</forename><surname>Lang</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution" key="instit1">CNRS</orgName>
+								<orgName type="institution" key="instit2">Université Paris-Dauphine</orgName>
+								<orgName type="institution" key="instit3">PSL Research University</orgName>
+								<address>
+									<settlement>LAMSADE Paris</settlement>
+									<country key="FR">France</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Pierre</forename><surname>Marquis</surname></persName>
+							<affiliation key="aff2">
+								<orgName type="institution" key="instit1">CRIL-CNRS</orgName>
+								<orgName type="institution" key="instit2">Université d&apos;Artois</orgName>
+								<orgName type="institution" key="instit3">Institut Universitaire de France</orgName>
+								<address>
+									<settlement>Lens</settlement>
+									<country key="FR">France</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Reasoning about Action and Change *</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2024-06-28">June 28, 2024</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">9935D83F5C3F65710DE7AE9E3C7D709E</idno>
+					<idno type="arXiv">arXiv:2406.18930v1[cs.AI]</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.8.2-SNAPSHOT" ident="GROBID" when="2025-01-24T14:30+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This chapter presents the state of research concerning the formalisation of an agent reasoning about a dynamic system which can be partially observed and acted upon. We first define the basic concepts of the area: system states, ontic and epistemic actions, observations; then the basic reasoning processes: prediction, progression, regression, postdiction, filtering, abduction, and extrapolation. We then recall the classical action representation problems and show how these problems are solved in some standard frameworks. For space reasons, we focus on these major settings: the situation calculus, STRIPS and some propositional action languages, dynamic logic, and dynamic Bayesian networks. We finally address a special case of progression, namely belief update.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>In this chapter, we are interested in formalizing the reasoning of a single agent who can make observations on a dynamic system and considers actions to perform on it. Reasoning about action and change is among the first issues addressed within Artificial Intelligence (AI); especially, it was the subject of the seminal article by <ref type="bibr" target="#b70">McCarthy and Hayes [1969]</ref>. Research in this area has been very productive until the late 1990s. Among other things, solutions to the various problems to be faced when dealing with action representation were put forward and a classification of action languages according to their expressive power was undertaken. Moreover, much progress towards the automatization of reasoning about action and change was made, for example through the design and the evaluation of algorithms implementing the reasoning processes of the main action languages and the investigation of the computational complexity of such processes.</p><p>The reasons why an agent may wish to act in order to modify the current state of a dynamic system or to learn more about it are numerous. For example, the goal can be to change the system into a configuration that the agent prefers over the actual one (such as moving a robot from a location to another one), or even into an optimal configuration. Alternatively, the objective can be to ensure that a certain property of the dynamic system is maintained, or that its successive states do not deviate too much from a normal path. The latter is for example the case when one wants to supervise and control a physical system, such as a furnace or that of a patient in an intensive care unit. Such scenarios involve concepts (state, action, observation, etc.) and processes connecting them <ref type="bibr">(planning, prediction, explanation, etc.)</ref>.</p><p>By 'formalizing', we first mean modeling the concepts and processes that are considered in such scenarios (the purpose is to define them rigorously from a mathematical point of view) and then representing them (that is, specifying how the information are encoded) and automating (designing algorithms suited to the processes under consideration). Note that there are typically two main reasons for modeling a dynamic system: controlling it (see Chapter 10 of Volume 2 about planning), and obtaining more information about it, for diagnosing it or supervising it (see Chapter 31 of this volume). Once modeled, the same concept can be associated with several representations. If the choice of a specific model typically depends on the available pieces of information and what one wants to do with them, the choice of a representation (suited to a given model) is based on other criteria, such as computational efficiency and succinctness.</p><p>2 Reasoning about Action: Models</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Basic Concepts and the Corresponding Models</head><p>In this section, we define some mathematical notions corresponding to the key concepts considered in reasoning about action and change.</p><p>The model of a reasoning process on a dynamic system can be divided in two parts: the model of the system (with its own dynamics) and the model of the agent (including her knowledge about the system). <ref type="bibr" target="#b78">Sandewall [1995]</ref> has developed a taxonomy of reasoning problems on dynamic systems, and the remainder of this chapter elaborates on it.</p><p>Throughout the chapter, we assume that time is discrete (which is a common assumption in Artificial Intelligence). The horizon of the process is the set H of relevant steps for controlling and observing it. It can be finite (H = {0, . . . , N} with N ∈ IN) or infinite (H = IN); a degenerate case of a finite horizon is when there is only one change step (H = {0, 1}).</p><p>A state is the description of the system at a given time point. Unless stated otherwise, the set of all states, denoted by S , will be assumed finite. A state trajectory is a sequence of elements of S , indexed by elements of H . The system states at the different time points of H may only partially known by the agent.</p><p>The specification of a reasoning process on a dynamic system requires first the beliefs of the agent about the state of the system at different time points (including the initial time point) and about the general laws that govern the evolution of the system. Thus, we first have to choose a model for uncertain belief states. For space reasons, we will focus only on two uncertainty models in the following: the binary model, where belief states b are non-empty subsets of S and the Bayesian model, where belief states b are probability distributions on S . <ref type="foot" target="#foot_0">1</ref>Transitions from one state to another are triggered by events. These events generally change not only the state of the system, but also the beliefs of the agent. An action is a special event triggered by an agent. The agent has a model of each action available to her. The set of actions available to the agent is denoted by A , and is supposed to be finite. The agent can also have a model for exogenous events, which are phenomena whose dynamics are similar to actions but which are not triggered by the agent. They are triggered by nature or possibly by other agents more or less well-identified (i.e., whose identity may be imperfectly known), and their occurrences are a priori not known by the agent. We distinguish between the action type α (defined very generally) from the action occurrence(s) at one or more time point(s): a given action may have no occurrence in an instance of a problem, or may have one or several occurrences. Actions have two types of effects: ontic (physical) effects, on the world, and epistemic effects, on the beliefs of the agent. Epistemic effects can either be caused by her projection of the physical effects of the performed action (for instance, if I know that the action "delete file F" has the effect that file F no longer appears on my computer, then, when I execute this action, the resulting belief state is such that I know that F no longer is on my computer) or from observations or any form of feedback (for instance, if after trying to turn the light on by flipping the switch, I observe that the light is off, then, in my new state of belief, I know that the bulb is broken or that the power is off).</p><p>Actions have generally two types of effects at once (as in the case of the "switch" action above). Some actions, referred to as purely epistemic actions, have only epistemic effects, and no effect on the state of the world; for example, measuring a temperature, or querying a database. Other actions, referred to as purely ontic actions have epistemic effects (it is hard to imagine actions without any epistemic effect, apart from the action "do nothing"), but these epistemic effects are the simple projection, by the agent, of what she knows about the ontic effects of the action (as for the action "delete file F" above). In other words, a purely ontic action gives no feedback to the agent: her belief state after the execution of such an action coincides with the belief state she could foresee before executing the action ("what you foresee is what you get"). Every action can be decomposed in a unique way into a purely ontic action and a purely epistemic action; without loss of generality, we can thus assume that each available action is either purely ontic or purely epistemic (and we will make such an assumption in the rest of the chapter, unless stated otherwise).</p><p>Let us start by describing purely ontic actions. The effects of a purely ontic action α are defined by a transition system between the states of the world, modeled as a binary relation R R R α over S .</p><p>The simplest case is when actions are deterministic and always executable. In this case, the transition system of α is a mapping R α from S to S . An action has conditional effects if the resulting state after its execution depends on the state before its execution. For example, the action "switch off the light" may be regarded as deterministic and unconditional (if we assume that it always has the effect that the lamp is off after its execution). "Toggle the switch" can be considered as deterministic, and with conditional effects since its effects depend on the state ("on" or "off") of the light before the execution of the action.</p><p>More generally, actions are not always executable: there can be states s such that R α (s) = / 0; actions can also be non-deterministic: there are states s such that R α (s) contains more than one element. For example, the action "delete file F" is not executable if the file does not exist; in this case, the modeler will define the effect of the action only for states where the file exists, and executing the action will be forbidden in the other cases. Another model would make advantage of an action with conditional effects, where the transition associated to the action would be associated with the identity relation in situations where file F does not exist, and would lead to states where the file is deleted otherwise.</p><p>In the non-deterministic case, the transition model chosen depends on the nature of the uncertainty one wants to deal with; with each initial state is associated a belief state on the subsequent states. Note that choosing a deterministic or a non-deterministic model for a system may depend on the knowledge and the goals of the modeler: the action "turn the computer off" can be considered as non-deterministic for an agent who is not a computer scientist (since it may happen that after the execution of the action the computer is still on) but as deterministic, with conditional effects, for an expert in computer science (since this expert will be able to determine the cases where the computer stays on after being turned off). Modeling a dynamic system as a transition system between states amounts to making the implicit assumption that the system is Markovian.<ref type="foot" target="#foot_1">foot_1</ref> Such an assumption can be made without loss of generality by considering more complex states (encoding state trajectories). For the sake of brevity, we will stick to the following two models: the binary non-deterministic model and the stochastic model.</p><p>In the binary non-deterministic model, the transition system of an action α is a mapping R α from S to 2 S (or to 2 S \ { / 0}, when α is always executable). For example, if the system states are S = {c on, c stand by, c off } (representing the activity of a computer: "on", "stand-by" or "off") then the action of "shutting down the computer" may be modeled as R shut down (c on) = {c on, c off }, R shut down (c stand by) = R shut down (c off ) = / 0 (meaning that one can "turn off the computer" only if it is "on", and in this case, it is not sure that the "shut down" action succeeds). Note that if α is a purely epistemic action, then R α (s) = {s} for all s.</p><p>In the stochastic model (here, the Bayesian model for uncertainty), R α is a stochastic matrix, i.e., a family of probability distributions p(.|s, α) for s ∈ S , where p(s ′ |s, α) is the probability to obtain the state s ′ after the execution of α in s. In this model, it is possible to specify how much the "shut down" action succeeds; thus, R shut down could be represented by p(c on | c on, shut down) = 0.1, p(c off | c on, shut down) = 0.9, p(c stand by | c on, shut down) = 0.</p><p>Epistemic effects of actions are expressed in terms of feedback. The actions that the agent decides to execute do not depend directly on the system state (which may be unknown to the agent) but on the agent's beliefs (and in particular, on what has been observed earlier). Ideally, the current state and what the agent may observe coincide. In this case, the belief state of the agent is perfect, but this hypothesis reflects an ideal case and does not often hold. In order to define the epistemic effects of actions, an observation space Ω Ω Ω can be introduced in the model. This space, unless otherwise indicated, is supposed finite. The observations are the feedback given by the system and each observation at a given time point from the horizon is a projection of a state (not necessarily totally observed) of the system. The observations are called reliable if this projection corresponds to the actual state of the system (unreliable observations can arise from faulty sensors, for example).</p><p>Taking observations into account concerns two distinct stages: the off-line stage when the decision policy is generated, and the on-line stage when it is exploited (i.e., when the plan is executed). During the off-line stage, the agent who generates the policy takes advantage of her knowledge about the observations which could be made at the on-line stage. During the on-line phase, the actions which are triggered by the agent typically depend on the observations which are effectively made. Note that nothing prevents from having two distinct agents (one who computes a decision policy and another one who executes it).</p><p>Two assumptions corresponding to two extreme cases are commonly made: when the system is fully observable, the observation space is identical to the state space: when she generates a decision policy, the agent knows that at the on-line stage, the actual state of the system will be known exactly at each time point; when the system is non-observable, the observation space is a singleton {o * }, where o * is a fictitious observation (the empty observation): the system gives no feedback.</p><p>When none of these two extreme assumptions hold, one faces the more general situation of partial observability, where observations and system states are constrained by an observation-state correlation structure, the definition of which varies with the uncertainty model under consideration. In general, each state s and each epistemic action α correspond to a belief state O O O α α α (s s s) over the space of observations, representing the prior beliefs about the observations obtained when action α is performed in state s. In the binary model for uncertainty, a family of sets O O O α (s) for s ∈ S is thus considered, where O α (s) is a non-empty set of Ω; so o ∈ O α (s) reflects the fact that s is a state compatible with the observation o which results from the execution of α. If α is purely ontic, then O α (s) = {o * } for all s. In the Bayesian model for uncertainty, the feedback is modeled by a probability distribution p(.|s, α) on Ω where p p p(o|s, α) is the probability to observe o when α is executed in s.</p><p>In this section, we assumed that only one action at a time can be executed. In some problems, it is natural to perform several actions in a concurrent way. This requires to be able to define the effects of combinations of actions; for reaching this goal, the same models as previously considered can be used, viewing every possible combination of actions as a specific action. A typical example <ref type="bibr" target="#b85">[Thielscher, 1995]</ref> is the one of a table that can be lifted by the right side or by the left side: the two actions performed in sequence and independently do not have the same effect as when they are executed simultaneously, especially when a glass of water is on the table!</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Types of Reasoning and their Implementations</head><p>Reasoning on a dynamic system requires to take account of a time horizon, the prior beliefs on the system (general laws of the domain and action effects), the occurrences of actions at some time points, and the observations at given time points (it is a simplified model -see <ref type="bibr" target="#b78">[Sandewall, 1995]</ref> for a more general one, where, in particular, the actions can have a duration). We are now going to approach some specific types of reasoning implying reasoning on a dynamic system, as well as their implementation by means of algorithms.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.1">Prediction and Postdiction with Ontic Actions</head><p>Prediction (also called projection) consists in determining, according to one initial state of belief b and the description of a purely ontic action α, the new state of belief b ′ resulting from the application of α in b. The transformation of a state of belief into another one by an action is called progression ; noted b ′ = prog(b, α). Of course, the formal definition of prog depends on the nature of the space of the beliefs (static and dynamic), thus it depends on the chosen representation of uncertainty. In the simplest case (that of classical planning) where belief states are perfect, actions are deterministic and always achievable, each prog(., α) is an application mapping a state to another one. In the binary nondeterministic model, a state s ′ is possible after the execution of α in the state of belief b ⊆ S if there exists a possible state s in the whole set of states corresponding to the initial belief b, such as s ′ is a possible result of α in s, i.e. prog(b, α) = s∈b R α (s). In the probabilistic model, the obvious choice is obtained by identifying the model of the process to a Markov chain : prog(b, α) is the probability distribution b ′ on S defined by b ′ (s ′ ) = ∑ s∈S b(s)p(s ′ |s, α) (where p(.|s, α) is the probability distribution associated with R α ).</p><p>The second type of reasoning is postdiction. It consists in determining, according to one final state of belief b ′ and the description of a purely ontic action α which has just been carried out, the state of belief b before the action was done. This transformation of a state of belief into another, is sometimes also called regression or weak regression; noted b = reg w (b ′ , α). The weak regression corresponds to the progression by the reverse action of α (noted α -1 ), which transition system R α -1 is the reciprocal relation of the relation R α ; thus it holds that reg w (b</p><formula xml:id="formula_0">′ , α) = prog(b ′ , α -1 ) = {s|R α (s) ∩ b ′ ̸ = /</formula><p>0}. Postdiction must be distinguished from goal regression, also called strong regression, which is the reverse transformation of progression. It is defined only for the binary model<ref type="foot" target="#foot_2">foot_2</ref> : given a belief state b ′ ⊆ S and a purely ontic action α, the aim is to find the belief state b = reg S (b ′ , α) such that prog(b, α) ⊆ b ′ and b is maximum for set inclusion; this belief state is the least informative state of belief (thus the least conjectural) which guarantees that the execution of α in it led to the goal b ′ .</p><p>Let us notice that reg S (b ′ , α) ⊆ reg w (b ′ , α) with the particular case reg S (b ′ , α) = reg w (b ′ , α) when α is deterministic.</p><p>Progression and regression are two key processes of reasoning for planning (see Chapter 10 of Volume 2), which consists in determining the actions to carry out to make evolve the system as the agent wishes it (for example, get as close as possible to a reference trajectory in the case of the supervision, or to reach a goal state in the case of classical planning). On the other hand, postdiction has little interest for planning itself (because if b is obtained as a possible postdiction from b ′ with action α, it is not guaranteed that by carrying out the action α one would again obtain the state b ′ , while strong regression guarantees it by definition).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.2">Prediction and Postdiction with Epistemic Actions</head><p>The progression of a belief state by an epistemic action depends on the nature of the reasoning process. In the case of a supervision process or a diagnosis, the agent reasons online and thus has access to all the observations coming from the actions feedback during its reasoning; thus it is enough to define the progression of a belief state by an observation, which is related to belief revision (see Chapter 14 of this volume). In the binary model, the progression of one belief state b ⊆ S by an observation o after having carried out the action α is b ∩ S(o), where S(o) = {s|o ∈ O α (s)}; while in the Bayesian model, the revision of b by o is the probability distribution b(.|S(O)).</p><p>The filtering process consists in determining the new state of belief b ′ , given an initial belief state b, an action α, and an observation o resulting from the execution of α. In the binary model, this new belief state is simply prog(b, α) ∩ S(o). In the Bayesian model, the probability distribution b ′ obtained after having carried out α and observing</p><formula xml:id="formula_1">o is b ′ (s ′ ) = p(o|s ′ ,α). ∑s∈S b(s).p(s ′ |s,α)</formula><p>∑ s ′′ ∈S (p(o|s ′′ ,α). ∑s∈S b(s).p(s ′′ |s,α)) ; it is the formula expressing the revision of the beliefs by the feedback in the partially observable Markov decision processes (see Chapter 10 of Volume 2).</p><p>In the case of a planning process, where the aim is to build an off line plan and to reason on its effects, the progression of a belief state by an epistemic action is in general not a unique belief state, but a set of such states (one for each possible observation, since the actual observation cannot be known off line). In the binary model, prog(b, α) is the set of belief states {b ∩ S(o) | b ∩ S(o) ̸ = / 0} for o varying in Ω. For sake of shortness, we do not give details on regression by epistemic actions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.3">Event Abduction</head><p>The third type of reasoning is event abduction. It concerns reasoning on the event which took place between two successive time points t and t + 1, starting from the description of the possible events and from the description of the belief states at time t and t + 1<ref type="foot" target="#foot_3">foot_3</ref> . If the event in question is exogenous, this reasoning is called explanation .</p><p>As for planning, progression and goal regression are two key processes for event abduction: in planning, one must choose the actions to be carried out to make the system evolve as desired starting from its current state; in event abduction, the objective is to determine which event α led the system to evolve as it did between t and t + 1 (even if this evolution was not desirable). In the binary model, to compute such α consists in searching among the possible events those satisfying b</p><formula xml:id="formula_2">′ ⊆ prog(b, α) (or equivalently b ⊇ reg F (b ′ , α)).</formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.4">Scenario Extrapolation</head><p>More generally, these types of reasoning, that we defined in a context where there is only one change stage (thus two time points), take place in situations where the horizon is unspecified, and where the input information is a complex scenario describing a partial trajectory of the system (at each time point, some information may be available about the occurrence of an action and/or an observation). In the typical case where no action was carried out and where the user wants to find the events (or more simply, the elementary changes) which occurred at each time point, the process is called extrapolation.</p><p>Another situation is when one seeks to recognize some trajectories among a set of reference trajectories in order to predict the events that will occur and/or the states that the system will reach; this process is called scenario monitoring or scenario recognition.</p><p>The sequence of observations can also contain action occurrences <ref type="bibr" target="#b28">[Dupin de Saint Cyr, 2008;</ref><ref type="bibr" target="#b24">Delgrande and Levesque, 2012;</ref><ref type="bibr" target="#b55">Hunter and Delgrande, 2015]</ref> (scenari are also called narratives or histories) and the two previous tasks of completing or recognizing some trajectories can be done in this more complex context. These tasks involve both prediction, postdiction and event abduction in situation that can be pervaded with uncertainty (fallible knowledge, erroneous perception, exogenous actions, and failed actions).</p><p>A crucial aspect of the reasoning about change approaches in artificial intelligence is that they assign a prominent role to inertia : by default, the system tends to remain static, and the changes other than those which are directly caused by action occurrences are rare, this is why one seeks to minimize them. This assumption is crucial if one wants to reason about action in presence of uncertainty without losing too much information. Very often, reasoning about change amounts to minimize change ; we will come back on this subject when we will approach the languages for reasoning about action. Indeed, according to the way actions are represented, there exist numerous ways of carrying out the progression of a state or the regression of a formula (encoding a set of states) by an action. Concerning the temporal or dynamic logic representations, progression and regression can be computed via some formula transformations (in particular, conjunction and forgetting). The use of change minimization principles is often proposed as a means to solve the frame problem (cf. Section 3.1), but it seems henceforth admitted that it is rather necessary to set up processes which remove the solutions containing abnormal changes (not caused by actions) than processes which minimize them.</p><p>This idea to focus on abnormal changes rather than on maximising inertia is well in accordance with the approaches that reason on a world under continuous change where the agent should adapt its action model when a surprise occurs (discrepancy between what is observed and what was expected). This kind of research is more related to the domain of planning in a dynamic word and particularly in the context of goal driven autonomy agents (GDA) that must reason about partially observable domains with a partial knowledge about available actions <ref type="bibr" target="#b72">[Molineaux and Aha, 2014;</ref><ref type="bibr" target="#b21">Dannenhauer et al., 2016;</ref><ref type="bibr" target="#b22">Dannenhauer and Cox, 2017]</ref>.</p><p>3 Reasoning about Action: Languages</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Problems related to the Representation of Actions</head><p>In the majority of real problems, the system is naturally described by some variables, called state variables, that represent some features about some objects, etc. In this case, a state of the system corresponds to the description of a value for each one of the state variables, these values being able to change with the course of time. State variables are usually called fluents, a fluent describes a dynamic property of the system. Obviously, the number of possible states is exponential in the number of variables. The explicit description of the effects of the actions, which consists in specifying in extenso the functions R α , becomes then unfeasible in practice, and is somewhat unnatural, because the user is obliged to describe the actions state by state. Similar considerations apply to the description of the correlations between states and observations and with the computation of the operations of progression, regression, etc.</p><p>However, there often exist much more economic and natural ways to represent the effects of the actions. For example, let us consider the action to "flip a switch" which causes the alternative "lighting on" or "off" of a bulb. If the representation of the problem requires to take into account the "on"/"off" states of 10 bulbs, then 1024 states of the system will have to be considered (all possible configurations of the 10 bulbs) in order to describe one flip action, whereas this action only causes the change of state of one particular bulb. To describe such action, one rather wants to be limited to indicate that it changes the state of this bulb and, implicitly, that it leaves the other bulbs in their current state.</p><p>Action languages were built precisely to this aim: obtaining representations of the effects of the actions which are both more economic (or more compact) and more natural. The problem of preventing the user from explicitly describing the fluents that are not modified by an action in the various possible contexts is known as the frame problem <ref type="bibr" target="#b70">[McCarthy and Hayes, 1969]</ref>. It is indeed a problem involved in the choice of a representation of the actions (and not of a modeling problem, i.e. the problem does not rely on the choices of the fluents used to model the system but on the coding of actions in general).</p><p>In the same vein, one may face a problem that is the dual of the frame problem, known as ramification problem <ref type="bibr" target="#b33">[Finger, 1987]</ref> which is solved when the action language makes it possible to avoid describing explicitly all the fluents that an action modifies, directly or indirectly, in the various possible contexts. Following up on the previous example, each flip of the switch causes the lighting on/off of the associated bulb, then the room where the bulb is located becomes enlightened and consequently one can settle there for reading. This derived fact is a consequence of the execution of the action but it is not natural, when the action is described, to specify it directly: it results rather from a (static) law which expresses that when a room is lit, one can practice the reading there.</p><p>When one deal with action representation, the qualification problem <ref type="bibr" target="#b68">[McCarthy, 1977]</ref> is also often evoked; this problem expresses the incapacity to describe all the pre-conditions that guarantee to obtain the "normal" effect of an action. To deal with this problem, it is first necessary to circumscribe the world with the individuals and the properties explicitly present in the representation; for example, flipping the switch when the associated bulb is off will cause the lighting of this one only if the conflict between Bordures and Syldaves did not cause the destruction of the electric line feeding the house. From our point of view, this problem is not intrinsic within the action representation, it occurs more primarily as soon as the modeling phase starts and simply reflects the difference existing between a situation of the physical world and a representation of this one, which necessarily abstracts it. However, in order to give the pre-conditions of an action, this restriction to the situations that have a representation in the language does not remove the need for reviewing all the situations in which the action is carried out normally. Solving the qualification problem means being able to state the "natural" pre-conditions of an action without having to describe explicitly the list of all the values of the fluents which allow the action to normally take place.</p><p>Once actions are represented, it is necessary to build algorithms allowing the computation of the basic operations <ref type="bibr">(progression, regression, etc)</ref>. The choice of an action language thus depends, on the one hand, of its more or less natural aspect, on the other hand, of its compactness (or space efficiency), and finally, of the complexity of the basic operations when the actions are represented in this language (its computational efficiency).</p><p>There exist many action languages which were developed and studied by the community. They can be gathered in several families, according to the nature of the mathematical objects that they use (propositional or first order logic formulas, temporal or dynamic logic formulas, Bayesian networks, state automatons, etc). Giving an exhaustive panorama would be too long and little digest. We will thus only sketchily present the languages which received the most attention from the community, and which are sufficiently representative of the range of the existing languages. Each following sub-section approaches a particular language, or a family of languages, by briefly giving its specificities.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">The Situation Calculus</head><p>From an historic perspective the situation calculus introduced by <ref type="bibr" target="#b70">McCarthy and Hayes [1969]</ref> is the first formalism devoted to reasoning about actions. The definitions given by these authors enabled them to set the basic concepts (presented higher) on reasoning about change and action. The situation calculus is a typed first order logic language with equality, whose types are fluents, states (called situations), actions and objects. In order to simplify the presentation, here we only consider propositional fluents, which have one situation as single argument; we do not mention the objects of the world. Thus, ¬P(S 0 ) express that the fluent P is false in the situation S 0 . S 0 denotes the state of the system at the initial time point of the horizon. For situations and actions we need both variables (denoted respectively s, . . . and x, . . .) and constants (denoted respectively S, . . . and A, . . .). The function do applies to a situation and an action and returns a situation. Thus, the formula ¬P(S 0 ) ∧ P(do(A 1 , S 0 )) expresses that P is false in S 0 and true in do(A 1 , S 0 ), i.e. in the situation obtained by applying the action A 1 in S 0 . The formula ∀s¬P(s) expresses that P is always false. The formula ∀s((∀x¬P(do(x, s)) ↔ x = A 0 ) expresses that A 0 is the single action which guarantees to make P false in any state where it is applied.</p><p>McCarthy and Hayes set a general representation framework enabling them to represent actions by their pre-conditions and their effects (represented by logical formulas). Many approaches were then proposed in order to characterize the "good" consequences of these formulas. Initially, all the authors bet on change minimization in order to restrict the set of models so that the properties resulting from the inertia principle can be deduced without having to mention them explicitly. This was accomplished thanks to a second order logic formula, and various circumscription policies were studied for this purpose (the reader can refer to <ref type="bibr" target="#b71">[Moinard, 2000]</ref> for a review). <ref type="bibr" target="#b69">McCarthy [1986]</ref> and then <ref type="bibr" target="#b44">Hanks and McDermott [1986]</ref> used the circumscription of abnormality predicates (by considering that a fluent must persist unless otherwise explicitly indicated) within the framework of the situation calculus. However, there are some examples where circumscription does not give the expected result. One of most famous is the Yale Shooting Problem proposed by Hanks and McDermott: someone is alive in the initial situation, and one carry out successively the three actions "Load", "Wait" then "Shoot". The action "Shoot" is described by the formula: ∀s, (loaded (s) → (Abnormal (Alive, Shoot, s) ∧ ¬Alive (do(Shoot, s)))) <ref type="foot" target="#foot_4">5</ref> . The fact that, by default, the fluents are persisting is described by the second order logic formula ∀ f , s, a, (( f (s) ∧ ¬Abnormal ( f , a, s) → f (do(a, s))<ref type="foot" target="#foot_5">foot_5</ref> . The circumscription of the predicate Abnormal makes it possible to obtain a logical model in which the person is alive at the initial time point and dead (non alive) after the action "Shoot". However, another model is possible: the one where the rifle unloaded itself during "Waiting" and the person is still alive after "Shoot". Circumscribing the Abnormal predicate does not allow for preferring the first model to the second one because the two models have incomparable sets of abnormalities w.r.t. set inclusion (in the first model, it is "Alive" which is abnormal in the presence of the action "Shoot"; in the second one, it is "Loaded" which is abnormal w.r.t. "Wait"). Chronological ignorance, proposed by <ref type="bibr" target="#b80">Shoham [1988]</ref> and consisting in preferring models where the changes occur the latest, allows one to obtain a satisfactory answer for this example. But this last ad hoc approach was challenged by other examples that it handles badly <ref type="bibr" target="#b78">[Sandewall, 1995;</ref><ref type="bibr" target="#b35">Friedman and Halpern, 1994]</ref>.</p><p>Another solution suggested by <ref type="bibr" target="#b64">Lifschitz and Rabinov [1989]</ref> is to impose that all the fluents that are modified by an action are systematically non inert when this action is carried out. This idea is close to the solution, proposed by <ref type="bibr" target="#b14">Castilho, Gasquet and Herzig [1999]</ref>, to use a dependence relation between an action and the atoms on which it may act. The reader can refer to <ref type="bibr" target="#b78">[Sandewall, 1995]</ref> for an excellent synthesis of all these works.</p><p>In short, approaches based on change minimization are based on non-monotonic logics and are very complex; they are not able to deduce all the intuitive consequences that are expected from a description of a set of actions and an initial situation.</p><p>The situation changed with the publication of what was called Reiter's solution to the frame problem <ref type="bibr" target="#b77">[Reiter, 1991]</ref>. Reiter suggests a monotonic solution based on successor state axioms (SSA). These axioms must be given for each fluent P (which is equivalent to an assumption of complete information about the conditions of change of truth value of a fluent) and they have the following form: ∀s, x (P(do(x, s)) ↔ γ P (x, s))</p><p>where γ P (x, s) is a formula which does not contain the function symbol do and which can only contain S 0 as situation constant. Thus, the SSA for P describes the conditions under which P is true after an action has been performed, in function of what was true before.</p><p>Let us consider the Toggle-switch example <ref type="bibr" target="#b63">[Lifschitz, 1990]</ref>:</p><p>In a room, the light is on only if both switches are up or both down. Initially, the switch a is up and the switch b in down, the light is thus off, someone toggles the switch a. a b The fluents are U a ("the switch a is up") and U b ("the switch b is up"). In this example, the SSA for fluent U a can be written:</p><formula xml:id="formula_3">∀s, x U a (do(x, s)) ↔ ((¬U a (s) ∧ x = T a ) ∨ (U a (s) ∧ x ̸ = T a ))</formula><p>where T a is the action to toggle the switch a, i.e., flip its position.</p><p>Reiter explains that using Successor States Axioms is a solution to the frame problem because one can reasonably expect the size of the set of SSA to be in the order of the number of fluents (which contrasts with the size of the explicit description of the frame axioms that would be in the order of the number of fluents set multiplied by the number of actions).</p><p>According to Reiter, quantification over actions is the key solution to the frame problem. As we will show in Section 3.4, the assumption of complete information about the conditions under which fluents change their truth value (translated by the ↔ in the SSA) allows Reiter to deal with the frame problem in a satisfactory way.</p><p>The presence of an SSA for each fluent allows for regressing formulas : atoms of the form P(do(α, σ )) (where α and σ are terms built with variables, constants and the function do) are replaced by the right member of the SSA for P, by applying first the suitable substitution ; this process is reiterated until complete elimination of the function do. By construction, the formula thus obtained only relates on the initial state S 0 .</p><p>For example, the formula U a (do(T a , do(T a , S 0 ))) is first replaced by:</p><p>(¬U a (do(T a , S 0 )) ∧ T a =T a ) ∨ (U a (do(T a , S 0 )) ∧ T a ̸ =T a ) which can be simplified into ¬U a (do(T a , S 0 )). In a second step, this last formula is replaced by ¬(¬U a (S 0 )∧ T a =T a ) ∨ (U a (S 0 ) ∧ T a ̸ =T a ) which can be simplified into U a (S 0 ). We have thus proven by regression that the switch is up after two executions of T a if and only if it is up in the initial state S 0 .</p><p>In order to decide whether the application of the action α in the state S 0 leads to a state in which ψ holds, it is enough to decide if the formula φ (S 0 ) → ψ(do(α, S 0 )) is valid. The regression of ψ(do(α, S 0 )) results in a formula ψ ′ (S 0 ). If the argument S 0 is eliminated, we obtain the propositional formula φ → ψ ′ , whose validity can be checked by using a suitable prover.</p><p>This solution was combined with epistemic logic <ref type="bibr" target="#b79">[Scherl and Levesque, 2003]</ref>, which gives a formalism close to dynamic logic, described in Section 3.4. Moreover the framework of the situation calculus with a Successor State Axioms has been recently used by <ref type="bibr" target="#b3">[Batusov and Soutchanski, 2018]</ref> for causal ascription.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Propositional Action Languages</head><p>A weak point of the approaches based on the situation calculus is the difficulty of their algorithmic implementation. For this reason, researchers have also developed approaches based on propositional logic, which can benefit from off-the-shelf ASP or SAT solvers (see Chapters 4 and 5 of Volume 2).</p><p>In action languages based on propositional logic, action effects are represented by local rules specifying only the fluents that change, possibly together with the conditions under which they change. Let F be a finite set of fluents. The states of S are the propositional interpretations over F, that is, S = 2 F .</p><p>The most basic action language is arguably STRIPS <ref type="bibr" target="#b32">[Fikes and Nilsson, 1971]</ref>, where an action is represented by a precondition and its effects (see Chapter 10 of Volume 2), a precondition being a conjunction of literals and an effect being a consistent set of literals.</p><p>To encode the light switch example, one may take as set of fluents F = {U a ,U b }, where U a (resp. U b ) is true (resp. false) when switch a (resp. b) is on (resp. off). An action with conditional effects such as T a ('switch a') can be written as</p><formula xml:id="formula_4">(U a → ¬U a ) ∧ (¬U a → U a ).</formula><p>The right member l of each rule of form c → l is a direct action effect, which applies if and only if the corresponding condition is satisfied in the state in which the action is performed. Thus, applying c → l in state s leaves s unchanged if s does not satisfy c and enforces the truth of l otherwise, leaving other fluents unchanged. This applies to each rule<ref type="foot" target="#foot_6">foot_6</ref> . Thus, applying T a in state s leads to change the truth value of U a in s, as we expect. Importantly, such an action description rule is not a classical logical formula, and in particular, → is not material implication. Indeed, a STRIPS action α can be seen as a constraint linking the state of the world before it is performed and the state of the world after it has been performed. In particular, c → l is not equivalent to ¬l → ¬c. <ref type="foot" target="#foot_7">8</ref>One of the limits of the STRIPS language is the impossibility to express static laws. These laws are however needed for the ramification problem to be dealt with. For instance, in the previous example, one may want to introduce a new fluent L expressing that "the light is on". With standard STRIPS, integrating this new fluent would require to modify all actions by specifying what happens to L. This solution is not reasonable when the number of fluents is large. A way to cope with this lack of expressiveness consists in encoding actions with a set of basic fluents on which the available actions act directly (U a and U b in the example); the fluents that are not basic are called derived fluents. Progression is first computed as in classical STRIPS, and then there is one additional step so as to take the static laws into account and make some inferences on derived fluents. Thus, to compute the progression of state s by an action, one starts by projecting s on the basic fluents; then one performs the progression of this projection, and finally the obtained state is completed using the static laws. In the switch example, one may take as static law</p><formula xml:id="formula_5">((U a ∧U b ) ∨ (¬U a ∧ ¬U b )) ↔ L</formula><p>where U a and U b are basic and L is derived. The progression of state {U a , ¬U b , ¬L} by action T a is thus {¬U a , ¬U b , L}.</p><p>There are four main problems with STRIPS : it does not allow for representing (a) non-determinism, (b) static causal relations between fluents (as discussed in the previous paragraph), (c) concurrent actions, and (d) epistemic actions. To cope with this lack of expressiveness, more sophisticated action languages have been developed, both in the planning community (with ADL <ref type="bibr" target="#b76">[Pednault, 1989]</ref> and PDDL <ref type="bibr" target="#b39">[Ghallab et al., 1998]</ref>) and in the knowledge representation community. We will now focus on the languages stemming from the latter community.</p><p>In the 70s and 80s, the knowledge representation community used to think of actions as simple rules linking action preconditions and action effects. Subsequently, some researchers suggested that prediction could be computed using minimization of change, so as to impose that, by default, fluents that are not concerned by the action should persist (these fluents, of course, do not need to be specified in action effects, so as to cope with the frame problem). Then, since the 90's, minimization of change was progressively replaced by the use of propositional languages based on causal implication. The solutions of <ref type="bibr" target="#b77">[Reiter, 1991]</ref>, <ref type="bibr" target="#b64">[Lifschitz and Rabinov, 1989</ref>] and <ref type="bibr" target="#b14">[Castilho et al., 1999]</ref> for solving problems occurring with minimization of change consist in expressing dependencies between an action and its effects. This very principle has been implemented in works using causal implication (see Chapter 9 of this volume), which is distinct from material implication since it is meant to express these dependencies.</p><p>Some approaches using causal implication make use of the situation calculus <ref type="bibr" target="#b84">[Stein and Morgenstern, 1994]</ref>, <ref type="bibr" target="#b65">[Lin, 1995]</ref>. Others use the modality C <ref type="bibr" target="#b37">[Geffner, 1990;</ref><ref type="bibr" target="#b40">Giordano et al., 1998;</ref><ref type="bibr" target="#b87">Turner, 1999]</ref> or equivalently, define a new connective ⇒ <ref type="bibr" target="#b41">[Giunchiglia et al., 2004</ref>]. Yet others define influence relations between fluents <ref type="bibr" target="#b86">[Thielscher, 1997]</ref>. The main feature of these approaches is that they distinguish the fact of being true from the reason for being true, and use this distinction for computing the expected effect of actions for prediction or planning.</p><p>We give now some details about the action language A proposed by <ref type="bibr" target="#b38">Gelfond and Lifschitz [1993]</ref>. In this language, an action is expressed by means of conditional causal rules of the form if c then α causes l, where α is an action name, c a conjunction of literals (omitted when it is equivalent to ⊤), and l a literal. A set of causal rules defines a deterministic transition system between states. Thus, the action α defined by the causal rules if p ∧ q then α causes ¬p, if ¬p ∧ q then α cause p and α cause q corresponds to the transition system R α defined by R α (pq) = R α ( p q) = pq and R α ( pq) = R α (p q) = pq. An action α described by such causal rules corresponds to a propositional action theory Σ α , expressing α by means of propositional symbols F t and F t+1 , with</p><formula xml:id="formula_6">F t = { f t | f ∈ F} and F t+1 = { f t+1 | f ∈ F},</formula><p>where f t represents fluent f at time t, that is, before action α has been performed, and f t+1 represents f at time t + 1, after action α has been performed. The causal rules are translated into Σ α according to the following principle: fluent f is true at t + 1 if and only if one of these two conditions holds: (a) it was true at t and the state at t does not satisfy any precondition of a causal rule whose conclusion is ¬ f , or (b) it was false at t and the state at t satisfies the precondition of a causal rule whose conclusion is f . One finds here the principle at work in the situation calculus, which we called 'Reiter's solution' in Section 3.2.</p><p>Formally, let Γ( f ) (respectively Γ(¬ f )) the disjunction of all preconditions of rules whose conclusion is f (respectively ¬ f ); then Σ α is the conjunction of all the formulas</p><formula xml:id="formula_7">f t+1 ↔ Γ( f ) t ∨ ( f t ∧ ¬Γ(¬ f ) t )</formula><p>for f ∈ F. Thus, the action theory Σ α corresponding to the action α previously described by its causal rules is</p><formula xml:id="formula_8">Σ α = (p t+1 ↔ ((¬p t ∧ q t ) ∨ (p t ∧ ¬(p t ∧ q t )))) ∧ (q t+1 ↔ ⊤), which simplifies into Σ α = q t+1 ∧ (p t+1 ↔ (p t ↔ ¬q t )</formula><p>). An extension of language A is language C [Giunchiglia and <ref type="bibr" target="#b42">Lifschitz, 1998</ref>], which allows for expressing executability conditions and static rules, independently of any action, such as Outside ∧ ¬Umbrella ∧ Umbrella causes ¬Dry, that are also taken into account in the corresponding action theory. For instance, consider action Go-out with a unique causal rule Go-out causes Outside; the corresponding action theory, taking into account the previous static rule, is</p><formula xml:id="formula_9">Σ Go-out = Outside t+1 ∧ (Umbrella t+1 ↔ Umbrella t ) ∧ (Rain t+1 ↔ Rain t ) ∧ (Dry t+1 ↔ Dry t ∧ (Umbrella t ∨ ¬Rain t )).</formula><p>Non-determinism can be expressed in several different ways, explored independently in different papers:</p><p>• by complex effects, such as α causes (p ↔ q), a choice that is at the heart of belief update, cf. Section 4;</p><p>• by disjunction of effects, which are similar to nondeterministic union in dynamic logic, cf. Subsection 3.4), such as</p><p>Toss causes Heads or causes ¬Heads;</p><p>• by recursive causal rules, which is a more technical solution that we will not discuss here.</p><p>Some action languages (such as language C ) also have concurrency, whereas others have epistemic actions, thus enabling the distinction between facts and knowledge; thus, the action of testing whether the fluent f is true or false is represented by the causal rule</p><formula xml:id="formula_10">α causes K f or causes K¬ f ,</formula><p>where K is the knowledge modality of epistemic logic S5 (see in particular <ref type="bibr" target="#b50">[Herzig et al., 2003]</ref>).</p><p>Progression and regression can be applied directly in these languages. A belief state, in the binary uncertainty model, is a nonempty set of states, and can thus be represented by a consistent propositional formula. Progression and regression map a consistent formula and an action to a formula (which is always consistent in the case of progression and weak regression). The progression of formula ϕ by action α consists first in taking the conjunction of ϕ t (expressing that ϕ is true before the action) and Σ α , and then in forgetting in ϕ t ∧ Σ α all variables f t , i.e., in deriving the strongest logical consequence of ϕ t ∧ Σ α independent of the variables f t (see for instance <ref type="bibr" target="#b59">[Lang et al., 2003]</ref>). Weak regression is computed similarly: the weak regression of ψ by α is the result of forgetting the variables f t+1 in ψ t+1 ∧ Σ α . The strong regression of ψ by α is obtained by computing the minimal conditions guaranteeing that the application of α will lead to a state satisfying ψ. Thus, in the previous example, the progression of Dry ∧ Umbrella by Go-out is (up to logical equivalence)</p><p>Outside ∧ Umbrella ∧ Dry, and the progression of ¬Umbrella by Go-out is Outside ∧ ¬Umbrella ∧ (Rain → ¬Dry), whereas the weak regression of Dry ∧ Rain by Go-out is Umbrella ∧ Rain ∧ Dry.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.4">Dynamic Logic</head><p>There are other possible ways of representing actions and dealing with the corresponding problems. Dynamic logic is a formalism initially known in theoretical computer science for reasoning about program execution. In addition to Boolean operators, its language contains modal operators of the form [α], where α is a program. The combination of such an operator with a formula results in a formula of the form [α]φ , read 'φ is true after every execution of α'. Instead of a program, one may assume that α is an event or an action. For instance, the action of toggling switch a can be described by the two effect laws</p><formula xml:id="formula_11">(¬U a → [T a ]U a ) and (U a → [T a ]¬U a ).</formula><p>In the context of dynamic logic, an important aspect of reasoning about actions that was dealt with first in <ref type="bibr" target="#b54">[Herzig and Varzinczak, 2007]</ref> concerns the consistency of a domain description. It has been shown that for expressive action languages, beyond logical consistency, a good domain description should be modular, in the sense that effect laws describing the actions should not allow for deriving</p><formula xml:id="formula_12">X(t-1) t+1 t Y(t) Y(t+1) X(t+1) X(t) Y(t-1) t-1 Figure 1:</formula><p>The DAG of a dynamic Bayesian network new static laws. For instance, the static laws P 1 → [A]Q, P 2 → [A]¬Q and ¬[A]⊥ together imply the static law ¬(P 1 ∧ P 2 ); if this law is not deductible from the other static laws and only them, then these effect laws should be considered problematic.</p><p>Unlike in situation calculus, states are not explicit in dynamic logic. Although dynamic logic does not allow either for quantifying over actions, which is a key feature or Reiter's solution for the frame problem, it has been shown that this solution can be implemented in dynamic logic for the rather general case of explicit SSAs <ref type="bibr" target="#b88">[van Ditmarsch et al., 2011]</ref>. In such SSAs, x must be the only action variable of γ P (x, s) and if an action constant A does not appear in γ P (x, s) then γ P (A, s) should not be equivalent to P(s). These conditions are natural for a system satisfying inertia. An example of SSA not satisfying them would be ∀s(∀xP(do(x, s))) ↔ ¬P(s)), which means that P is changed in every state (thus P is a non-inert fluent). Note that the formula γ U a (x, s) in our example from paragraph 3.2 satisfies these conditions. In order to translate these SSAs in dynamic logic, one introduces assignment actions of the form P := φ ; such an assignment describes an action where P takes the truth value that φ had in the previous state. This allows for associating with each action constant A the following set of assignments:</p><formula xml:id="formula_13">σ SSA (A) = {P := simp(γ P (A)) | P appears in γ P (x)}</formula><p>where simp(γ P (A)) is obtained from γ P (x) by eliminating argument s, substituting x by A and simplifying the equalities. In our example from paragraph 3.2, after substituting x by T a we obtain:</p><p>σ SSA (T a ) = {U a := (¬U a ∧ T a =T a ) ∨ (U a ∧ T a ̸ =T a )} which can then be simplified into σ SSA (T a ) = {U a := ¬U a }. Each occurrence of an abstract action symbol A is replaced by the corresponding assignment. As shown in <ref type="bibr" target="#b88">[van Ditmarsch et al., 2011]</ref>, this constitutes a solution (in Reiter's sense) to the frame problem. Thus Reiter's solution is transferred to dynamic logic, without any need to quantify over actions. It is also shown that Reiter's solution can be combined with epistemic logic, thus bridging it with epistemicodynamic logics (see Chapter 2 of this volume).</p><p>A recent work in dynamic logic is to investigate epistemic extensions that are suitable for conformant planning <ref type="bibr" target="#b61">[Li et al., 2017]</ref> and more generally for multiagent epistemic planning <ref type="bibr" target="#b1">[Aucher and Bolander, 2013;</ref><ref type="bibr" target="#b10">Bolander et al., 2015;</ref><ref type="bibr" target="#b16">Cooper et al., 2016</ref>]. An overview paper about combinations of logics of action with logics of knowledge and belief is <ref type="bibr" target="#b49">[Herzig, 2015]</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.5">Dynamic Bayesian Networks</head><p>A dynamic Bayesian network <ref type="bibr" target="#b23">[Dean and Kanazawa, 1989</ref>] is a Bayesian network (see Chapter 8 of Volume 2) in which the variables exist in as many copies as there are time points: for any fluent f and time step t there is a fluent f t . For each time step t, there exists a Bayesian network linking the variables corresponding to t. Moreover, between these 'instantaneous' networks, the only allowed edges are those that are directed from past to future. The temporal directed acyclic graph (DAG) given on Figure <ref type="figure">1</ref>, equipped with probabilities for each variable, at each time step, conditionally on the values of the parents of the variable, constitutes a dynamic Bayesian network.</p><p>If the system is Markovian, in order to determine completely the behavior of the system it is enough to know the probability distribution for x t and the conditional probability distribution for x t+1 given x t . The Markovian assumption can reasonably be made for many classes of systems. A Markovian temporal DAG cannot admit an arc linking variables distant from more than one time step: by deleting the edge between x t-1 and x t+1 the diagram on the example below becomes Markovian, and a description restricted to time steps t and t + 1 suffices.</p><p>The truth value of a fluent f at a given time step can depend on its value at earlier time steps t -∆, which translates in probabilistic terms into the following "survival equation":</p><formula xml:id="formula_14">Pr( f t ) = Pr( f t | f t-∆ ).Pr( f t-∆ ) + Pr( f t | ¬ f t-∆ ).Pr(¬ f t-∆ ).</formula><p>The conditional probability Pr( f t | f t-∆ ) is called survival function. The survival function represents the tendency of propositions to persist given all events that can make them false. A classical survival function is: Pr( f t | f t-∆ ) = exp -λ .∆ , which indicates that the probability that f persists decreases, from the last time step where f was observed to hold, at an exponential speed determined by λ .</p><p>If one has some information about events that can affect the truth value of the fluent, then the survival equation no longer fits. Generally, the probability that a proposition f is true in t is a fonction of:</p><p>• the probability Pr( f t-∆ ) that it is true at t -∆</p><p>• probability Pr(do( f t )) of the occurrence of an event that makes f true at t</p><p>• and the probability Pr(do(¬ f t )) of the occurrence of an event that makes f false at t.</p><p>From the standpoint of expressiveness, the interest of this class of probabilistic approaches for reasoning about change is that it allows for expressing numerical uncertainty on beliefs, observations, and causal laws (see also <ref type="bibr" target="#b45">[Hanks and McDermott, 1994]</ref> and by <ref type="bibr" target="#b75">[Pearl, 1988]</ref>). On the other hand, a problem is that it requires the specification of many prior probabilities, even if it is not always necessary to 'solve' the whole probabilistic network to determine the probability of a proposition: one can instead focus on a few key time steps (and key propositions). Note that the use of a dynamic possibilistic network allows one to reason without knowing precisely these probabilities <ref type="bibr" target="#b46">[Heni et al., 2007]</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Reasoning about Change: Update</head><p>Update is a research domain at the intersection of reasoning about actions (whence its presence in this chapter) and belief change (see Chapter 14 of this volume). It is a process for integrating into a belief base a modification of the state of the system that is explicitly specified by a propositional formula. More precisely, given a belief base K and a propositional formula α, the update of K by α is the progression of K by an action, or alternatively by an exogenous event whose occurrence is known and whose effect is α. Belief update is opposed to belief revision where a new piece of information about the system is integrated into a belief base about that system, under the hypothesis that the latter did not evolve. The distinction was clarified by <ref type="bibr" target="#b56">Katsuno and Mendelzon [1991]</ref>, although update was studied before <ref type="bibr" target="#b57">[Keller and Winslett, 1985;</ref><ref type="bibr" target="#b89">Winslett, 1988]</ref>, partially by scholars from the database community (see Chapter 3 of Volume 3).</p><p>The distinction between revision and update deserves to be clarified a bit more here. If the new piece of information ('the input') completes our beliefs about the world then it is not the world that has evolved, but only the agent's beliefs about the world. (This may be due to the questioning of an erroneous information about the world or a new piece of information about the characteristics of the world.) In that case we have to perform a revision.<ref type="foot" target="#foot_8">foot_8</ref> Such a revision amounts to a simple addition (also called expansion) when the input is consistent with the beliefs; however, in case of inconsistency revision selects some beliefs that have to be rejected in order to restore consistence (see Chapter 14 of this volume). If the input characterizes an explicit evolution of the world (i.e., is the effect of an action or an exogenous event) then we speak of an update. The updated belief base describes the world after its evolution. The update therefore corresponds to a progression.</p><p>The difference can be illustrated by the following example <ref type="bibr" target="#b73">[Morreau, 1992]</ref>. Suppose there is a basket containing either an apple or a banana. If we learn that in fact it does not contain bananas then our beliefs have to be revised and we deduce that the basket contains an apple. However, if we learn that the world has evolved in a way such that there is no banana in the basket any more (e.g. because somebody has performed the action of taking the banana out of the basket if it was there) then we have to update our beliefs, i.e., that now the basket is either empty or contains an apple.</p><p>Just as for revision, there does not exist a unique update operator that would suit all applications. It is therefore interesting to define criteria which determine which of these operators are 'rational', these criteria can be written under the form of rationality postulates. Paralleling Alchourrón, Gärdenfors and Makinson's postulates characterizing 'rational' revision operators (the so-called AGM postulates) <ref type="bibr">[1985]</ref>, <ref type="bibr" target="#b90">Winslett [1990]</ref> was the first to define postulates for update operators. These postulates inspired <ref type="bibr" target="#b56">Katsuno and Mendelzon [1991]</ref> who defined a new set of postulates. Similarly to the AGM postulates (see Chapter 14 of this volume), they are related to the existence of a set of preorder relations about the states of the system, where with each state there is associated a preorder. In <ref type="bibr" target="#b56">[Katsuno and Mendelzon, 1991]</ref>, the authors implement an idea that had been put forward by Winslett: in order to update a belief base one may update each of the models of the base independently. Katsuno and Mendelzon's contribution is the idea that each model has to be updated towards the 'closest' models (in the sense of the preorder associated to the original model). According to Katsuno and Mendelzon, an update operator is a function ⋄ which given a formula K representing beliefs about the world and a formula φ representing the information about the evolution of the world, returns a new formula K ⋄ φ . The postulates they propose in order to characterize the 'rational' operators ⋄ are the following:</p><formula xml:id="formula_15">U1 K ⋄ ϕ implies ϕ. U2 If K implies ϕ then (K ⋄ ϕ) is equivalent to K . U3 If K and ϕ are satisfiable then K ⋄ ϕ is satisfiable. U4 If K 1 is equivalent to K 2 and ϕ 1 is equivalent to ϕ 2 then K 1 ⋄ ϕ 1 is equivalent to K 2 ⋄ ϕ 2 . U5 (K ⋄ ϕ) ∧ ψ implies K ⋄ (ϕ ∧ ψ). U6 If K ⋄ ϕ 1 implies ϕ 2 and K ⋄ ϕ 2 implies ϕ 1 then K ⋄ ϕ 1 is equivalent to K ⋄ ϕ 2 . U7 If K is complete then (K ⋄ ϕ 1 ) ∧ (K ⋄ ϕ 2 ) implies K ⋄ (ϕ 1 ∨ ϕ 2 ). U8 (K 1 ∨ K 2 ) ⋄ ϕ is equivalent to (K 1 ⋄ ϕ) ∨ (K 2 ⋄ ϕ). U9 If K is complete and (K ⋄ ϕ 1 ) ∧ ϕ 2 is satisfiable then K ⋄ (ϕ 1 ∧ ϕ 2 ) implies (K ⋄ ϕ 1 ) ∧ ϕ 2 .</formula><p>U1 stipulates that φ is a piece of information describing the world after its evolution (this is one of Winslett's postulates). U2 says that if φ was already true in all states of the system before the update then the system does not evolve. This is the postulate requiring that inertia has always to be preferred to spontaneous evolution. It is however not always desirable because it forbids the existence of transitory states, i.e., states within which the system may not stay because it immediately evolves towards other states. U3 expresses that a consistent representation of the system and of its evolution can always be updated in a consistent way (which was also one of Winslett's postulates). However, systems may exist where there is no transition between two states: for example, when ϕ = dead and α = alive then one may wish the update to fail. So this postulate is not always desirable. U8 (also one of Winslett's postulates) means that the update is defined as a progression operator. U9 is a restriction of the converse of U5. We refer to <ref type="bibr" target="#b26">[Dubois et al., 1995;</ref><ref type="bibr" target="#b53">Herzig and Rifi, 1999]</ref> for a more detailed critique of these postulates.</p><p>The following representation theorem relates these postulates to the existence of a set of preorder relations between states of the world:</p><p>Theorem 1 (Katsuno, Mendelzon) ⋄ satisfies U1, U2, U3, U4, U5, U8, U9<ref type="foot" target="#foot_9">foot_9</ref> if and only if for every ω ∈ Ω there is a total preorder ≤ ω such that</p><p>(1)</p><formula xml:id="formula_16">∀ω ′ ∈ Ω, ω &lt; ω ω ′ (≤ ω is "faithful"); (2) Mod(K ⋄ ϕ) = ω|=K {ω ′ |= ϕ such that ∀ω ′′ |= ϕ, ω ′ ≤ ω ω ′′ }.</formula><p>Item (1) means that for each model ω of K , the models of the update of ω by ϕ are the models of ϕ that are closest to ω w.r.t. ≤ ω , and (2) means that the set of models of the update of K by ϕ is the union of the sets of models resulting from the update of each model of K by ϕ (which follows directly from postulate U8). Numerous update operators were proposed in the literature. Thanks to the above theorem they can be defined by associating with each state a faithful total preorder relation between states. In practice, such a set of preorders is a way of minimizing change. For example, Winslett defined a relation ≤ PMA ω between states that she called 'Possible Models Approach', abbreviated PMA. It is based on the function diff PMA (ω 1 , ω 2 ) (the set of variables whose value differs between the two states ω 1 and ω 2 ):</p><formula xml:id="formula_17">ω 1 ≤ PMA ω ω 2 ⇔ de f diff PMA (ω 1 , ω) ⊆ diff PMA (ω 2 , ω</formula><p>). This relation is faithful and therefore defines an update operator. The corresponding update operator can also be characterized in terms of independence (the logical consequences of K that are independent of ϕ persist) <ref type="bibr" target="#b67">[Marquis, 1994]</ref>. In the examples of <ref type="bibr" target="#b73">[Morreau, 1992]</ref>, the initial beliefs are K = (banana ∧ ¬apple) ∨ (apple ∧ ¬banana), so there are two models ω 1 = {¬apple, banana} and ω 2 = {apple, ¬banana}. When the agent then learns (ϕ) that somebody took the banana if it was there (update by ¬banana), the states of the system representing the information ϕ are ω 2 and ω 3 = {¬apple, ¬banana}. The updated base K ⋄ PMA ϕ can be computed by taking the union, for all models ω of K , of the models of ϕ that are closest to ω. Here, the model of ϕ that is closest to ω 1 for the relation ≤ PMA ω is ω 3 ; the model of ϕ closest to ω 2 is ω 2 itself (because ≤ PMA ω is faithful). So the set of models of K ⋄ PMA A is {ω 2 , ω 3 }. This means that after the update there is either an apple in the basket or the basket is empty.</p><p>The PMA relation has been refined by assigning priorities to some fluents <ref type="bibr" target="#b89">[Winslett, 1988]</ref>, which allows for handling fluents that do not persist in the same way. Other update operators go for increased expressiveness, e.g. the one proposed by <ref type="bibr" target="#b17">Cordier and Siegel [1995]</ref> which allows for more or less prioritary transition constraints. These constraints take the form of pairs of formulas (ϕ, ψ) and are satisfied by a pair of models (ω, ω ′ ) when ω satisfies ϕ and ω ′ satisfies ψ. Then ω ′ is considered closer to ω than ω ′′ if the transition (ω, ω ′ ) violates less prioritary constraints than the transition (ω, ω ′′ ).</p><p>Updates à la <ref type="bibr">Katsuno and Mendelzon (and in particular Winslett's PMA [1988]</ref> but also Forbus' operator <ref type="bibr" target="#b34">[Forbus, 1989]</ref>) are built on minimization of change. However, minimization of change is not always desirable for updates. In particular, <ref type="bibr" target="#b53">Herzig and Rifi [1999]</ref> have shown that the approaches building on minimization of change do not allow updates by disjunctions; more formally, an update operator satisfying the Katsuno-Mendelzon postulates cannot handle disjunctions correctly, the culprit being postulate U5.</p><p>For that reason, several scholars studied update operators that are not built on minimization. They in particular studied a family of update operators that is based on the concept of dependence. Such updates of a belief base β by a formula α consists in first forgetting in β "all information concerning α" (leaving the truth values of the variables that are not concerned by the update unchanged), and then adding α to the result. It remains to work out what "all information concerning α" means. Such a kind of relevance is induced by a dependence relation between formulas: α concerns β if and only if β depends on α. This approach is general because the notion of dependence between formulas can vary.</p><p>Most of the dependence-based approaches to update consider that the dependence relation is expressed first between formulas and propositional variables, and can then be extended to a dependence relation between formulas: α and β are dependent if and only if there is at least one variable on which α and β are dependent. Examples of such update operators can be found in <ref type="bibr" target="#b47">[Herzig, 1996]</ref>, <ref type="bibr" target="#b25">[Doherty et al., 1998</ref>] et <ref type="bibr" target="#b53">[Herzig and Rifi, 1999]</ref>. This principle allows for remediating several counterintuitive aspects of minimization-based approaches and moreover is generally of lower computational complexity. A slight drawback is however that it is too little conservative: too much information of the initial base is forgotten. This can be counterbalanced by replacing the dependence relation between formulas and variables by a dependence relation between formulas and literals <ref type="bibr" target="#b51">[Herzig et al., 2013]</ref>.</p><p>As an update by a formula α can be viewed as a progression by a particular action whose effect is α ("to make α true") (see a discussion in <ref type="bibr" target="#b58">[Lang, 2007]</ref>), it makes sense to situate update w.r.t. propositional action languages. We start by observing that STRIPS is a particular case of both formalisms, corresponding to an update by conjunctions of literals. Axiom U8-which requires that the update of a set of models is the union of the update of the individual models-is exactly the definition of the progression of a belief state by an action. The two paradigms however differ in the variety of available actions: on the one hand, update offers the possibility of taking into account disjunctive effects (representing a unique but imperfectly known effect) and more generally effects consisting of arbitrary propositional formulas. On the other hand, action languages allow for conditional effects such as (if Heads then flip-coin causes ¬Tails, if ¬Heads then flip-coin causes Tails), nondeterministic effects such as Toss-coin causes Heads or causes ¬Heads, concurrent effects such as if G and D are actions consisting in lifting the left and the right side of a table and if a glass of water is on the table then G causes Spilled, D causes Spilled, G concurrently with D cause ⊤ as well as static causal rules allowing for ramifications. Approaches aiming at unifying the potentialities of various approaches are not numerous. Some update approaches take ramification into account by resorting to integrity constraints <ref type="bibr" target="#b25">[Doherty et al., 1998]</ref> or allow for nondeterministic updates <ref type="bibr" target="#b13">[Brewka and Hertzberg, 1993]</ref>, or conditional or concurrent updates <ref type="bibr" target="#b52">[Herzig et al., 2001]</ref>. However, an embedding of Winslett's and Forbus' update operator and of Dalal's revision operator into dynamic logic was recently provided in <ref type="bibr" target="#b48">[Herzig, 2014]</ref>.</p><p>Update corresponding to the progression of an action, there exists a generalization (rightly called generalized update) that enables both revision and event abduction <ref type="bibr" target="#b12">[Boutilier, 1998]</ref>. Generalized update allows for example for handling the following scenario: an agent wakes up in the morning and believes that the lawn is dry just as it was when she went to sleep. She subsequently observes that the lawn is wet, which first of all leads to a revision of her beliefs, then to the abduction of an event (it rained), and finally to an update by the effects of the event (the road is wet, too). Belief extrapolation [Dupin de Saint-Cyr and <ref type="bibr" target="#b30">Lang, 2011]</ref> and other related formalisms such as <ref type="bibr" target="#b7">[Berger et al., 1999]</ref> only handle the abduction of events. Finally, update can be viewed as an ordinal form of Lewis's imaging operator <ref type="bibr" target="#b27">[Dubois and Prade, 1993]</ref> as well as the predictive phase of the Kalman filter <ref type="bibr" target="#b18">[Cossart and Tessier, 1999;</ref><ref type="bibr" target="#b6">Benferhat et al., 2000]</ref>. <ref type="bibr" target="#b43">Goldszmidt and Pearl [1992]</ref> were also interested by accounting for revision and update at the same time. They reason about a set of default rules and are of the causal kind, from which they deduce an order on the pairs of states of the world that they are filtering according to the input. If the last operator is a revision by ϕ then the pairs of states where the final state satisfies ϕ see their plausibility increased. In the case of an update by ϕ, one has to perform a revision by the dummy action do(ϕ).</p><p>The contributions of Winslett, and of Katsuno and Mendelzon, are important for two reasons. First of all, they established a clear distinction between revising and updating a belief base. Second, they elaborated a set of postulates guaranteeing that a rational update is related to the existence of a set of preorders between the possible states of the system. Katsuno and Mendelzon, and Winslett, implicitly opted for the particular case where the fluents are by default inertial (they only change if an action or an event occurs that changes them). There is a further implicit hypothesis embodied by postulate U3 (Winslett's MB4): asserting that any update can be performed means that the input is always consistent with the possible evolution of the world.</p><p>Recently, belief change (including belief update) within the framework of fragments of propositional logic has gained attention. A propositional fragment simply is a subset of a propositional language which has some valuable properties (typically, from the computational side) but is not fully expressive w.r.t. propositional logic (some propositional formulas do not have any equivalent representation in the fragment). For instance, the Horn CNF fragment is the set of CNF formulas where each clause is Horn, i.e., it contains at most one positive literal. It is well-known that the satisfiability of any Horn CNF formula can be decided in linear time but that some propositional formulas (e.g. the clause a ∨ b) cannot be turned into equivalent Horn CNF ones. Other fragments which are often considered are the Krom one (the set of all CNF formulas where each clause is binary) and the affine fragment (the set of all conjunctions of exclusive-or clauses), and each of them offers the same tractability property as the Horn one w.r.t. the satisfiability issue and the same limitations as to expressiveness. In order to preserve the tractability benefits, when a belief base from a given fragment has to be updated, it is expected that the updated base belongs to the same fragment. However, update operators satisfying all the Katsuno-Mendelzon postulates (especially <ref type="bibr">Winslett's PMA and Forbus' operator)</ref> do not ensure this property. This calls for a notion of refinement of an update operator for a given fragment, which warrants that the result of any update is in the fragment when the initial base is in the fragment as well. Any refined operator is required to approximate the behavior of the operator considered at start (especially, leading to the same updated base as it when this base fits in the fragment), the price to be paid being the loss of some rationality postulates. A constructive approach to such refinements of update operators has been introduced in <ref type="bibr" target="#b20">[Creignou et al., 2015]</ref>, and the Katsuno-Mendelzon postulates satisfied by the refined operators identified as well.</p><p>Several tentatives were also made to extend update to more expressive frameworks:</p><p>• ASP: Slota and Leite [2010] adapt Katsuno &amp; Mendelzon's postulates to logic programs <ref type="bibr" target="#b82">[Slota and Leite, 2010]</ref>. They also define update operators for hybrid belief bases <ref type="bibr" target="#b83">[Slota et al., 2011;</ref><ref type="bibr" target="#b81">Slota, 2012]</ref>. Such hybrid bases are made up of an ontology component, expressed in the language of the description logic ALCIO (ALC with inverse and nominals), and a rule component, expressed in the language answer-set programming under the stable semantics (see Chapter 4 of Volume 2). Update operators are studied in particular for the strong equivalence semantics for ASP as well as for hybrid belief bases <ref type="bibr" target="#b74">[Motik and Rosati, 2010]</ref>.</p><p>• Belief states: Lang, <ref type="bibr" target="#b60">Marquis and Williams [2001]</ref> define update operators over epistemic states. In addition to beliefs, such epistemic states, represented by orders on worlds, allow for expressing the relative plausibility of beliefs. The authors extend the class of dependence-based update operators to epistemic states. <ref type="bibr" target="#b2">Baral and Zhang [2005]</ref> generalize update so as to distinguish between facts and knowledge, as in the epistemic logic S5. Their process is called knowledge update and allows one to account for the effects of epistemic actions by an updating the epistemic formulas describing the agent's beliefs. Such a framework takes the viewpoint of a modeler agent O who reasons about the belief state of another agent ag. For example, the update of an S5 model by K ag ϕ means that O updates her beliefs about ag's beliefs; the mental state of ag is seen by O as part of the external world, and the update by K ag ϕ corresponds to an action whose effect is to make K ag ϕ true (for example, the action of telling ag that ϕ is true).</p><p>• Description logics (see Chapter 6 of this volume): <ref type="bibr" target="#b66">Liu et al. [2011]</ref> update assertions of an "ABox" (that is, the factual component of the belief base). They highlight an expressiveness problem that arises in that framework: sometimes the expected result of an update cannot be encoded by an assertion of the basic description logic ALC. For example, the assertion It turns out that almost all description logic have similar expressiveness problems. If we allow for object names as concepts as done in ALCO, this wipes out the distinction between ABox assertions (which are about particular objects) and TBox concept inclusions which should not be about particular objects. This is unsatisfactory because the distinction is one of the very basic ideas of description logics.</p><p>• Action descriptions: Eiter et al. <ref type="bibr" target="#b31">[Eiter et al., 2010]</ref> define a framework for minimal change of action descriptions that they call "action description updates".</p><p>• Abstract argumentation: researchers in that domain (see Chapter 13 of this volume) are also interested by update and more generally change operators. An abstract argumentation system is represented by a graph whose vertices are arguments and whose edges are attacks between arguments. Some authors <ref type="bibr" target="#b9">[Boella et al., 2009;</ref><ref type="bibr" target="#b15">Cayrol et al., 2010;</ref><ref type="bibr" target="#b62">Liao et al., 2011;</ref><ref type="bibr" target="#b11">Booth et al., 2013;</ref><ref type="bibr" target="#b19">Coste-Marquis et al., 2013]</ref> are interested by the impact of a change (by adding / withdrawing arguments or attacks) on such systems. <ref type="bibr" target="#b5">Baumann and Brewka [2010;</ref><ref type="bibr">2012]</ref> introduced the notion of enforcement, which is very similar to the notion of update (cf. <ref type="bibr" target="#b8">[Bisquert et al., 2013;</ref><ref type="bibr" target="#b29">Dupin de Saint Cyr et al., 2016]</ref>) because the idea is to minimally modify an argumentation system in a way such that it satisfies a given goal (usually expressed in terms of arguments that should be accepted). They define a preference relation between argumentation systems, which is similar to preference relations between models in classical update.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Conclusion</head><p>Reasoning about action and change is one of the oldest topics in Artificial Intelligence. Since 1995, the topic is the subject of a biennial workshop International Workshop on Nonmonotonic Reasoning, Action and Change (NRAC) held in conjunction with the IJCAI (International Joint Conference on Artificial Intelligence) conference. Several periods followed, during which the researchers were interested in conceiving several formal settings for modeling the important tasks related to reasoning about action: STRIPS first, then approaches based on minimal change, and then approaches based on successor state axioms. To this variety of formal settings corresponds a variety of languages for representing and reasoning about action: propositional logic, situation calculus, dynamic logic, graphical models (among others).</p><p>Reasoning about action and change has close connections with other areas of Artificial Intelligence, including non-monotonic reasoning, belief change, reasoning under uncertainty, planning (and in particular Markov decision processes) ; it also has links with control theory (more precisely, Kalman filtering and discrete event systems).</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>mary:</head><label></label><figDesc>Person ⊓ ∃child of.Person ⊓ ∀child of.(Person ⊓ Happy)expresses that every child of Mary is happy. If one updates the ABox containing this information by the fact that Peter becomes unhappy, i.e., by the assertion peter : Person ⊓ ¬Happy, then one has to take two possible cases into account: the case where Peter is among Mary's children and the case where he is not. Intuitively, the principle of minimal change requires that the result of the update is on the one hand the new piece of information (Peter is unhappy) and on the other hand the fact that every child of Mary either has the property of being happy or has the property of being Peter. The latter assertion (i.e., Mary's children are either happy or called Peter) cannot be expressed in ALC: it requires an extension by object names. The extended logic (called ALCO) allows for writing mary : Person ⊓ ∃child of.Person ⊓ ∀child of.(Person ⊓ (Happy ⊔ {pierre}).</figDesc></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1" xml:id="foot_0"><p>There are many other uncertainty models that should be mentioned but will not be, for space reasons -they include ordinal models, where belief states and action effects are modeled as pre-orders over S , possibilistic models that are similar in spirit to them, non-Bayesian probabilistic models, where a belief state is a family of probability distributions, etc. (see Chapter 3 of this volume).</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2" xml:id="foot_1"><p>A system is Markovian if the transition of the system to any given state depends only on the current state and not on the previous ones.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3" xml:id="foot_2"><p>In the probabilistic model, there may not exist a unique probability distribution b on S satisfying b ′ (s ′ ) = ∑ s∈S b(s).p(s ′ |s, α), b ′ (s ′ ) with p(s ′ |s, α) being known for all s, s ′ and α.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4" xml:id="foot_3"><p>A more complex abduction problem consists in reasoning not only on the event which took place, but also on the system states at time points t and t + 1, on which one wishes to obtain more precise beliefs.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5" xml:id="foot_4"><p>If the rifle is loaded in the situation s then the fluent "Alive" is abnormal (i.e., non persistent) when the action "Shoot" takes place in s and the person will not be alive any more in the resulting situation.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6" xml:id="foot_5"><p>If the fluent is not abnormal with respect to an action then it keeps its value after the execution of this action.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7" xml:id="foot_6"><p>A pathological case is when the conditions of rules leading to complementary literals are conjointly satisfied in s; in such a case, the progression is undefined; this can reflect an error when specifying the representation of the action, or the fact that s is impossible (and in this case corresponds to an implicit static law).</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="8" xml:id="foot_7"><p>If they were equivalent, then the encoding of action "Shoot" by Loaded → ¬ Alive in the Yale Shooting Problem would be equivalent to Alive → ¬ Loaded, meaning that shooting on a living person results on the gun being magically unloaded (and the person staying alive...)</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="9" xml:id="foot_8"><p>As shown in<ref type="bibr" target="#b36">[Friedman and Halpern, 1999]</ref>, revision remains relevant even if the initial belief state and the new formula do not refer to the same time point, as long as there is a syntactical distinction (via some time-stamping) between a fluent at a time point and the same fluent at another time point: what matters for revision is not that the world is static, but that the propositions that are used to describe the world are static. This also explains that belief extrapolation also corresponds to a revision process [Dupin de Saint-Cyr and<ref type="bibr" target="#b30">Lang, 2011]</ref>.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="10" xml:id="foot_9"><p>If U6 and U7 are used instead of U9 then the theorem gives us a faithful preorder that is only partial.</p></note>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">On the logic of theory change : partial meet contraction and revision functions</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Alchourrón</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Gärdenfors</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Makinson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. of Symbolic Logic</title>
+		<imprint>
+			<biblScope unit="volume">50</biblScope>
+			<biblScope unit="page" from="510" to="530" />
+			<date type="published" when="1985">1985</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Undecidability in epistemic planning</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Aucher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Bolander</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 23rd International Joint Conference on Artificial Intelligence</title>
+		<editor>
+			<persName><surname>Ij-Cai</surname></persName>
+		</editor>
+		<meeting>the 23rd International Joint Conference on Artificial Intelligence<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<publisher>IJCAI/AAAI</publisher>
+			<date type="published" when="2013-08-03">2013. 2013. August 3-9, 2013</date>
+			<biblScope unit="page" from="27" to="33" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Knowledge updates: Semantics and complexity issues</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Baral</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artif. Intell</title>
+		<imprint>
+			<biblScope unit="volume">164</biblScope>
+			<biblScope unit="issue">1-2</biblScope>
+			<biblScope unit="page" from="209" to="243" />
+			<date type="published" when="2005">2005</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Situation calculus semantics for actual causality</title>
+		<author>
+			<persName><forename type="first">V</forename><surname>Batusov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Soutchanski</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Thirty-Second AAAI Conference on Artificial Intelligence</title>
+		<meeting>the Thirty-Second AAAI Conference on Artificial Intelligence<address><addrLine>New Orleans, Louisiana, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018-02-02">2018. February 2-7, 2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">What Does it Take to Enforce an Argument? Minimal Change in Abstract Argumentation</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Baumann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. European Conf. on Artificial Inteligence (ECAI&apos;12)</title>
+		<meeting>European Conf. on Artificial Inteligence (ECAI&apos;12)</meeting>
+		<imprint>
+			<date type="published" when="2012">2012</date>
+			<biblScope unit="page" from="127" to="132" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Expanding Argumentation Frameworks: Enforcing and Monotonicity Results</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Baumann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Brewka</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Conf. on Computational Models of Arugement (COMMA&apos;10)</title>
+		<meeting>Int. Conf. on Computational Models of Arugement (COMMA&apos;10)</meeting>
+		<imprint>
+			<date type="published" when="2010">2010</date>
+			<biblScope unit="page" from="75" to="86" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Kalman-like filtering in a possibilistic setting</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Benferhat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Dubois</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Prade</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. European Conf. on Artificial Intelligence (ECAI&apos;00)</title>
+		<meeting>European Conf. on Artificial Intelligence (ECAI&apos;00)</meeting>
+		<imprint>
+			<date type="published" when="2000">2000</date>
+			<biblScope unit="page" from="8" to="12" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Preferred history semantics for iterated updates</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Berger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">J</forename><surname>Lehmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Schlechta</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. of Logic and Computation</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page" from="817" to="833" />
+			<date type="published" when="1999">1999</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Enforcement in Argumentation is a kind of Update</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Bisquert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Cayrol</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Dupin De Saint</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Cyr</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M.-C</forename><surname>Lagasquie-Schiex</surname></persName>
+		</author>
+		<idno>2013- 18/09/2013</idno>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Scalable Uncertainty Management (SUM)</title>
+		<editor>
+			<persName><forename type="first">W</forename><surname>Liu</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">V</forename><surname>Subrahmanian</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">J</forename><surname>Wijsen</surname></persName>
+		</editor>
+		<meeting><address><addrLine>Washington DC, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013">2013. 16/09</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Dynamics in argumentation with single extensions: Attack refinement and the grounded extension</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Boella</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kaci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Van Der Torre</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Conf. on Autonomous Agents and Multiagent Systems (AAMAS&apos;09)</title>
+		<meeting>Int. Conf. on Autonomous Agents and Multiagent Systems (AAMAS&apos;09)</meeting>
+		<imprint>
+			<date type="published" when="2009">2009</date>
+			<biblScope unit="page" from="1213" to="1214" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Complexity results in epistemic planning</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Bolander</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">H</forename><surname>Jensen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Schwarzentruber</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twenty-Fourth International Joint Conference on Artificial Intelligence, IJCAI 2015</title>
+		<editor>
+			<persName><forename type="first">Q</forename><surname>Yang</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">M</forename><surname>Wooldridge</surname></persName>
+		</editor>
+		<meeting>the Twenty-Fourth International Joint Conference on Artificial Intelligence, IJCAI 2015<address><addrLine>Buenos Aires, Argentina</addrLine></address></meeting>
+		<imprint>
+			<publisher>AAAI Press</publisher>
+			<date type="published" when="2015-07-25">2015. July 25-31, 2015</date>
+			<biblScope unit="page" from="2791" to="2797" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">A logical theory about dynamics in abstract argumentation</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Booth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kaci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Rienstra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Van Der Torre</surname></persName>
+		</author>
+		<idno>2013-18/09/2013</idno>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Scalable Uncertainty Management (SUM)</title>
+		<editor>
+			<persName><forename type="first">W</forename><surname>Liu</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">V</forename><surname>Subrahmanian</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">J</forename><surname>Wijsen</surname></persName>
+		</editor>
+		<meeting><address><addrLine>Washington DC, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013">2013. 16/09</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">A unified model of qualitative belief change: A dynamical systems perspective</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Boutilier</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">98</biblScope>
+			<biblScope unit="issue">1-2</biblScope>
+			<biblScope unit="page" from="281" to="316" />
+			<date type="published" when="1998">1998</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">How to do things with worlds: On formalizing actions and plans</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Brewka</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Hertzberg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. of Logic and Computation</title>
+		<imprint>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="517" to="532" />
+			<date type="published" when="1993">1993</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Formalizing action and change in modal logic I: The frame problem</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Castilho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Gasquet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Herzig</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. of Logic and Computation</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="701" to="735" />
+			<date type="published" when="1999">1999</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Change in abstract argumentation frameworks: Adding an argument</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Cayrol</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Dupin De Saint-Cyr</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M.-C</forename><surname>Lagasquie-Schiex</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. of Artificial Intelligence Research</title>
+		<imprint>
+			<biblScope unit="volume">38</biblScope>
+			<biblScope unit="page" from="49" to="84" />
+			<date type="published" when="2010">2010</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">A simple account of multi-agent epistemic planning</title>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">C</forename><surname>Cooper</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Herzig</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Maffre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Maris</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Régnier</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">-Including Prestigious Applications of Artificial Intelligence (PAIS</title>
+		<title level="s">Frontiers in Artificial Intelligence and Applications</title>
+		<editor>
+			<persName><forename type="first">G</forename><forename type="middle">A</forename><surname>Kaminka</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">M</forename><surname>Fox</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">P</forename><surname>Bouquet</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">E</forename><surname>Hüllermeier</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">V</forename><surname>Dignum</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">F</forename><surname>Dignum</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">F</forename><surname>Van Harmelen</surname></persName>
+		</editor>
+		<meeting><address><addrLine>The Hague, The Netherlands</addrLine></address></meeting>
+		<imprint>
+			<publisher>IOS Press</publisher>
+			<date type="published" when="2016-08-29">2016. 29 August-2 September 2016. 2016</date>
+			<biblScope unit="volume">285</biblScope>
+			<biblScope unit="page" from="193" to="201" />
+		</imprint>
+	</monogr>
+	<note>ECAI 2016 -22nd European Conference on Artificial Intelligence</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Prioritized transitions for updates</title>
+		<author>
+			<persName><forename type="first">M.-O</forename><surname>Cordier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Siegel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. European Conf. on Symbolic and Qualitative Aspects of Reasoning under Uncertainty (ECSQARU&apos;95)</title>
+		<meeting>European Conf. on Symbolic and Qualitative Aspects of Reasoning under Uncertainty (ECSQARU&apos;95)</meeting>
+		<imprint>
+			<date type="published" when="1995">1995</date>
+			<biblScope unit="page" from="142" to="150" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Filtering vs. revision and update: Let us debate! In</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Cossart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Tessier</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. European Conf. on Symbolic and Qualitative Aspects of Reasoning under Uncertainty (ECSQARU&apos;99)</title>
+		<meeting>European Conf. on Symbolic and Qualitative Aspects of Reasoning under Uncertainty (ECSQARU&apos;99)</meeting>
+		<imprint>
+			<date type="published" when="1999">1999</date>
+			<biblScope unit="page" from="116" to="127" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">On the revision of argumentation systems: Minimal change of arguments status</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Coste-Marquis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Konieczny</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J.-G</forename><surname>Mailly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Marquis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Proc. TAFA</title>
+		<imprint>
+			<date type="published" when="2013">2013</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Belief update within propositional fragments</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Creignou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Ktari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Papini</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. European Conference on Symbolic and Quantitative Approaches to Reasoning with Uncertainty (EC-SQARU&apos;15)</title>
+		<meeting>European Conference on Symbolic and Quantitative Approaches to Reasoning with Uncertainty (EC-SQARU&apos;15)</meeting>
+		<imprint>
+			<date type="published" when="2015">2015</date>
+			<biblScope unit="page" from="165" to="174" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Informed expectations to guide gda agents in partially observable environments</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Dannenhauer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Munoz-Avila</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">T</forename><surname>Cox</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">IJCAI</title>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="page" from="2493" to="2499" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Rationale-based visual planning monitors for cognitive systems</title>
+		<author>
+			<persName><forename type="first">Z</forename><forename type="middle">A</forename><surname>Dannenhauer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">T</forename><surname>Cox</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Thirtieth International Florida Artificial Intelligence Research Society Conference</title>
+		<meeting>the Thirtieth International Florida Artificial Intelligence Research Society Conference</meeting>
+		<imprint>
+			<publisher>AAAI Publications</publisher>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="182" to="185" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">A model for reasoning about persistence and causation</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Dean</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Kanazawa</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">5</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="142" to="150" />
+			<date type="published" when="1989">1989</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<title level="m" type="main">Belief revision with sensing and fallible actions</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">P</forename><surname>Delgrande</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">J</forename><surname>Levesque</surname></persName>
+		</author>
+		<editor>KR.</editor>
+		<imprint>
+			<date type="published" when="2012">2012</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">The PMA and relativizing minimal change for action update</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Doherty</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Lukaszewicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Madalinska-Bugaj</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Conf. on Principles of Knowledge Representation and Reasoning (KR&apos;98)</title>
+		<meeting>Int. Conf. on Principles of Knowledge Representation and Reasoning (KR&apos;98)</meeting>
+		<imprint>
+			<date type="published" when="1998">1998</date>
+			<biblScope unit="page" from="258" to="269" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Update postulates without inertia</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Dubois</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Dupin De Saint-Cyr</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Prade</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. European Conf. on Symbolic and Qualitative Aspects of Reasoning under Uncertainty (ECSQARU&apos;95)</title>
+		<meeting>European Conf. on Symbolic and Qualitative Aspects of Reasoning under Uncertainty (ECSQARU&apos;95)</meeting>
+		<imprint>
+			<date type="published" when="1995">1995</date>
+			<biblScope unit="page" from="162" to="170" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Belief revision and updates in numerical formalisms: An overview, with new results for the possibilistic framework</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Dubois</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Prade</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;93)</title>
+		<meeting>Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;93)</meeting>
+		<imprint>
+			<date type="published" when="1993">1993</date>
+			<biblScope unit="page" from="620" to="625" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Scenario Update Applied to Causal Reasoning</title>
+		<author>
+			<persName><forename type="first">Dupin</forename><surname>De Saint</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Cyr</surname></persName>
+		</author>
+		<ptr target="http://www.aaai.org/Press/press.php" />
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Principles of Knowledge Representation and Reasoning (KR)</title>
+		<imprint>
+			<publisher>AAAI Press</publisher>
+			<date type="published" when="2008">2008</date>
+			<biblScope unit="page" from="188" to="197" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Argumentation update in YALLA (Yet Another Logic Language for Argumentation)</title>
+		<author>
+			<persName><forename type="first">Dupin</forename><surname>De Saint</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Cyr</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Bisquert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Cayrol</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M.-C</forename><surname>Lagasquie-Schiex</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of Approximate Reasoning</title>
+		<imprint>
+			<biblScope unit="volume">75</biblScope>
+			<biblScope unit="page" from="57" to="92" />
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Belief extrapolation (or how to reason about observations and unpredicted change)</title>
+		<author>
+			<persName><forename type="first">Dupin</forename><surname>De Saint-Cyr</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Lang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">175</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="760" to="790" />
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Updating action domain descriptions</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Eiter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Erdem</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Fink</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Senko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artif. Intell</title>
+		<imprint>
+			<biblScope unit="volume">174</biblScope>
+			<biblScope unit="issue">15</biblScope>
+			<biblScope unit="page" from="1172" to="1221" />
+			<date type="published" when="2010">2010</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Strips : A new approach to the application of theorem proving to problem solving</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Fikes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Nilsson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="189" to="208" />
+			<date type="published" when="1971">1971</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<monogr>
+		<title level="m" type="main">Exploiting constraints in design synthesis</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Finger</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1987">1987</date>
+			<pubPlace>Stanford, CA</pubPlace>
+		</imprint>
+		<respStmt>
+			<orgName>Stanford University</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">PhD thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Introducing actions into qualitative simulation</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Forbus</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;89)</title>
+		<meeting>Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;89)</meeting>
+		<imprint>
+			<date type="published" when="1989">1989</date>
+			<biblScope unit="page" from="1273" to="1278" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">A knowledge based framework for belief change part II : revision and update</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Friedman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Halpern</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Conf. on Principles of Knowledge Representation and Reasoning (KR&apos;94)</title>
+		<meeting>Int. Conf. on Principles of Knowledge Representation and Reasoning (KR&apos;94)</meeting>
+		<imprint>
+			<date type="published" when="1994">1994</date>
+			<biblScope unit="page" from="190" to="201" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Modeling belief in dynamic systems, part II: Revision and update</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Friedman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">Y</forename><surname>Halpern</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. of Artificial Intelligence Research</title>
+		<imprint>
+			<biblScope unit="volume">10</biblScope>
+			<biblScope unit="page" from="117" to="167" />
+			<date type="published" when="1999">1999</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Causal theories for nonmonotonic reasoning</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Geffner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. National Conf. on Artificial Intelligence (AAAI&apos;90)</title>
+		<meeting>National Conf. on Artificial Intelligence (AAAI&apos;90)</meeting>
+		<imprint>
+			<date type="published" when="1990">1990</date>
+			<biblScope unit="page" from="524" to="530" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Representing action and change by logic programs</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Gelfond</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Lifschitz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. of Logic Programming</title>
+		<imprint>
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="page" from="301" to="321" />
+			<date type="published" when="1993">1993</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<monogr>
+		<title level="m" type="main">The planning domain definition language</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Ghallab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Howe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Knoblock</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Mcdermott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ram</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Veloso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Weld</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Wilkins</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1998">1998</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">AIPS-98 Planning Competition</note>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">Dealing with concurrent actions in modal action logics</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Giordano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Martelli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Schwind</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. European Conf. on Artificial Intelligence (ECAI&apos;98)</title>
+		<meeting>European Conf. on Artificial Intelligence (ECAI&apos;98)</meeting>
+		<imprint>
+			<date type="published" when="1998">1998</date>
+			<biblScope unit="page" from="537" to="541" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Nonmonotonic causal theories</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Giunchiglia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Lifschitz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Mccain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Turner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">153</biblScope>
+			<biblScope unit="page" from="49" to="104" />
+			<date type="published" when="2004">2004</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">An action language based on causal explanation: Preliminary report</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Giunchiglia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Lifschitz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. National Conf. on Artificial Intelligence (AAAI&apos;98)</title>
+		<meeting>National Conf. on Artificial Intelligence (AAAI&apos;98)</meeting>
+		<imprint>
+			<date type="published" when="1998">1998</date>
+			<biblScope unit="page" from="623" to="630" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">Rank-based systems: A simple approach to belief revision, belief update, and reasoning about evidence and actions</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Goldszmidt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pearl</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Conf. on Principles of Knowledge Representation and Reasoning (KR&apos;92)</title>
+		<meeting>Int. Conf. on Principles of Knowledge Representation and Reasoning (KR&apos;92)</meeting>
+		<imprint>
+			<date type="published" when="1992">1992</date>
+			<biblScope unit="page" from="661" to="672" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Default reasoning, nonmonotonic logics, and the frame problem</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Hanks</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Mcdermott</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. National Conf. on Artificial Intelligence (AAAI&apos;86)</title>
+		<meeting>National Conf. on Artificial Intelligence (AAAI&apos;86)</meeting>
+		<imprint>
+			<date type="published" when="1986">1986</date>
+			<biblScope unit="page" from="328" to="333" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">Modelling and uncertain world i : symbolic and probabilistic reasoning about change</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Hanks</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Mcdermott</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">66</biblScope>
+			<biblScope unit="page" from="1" to="55" />
+			<date type="published" when="1994">1994</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">Dynamic possibilistic networks: Representation and exact inference</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Heni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Ben Amor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Benferhat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Alimi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. IEEE Int. Conf. on Computational Intelligence for Measurement Systems and Applications (CIMSA&apos;07)</title>
+		<meeting>IEEE Int. Conf. on Computational Intelligence for Measurement Systems and Applications (CIMSA&apos;07)</meeting>
+		<imprint>
+			<date type="published" when="2007">2007</date>
+			<biblScope unit="page" from="1" to="8" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">The PMA revisited</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Herzig</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Conf. on Principles of Knowledge Representation and Reasoning (KR&apos;96)</title>
+		<meeting>Int. Conf. on Principles of Knowledge Representation and Reasoning (KR&apos;96)</meeting>
+		<imprint>
+			<date type="published" when="1996">1996</date>
+			<biblScope unit="page" from="40" to="50" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">Belief change operations: A short history of nearly everything, told in dynamic logic of propositional assignments</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Herzig</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Principles of Knowledge Representation and Reasoning: Proceedings of the Fourteenth International Conference</title>
+		<editor>
+			<persName><forename type="first">C</forename><surname>Baral</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">G</forename><forename type="middle">D</forename><surname>Giacomo</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">T</forename><surname>Eiter</surname></persName>
+		</editor>
+		<meeting><address><addrLine>KR; Vienna, Austria</addrLine></address></meeting>
+		<imprint>
+			<publisher>AAAI Press</publisher>
+			<date type="published" when="2014-07-20">2014. 2014. July 20-24, 2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">Logics of knowledge and action: critical analysis and challenges</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Herzig</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Autonomous Agents and Multi-Agent Systems</title>
+		<imprint>
+			<biblScope unit="volume">29</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="719" to="753" />
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<analytic>
+		<title level="a" type="main">Action representation and partially observable planning using epistemic logic</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Herzig</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Marquis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;03)</title>
+		<meeting>Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;03)</meeting>
+		<imprint>
+			<date type="published" when="2003">2003</date>
+			<biblScope unit="page" from="1067" to="1072" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<analytic>
+		<title level="a" type="main">Propositional update operators based on formula/literal dependence</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Herzig</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Marquis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ACM Trans. Comput. Log</title>
+		<imprint>
+			<biblScope unit="volume">14</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="1" to="24" />
+			<date type="published" when="2013">2013</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<analytic>
+		<title level="a" type="main">Updates, actions, and planning</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Herzig</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Marquis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Polacsek</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;01)</title>
+		<meeting>Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;01)</meeting>
+		<imprint>
+			<date type="published" when="2001">2001</date>
+			<biblScope unit="page" from="119" to="124" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<analytic>
+		<title level="a" type="main">Propositional belief base update and minimal change</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Herzig</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Rifi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">115</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="107" to="138" />
+			<date type="published" when="1999">1999</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b54">
+	<analytic>
+		<title level="a" type="main">Metatheory of actions: beyond consistency</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Herzig</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><forename type="middle">J</forename><surname>Varzinczak</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">171</biblScope>
+			<biblScope unit="page" from="951" to="984" />
+			<date type="published" when="2007">2007</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b55">
+	<analytic>
+		<title level="a" type="main">Belief change with uncertain action histories</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Hunter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Delgrande</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Artificial Intelligence Research</title>
+		<imprint>
+			<biblScope unit="volume">53</biblScope>
+			<biblScope unit="page" from="779" to="824" />
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b56">
+	<analytic>
+		<title level="a" type="main">On the difference between updating a knowledge base and revising it</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Katsuno</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Mendelzon</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Conf. on Principles of Knowledge Representation and Reasoning (KR&apos;91)</title>
+		<meeting>Int. Conf. on Principles of Knowledge Representation and Reasoning (KR&apos;91)</meeting>
+		<imprint>
+			<date type="published" when="1991">1991</date>
+			<biblScope unit="page" from="387" to="394" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b57">
+	<analytic>
+		<title level="a" type="main">On the use of an extended relational model to handle changing incomplete information</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Keller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Winslett</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Trans. on Software Engineering</title>
+		<imprint>
+			<biblScope unit="volume">11</biblScope>
+			<biblScope unit="issue">7</biblScope>
+			<biblScope unit="page" from="620" to="633" />
+			<date type="published" when="1985">1985</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b58">
+	<analytic>
+		<title level="a" type="main">Belief Update Revisited</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;07)</title>
+		<meeting>Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;07)</meeting>
+		<imprint>
+			<date type="published" when="2007">2007</date>
+			<biblScope unit="page" from="2517" to="2522" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b59">
+	<analytic>
+		<title level="a" type="main">Propositional independence: Formula-variable independence and forgetting</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Liberatore</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Marquis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. of Artificial Intelligence Research</title>
+		<imprint>
+			<biblScope unit="volume">18</biblScope>
+			<biblScope unit="page" from="391" to="443" />
+			<date type="published" when="2003">2003</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b60">
+	<analytic>
+		<title level="a" type="main">Updating epistemic states</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Marquis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M.-A</forename><surname>Williams</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Australian Joint Conf. on Artificial Intelligence (AI&apos;01)</title>
+		<meeting>Australian Joint Conf. on Artificial Intelligence (AI&apos;01)</meeting>
+		<imprint>
+			<date type="published" when="2001">2001</date>
+			<biblScope unit="page" from="297" to="308" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b61">
+	<analytic>
+		<title level="a" type="main">More for free: a dynamic epistemic framework for conformant planning over transition systems</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. Log. Comput</title>
+		<imprint>
+			<biblScope unit="volume">27</biblScope>
+			<biblScope unit="issue">8</biblScope>
+			<biblScope unit="page" from="2383" to="2410" />
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b62">
+	<analytic>
+		<title level="a" type="main">Dynamics of argumentation systems: A division-based method</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Liao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Jin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">C</forename><surname>Koons</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">175</biblScope>
+			<biblScope unit="issue">11</biblScope>
+			<biblScope unit="page" from="1790" to="1814" />
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b63">
+	<analytic>
+		<title level="a" type="main">Frames in the space of situations</title>
+		<author>
+			<persName><forename type="first">V</forename><surname>Lifschitz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">46</biblScope>
+			<biblScope unit="page" from="365" to="376" />
+			<date type="published" when="1990">1990</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b64">
+	<analytic>
+		<title level="a" type="main">Things that change by themselves</title>
+		<author>
+			<persName><forename type="first">V</forename><surname>Lifschitz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Rabinov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;89)</title>
+		<meeting>Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;89)</meeting>
+		<imprint>
+			<date type="published" when="1989">1989</date>
+			<biblScope unit="page" from="864" to="867" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b65">
+	<analytic>
+		<title level="a" type="main">Embracing causality in specifying the indirect effects of actions</title>
+		<author>
+			<persName><forename type="first">F</forename><surname>Lin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;95)</title>
+		<meeting>Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;95)</meeting>
+		<imprint>
+			<date type="published" when="1995">1995</date>
+			<biblScope unit="page" from="1985" to="1991" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b66">
+	<analytic>
+		<title level="a" type="main">Foundations of instance level updates in expressive description logics</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Lutz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Milicic</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Wolter</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">175</biblScope>
+			<biblScope unit="issue">18</biblScope>
+			<biblScope unit="page" from="2170" to="2197" />
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b67">
+	<analytic>
+		<title level="a" type="main">Possible models approach via independency</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Marquis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. European Conf. on Artificial Intelligence (ECAI&apos;94)</title>
+		<meeting>European Conf. on Artificial Intelligence (ECAI&apos;94)</meeting>
+		<imprint>
+			<date type="published" when="1994">1994</date>
+			<biblScope unit="page" from="336" to="340" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b68">
+	<analytic>
+		<title level="a" type="main">Epistemological problems of artificial intelligence</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Mccarthy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;77)</title>
+		<meeting>Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;77)</meeting>
+		<imprint>
+			<date type="published" when="1977">1977</date>
+			<biblScope unit="page" from="1038" to="1044" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b69">
+	<analytic>
+		<title level="a" type="main">Applications of circumscription to formalizing common-sense knowledge</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Mccarthy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">28</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="1038" to="1044" />
+			<date type="published" when="1986">1986</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b70">
+	<analytic>
+		<title level="a" type="main">Some philosophical problems from the standpoint of artificial intelligence</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Hayes</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Machine Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="page" from="463" to="502" />
+			<date type="published" when="1969">1969</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b71">
+	<analytic>
+		<title level="a" type="main">Note about cardinality-based circumscription</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Moinard</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">119</biblScope>
+			<biblScope unit="issue">1-2</biblScope>
+			<biblScope unit="page" from="259" to="273" />
+			<date type="published" when="2000">2000</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b72">
+	<analytic>
+		<title level="a" type="main">Learning unknown event models</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Molineaux</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">W</forename><surname>Aha</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">AAAI</title>
+		<imprint>
+			<date type="published" when="2014">2014</date>
+			<biblScope unit="page" from="395" to="401" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b73">
+	<analytic>
+		<title level="a" type="main">Planning from first principles</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Morreau</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Belief revision</title>
+		<imprint>
+			<publisher>Cambridge University Press</publisher>
+			<date type="published" when="1992">1992</date>
+			<biblScope unit="page" from="204" to="219" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b74">
+	<analytic>
+		<title level="a" type="main">Reconciling description logics and rules</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Motik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Rosati</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. of the Association for Computing Machinery</title>
+		<imprint>
+			<biblScope unit="volume">57</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<date type="published" when="2010">2010</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b75">
+	<analytic>
+		<title level="a" type="main">Embracing causality in formal reasoning</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pearl</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">35</biblScope>
+			<biblScope unit="page" from="259" to="271" />
+			<date type="published" when="1988">1988</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b76">
+	<analytic>
+		<title level="a" type="main">Adl: Exploring the middle ground between strips and the situation calculus</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Pednault</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Conf. on Principles of Knowledge Representation and Reasoning (KR&apos;89)</title>
+		<meeting>Int. Conf. on Principles of Knowledge Representation and Reasoning (KR&apos;89)</meeting>
+		<imprint>
+			<date type="published" when="1989">1989</date>
+			<biblScope unit="page" from="324" to="332" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b77">
+	<analytic>
+		<title level="a" type="main">The frame problem in the situation calculus: A simple solution (sometimes) and a completeness result for goal regression</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Reiter</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Artificial Intelligence and Mathematical Theory of Computation: Papers in Honor of John McCarthy</title>
+		<imprint>
+			<publisher>Academic Press</publisher>
+			<date type="published" when="1991">1991</date>
+			<biblScope unit="page" from="359" to="380" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b78">
+	<monogr>
+		<author>
+			<persName><forename type="first">E</forename><surname>Sandewall</surname></persName>
+		</author>
+		<title level="m">Features and Fluents</title>
+		<imprint>
+			<publisher>Oxford University Press</publisher>
+			<date type="published" when="1995">1995</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b79">
+	<analytic>
+		<title level="a" type="main">The frame problem and knowledge producing actions</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Scherl</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">J</forename><surname>Levesque</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">144</biblScope>
+			<biblScope unit="issue">1-2</biblScope>
+			<date type="published" when="2003">2003</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b80">
+	<monogr>
+		<title level="m" type="main">Reasoning about Change -Time and Causation from the Standpoint of Artificial Intelligence</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Shoham</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1988">1988</date>
+			<publisher>MIT Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b81">
+	<monogr>
+		<title level="m" type="main">Updates of Hybrid Knowledge bases</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Slota</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2012">2012</date>
+		</imprint>
+		<respStmt>
+			<orgName>Universidade Nove de Lisboa</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">PhD thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b82">
+	<analytic>
+		<title level="a" type="main">On semantic update operators for answer-set programs</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Slota</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Leite</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. European Conf. on Artificial Intelligence</title>
+		<meeting>European Conf. on Artificial Intelligence</meeting>
+		<imprint>
+			<date type="published" when="2010">2010</date>
+			<biblScope unit="page" from="957" to="962" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b83">
+	<analytic>
+		<title level="a" type="main">Splitting and updating hybrid knowledge bases</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Slota</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Leite</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Swift</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Theory and Practice of Logic Programming</title>
+		<imprint>
+			<biblScope unit="volume">11</biblScope>
+			<biblScope unit="issue">4-5</biblScope>
+			<biblScope unit="page" from="801" to="819" />
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b84">
+	<analytic>
+		<title level="a" type="main">Motivated action theory: A formal theory of causal reasoning</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Stein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Morgenstern</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">71</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="1" to="42" />
+			<date type="published" when="1994">1994</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b85">
+	<analytic>
+		<title level="a" type="main">The logic of dynamic systems</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Thielscher</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;95)</title>
+		<meeting>Int. Joint Conf. on Artificial Intelligence (IJCAI&apos;95)</meeting>
+		<imprint>
+			<date type="published" when="1995">1995</date>
+			<biblScope unit="page" from="1956" to="1962" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b86">
+	<analytic>
+		<title level="a" type="main">Ramification and causality</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Thielscher</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">89</biblScope>
+			<biblScope unit="issue">1-2</biblScope>
+			<biblScope unit="page" from="317" to="364" />
+			<date type="published" when="1997">1997</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b87">
+	<analytic>
+		<title level="a" type="main">A logic of universal causation</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Turner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">113</biblScope>
+			<biblScope unit="issue">1-2</biblScope>
+			<biblScope unit="page" from="87" to="123" />
+			<date type="published" when="1999">1999</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b88">
+	<analytic>
+		<title level="a" type="main">From Situation Calculus to Dynamic Epistemic Logic</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Van Ditmarsch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Herzig</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>De Lima</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. of Logic and Computation</title>
+		<imprint>
+			<biblScope unit="volume">21</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="179" to="204" />
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b89">
+	<analytic>
+		<title level="a" type="main">Reasoning about action using a possible models approach</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Winslett</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. National Conf. on Artificial Intelligence (AAAI&apos;88)</title>
+		<meeting>National Conf. on Artificial Intelligence (AAAI&apos;88)</meeting>
+		<imprint>
+			<date type="published" when="1988">1988</date>
+			<biblScope unit="page" from="89" to="93" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b90">
+	<monogr>
+		<title level="m" type="main">Updating Logical Databases</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Winslett</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1990">1990</date>
+			<publisher>Cambridge University Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

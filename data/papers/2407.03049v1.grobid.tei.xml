@@ -1,0 +1,1067 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Enhancements for Real-Time Monte-Carlo Tree Search in General Video Game Playing</title>
+				<funder ref="#_2ZvBCTE">
+					<orgName type="full">Netherlands Organisation for Scientific Research (NWO)</orgName>
+				</funder>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability  status="unknown">
+					<licence/>
+				</availability>
+				<date type="published" when="2024-07-03">3 Jul 2024</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Dennis</forename><forename type="middle">J N J</forename><surname>Soemers</surname></persName>
+							<email>d.soemers@gmail.com</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Data Science and Knowledge Engineering</orgName>
+								<orgName type="institution">Maastricht University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Chiara</forename><forename type="middle">F</forename><surname>Sironi</surname></persName>
+							<email>c.sironi@maastrichtuniversity.nl</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Data Science and Knowledge Engineering</orgName>
+								<orgName type="institution">Maastricht University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Torsten</forename><surname>Schuster</surname></persName>
+							<email>t.schuster@student.maastrichtuniversity.nl</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Data Science and Knowledge Engineering</orgName>
+								<orgName type="institution">Maastricht University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Mark</forename><forename type="middle">H M</forename><surname>Winands</surname></persName>
+							<email>m.winands@maastrichtuniversity.nl</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Data Science and Knowledge Engineering</orgName>
+								<orgName type="institution">Maastricht University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><surname>Set</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Data Science and Knowledge Engineering</orgName>
+								<orgName type="institution">Maastricht University</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Enhancements for Real-Time Monte-Carlo Tree Search in General Video Game Playing</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2024-07-03">3 Jul 2024</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">D0814161759E75D1D87BB771660930B4</idno>
+					<idno type="arXiv">arXiv:2407.03049v1[cs.AI]</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.8.2-SNAPSHOT" ident="GROBID" when="2025-01-24T14:30+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<textClass>
+				<keywords>
+					<term>Aliens</term>
+					<term>Boulderdash</term>
+					<term>Butterflies</term>
+					<term>Chase</term>
+					<term>Frogs</term>
+					<term>Missile Command</term>
+					<term>Portals</term>
+					<term>Sokoban</term>
+					<term>Survive Zombies</term>
+					<term>Zelda Camel Race</term>
+					<term>Digdug</term>
+					<term>Firestorms</term>
+					<term>Infection</term>
+					<term>Firecaster</term>
+					<term>Overload</term>
+					<term>Pacman</term>
+					<term>Seaquest</term>
+					<term>Whackamole</term>
+					<term>Eggomania Bait</term>
+					<term>BoloAdventures</term>
+					<term>BrainMan</term>
+					<term>ChipsChallenge</term>
+					<term>Modality</term>
+					<term>Painter</term>
+					<term>RealPortals</term>
+					<term>RealSokoban</term>
+					<term>TheCitadel</term>
+					<term>ZenPuzzle Roguelike</term>
+					<term>Surround</term>
+					<term>Catapults</term>
+					<term>Plants</term>
+					<term>Plaque-Attack</term>
+					<term>Jaws</term>
+					<term>Labyrinth</term>
+					<term>Boulderchase</term>
+					<term>Escape</term>
+					<term>Lemmings Solarfox</term>
+					<term>Defender</term>
+					<term>Enemy Citadel</term>
+					<term>Crossfire</term>
+					<term>Lasers</term>
+					<term>Sheriff</term>
+					<term>Chopper</term>
+					<term>Superman</term>
+					<term>WaitForBreakfast</term>
+					<term>CakyBaky</term>
+				</keywords>
+			</textClass>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>General Video Game Playing (GVGP) is a field of Artificial Intelligence where agents play a variety of realtime video games that are unknown in advance. This limits the use of domain-specific heuristics. Monte-Carlo Tree Search (MCTS) is a search technique for game playing that does not rely on domain-specific knowledge. This paper discusses eight enhancements for MCTS in GVGP; Progressive History, N-Gram Selection Technique, Tree Reuse, Breadth-First Tree Initialization, Loss Avoidance, Novelty-Based Pruning, Knowledge-Based Evaluations, and Deterministic Game Detection. Some of these are known from existing literature, and are either extended or introduced in the context of GVGP, and some are novel enhancements for MCTS. Most enhancements are shown to provide statistically significant increases in win percentages when applied individually. When combined, they increase the average win percentage over sixty different games from 31.0% to 48.4% in comparison to a vanilla MCTS implementation, approaching a level that is competitive with the best agents of the GVG-AI competition in 2015.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>I. INTRODUCTION</head><p>General Video Game Playing (GVGP) <ref type="bibr" target="#b0">[1]</ref> is a field of Artificial Intelligence in games where the goal is to develop agents that are able to play a variety of real-time video games that are unknown in advance. It is closely related to General Game Playing (GGP) <ref type="bibr" target="#b1">[2]</ref>, which focuses on abstract games instead of video games. The wide variety of games in GGP and GVGP makes it difficult to use domain-specific knowledge, and promotes the use of generally applicable techniques.</p><p>There are two main frameworks for GVGP. The first framework is the Arcade Learning Environment (ALE) <ref type="bibr" target="#b2">[3]</ref> for developing agents that can play games of the Atari 2600 console. The second framework is GVG-AI <ref type="bibr" target="#b3">[4]</ref>, which can run any real-time video game described in a Video Game Description Language <ref type="bibr" target="#b4">[5]</ref>, <ref type="bibr" target="#b5">[6]</ref>. This paper focuses on the GVG-AI framework.</p><p>The GVG-AI framework is used in the GVG-AI Competition <ref type="bibr" target="#b3">[4]</ref>, <ref type="bibr" target="#b6">[7]</ref>. Past competitions only ran a Planning Track, where agents were ranked based on their performance in single-player games. In 2016, it is planned to extend this with a 2/N-Player Track, a Learning Track, and a Procedural Content Generation Track. This paper focuses on the Planning Track.</p><p>Monte-Carlo Tree Search (MCTS) <ref type="bibr" target="#b7">[8]</ref>, <ref type="bibr" target="#b8">[9]</ref> is a popular technique in GGP <ref type="bibr" target="#b9">[10]</ref> because it does not rely on domainspecific knowledge. MCTS has also performed well in GVGP in 2014 <ref type="bibr" target="#b3">[4]</ref>, which was the first year of the GVG-AI competition, but was less dominant in 2015 <ref type="bibr" target="#b6">[7]</ref>. This paper discusses and evaluates eight enhancements for MCTS to improve its performance in GVGP: Progressive History, N-Gram Selection Technique, Tree Reuse, Breadth-First Tree Initialization, Loss Avoidance, Novelty-Based Pruning, Knowledge-Based Evaluations and Deterministic Game Detection.</p><p>The remainder of the paper is structured as follows. Section II provides background information on the GVG-AI framework and the GVG-AI competition. MCTS is discussed in Section III. In Section IV, the enhancements for MCTS in GVGP are explained. Section V describes the experiments to assess the enhancements. Finally, the paper is concluded in Section VI and ideas for future research are discussed.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>II. GVG-AI FRAMEWORK AND COMPETITION</head><p>In the GVG-AI competition <ref type="bibr" target="#b3">[4]</ref>, <ref type="bibr" target="#b6">[7]</ref>, agents play a variety of games that are unknown in advance. Agents are given 1 second of processing time at the start of every game, and 40 milliseconds of processing time per tick. A tick can be thought of as a turn in an abstract game. Every tick, the agent can choose an action to play, and at the end of the tick the chosen action is played and the game state progresses. Every game has a duration of at most 2000 ticks, after which the game is a loss. Other than that, different games have different termination conditions, which define when the agent wins or loses. Every game in GVG-AI contains at least an avatar object, which is the "character" controlled by the agent. Games can also contain many other types of objects. Games in GVG-AI are fully observable and can be nondeterministic.</p><p>Agents can perform searches and attempt to learn which actions are good using the Forward Model, consisting of two important functions; advance and copy. Given a game state s t , the advance(a) function can be used to generate a successor state s t+1 , which represents one of the possible states that can be reached by playing an action a. In deterministic games, there is only one such state s t+1 for every action a, but in nondeterministic games there can be more than one. The copy(s t ) function creates a copy of s t . This function is required when it is desirable to generate multiple possible successors of s t , because every call to advance modifies the original state, and there is no undo function. Because the framework supports a wide variety of different games, it is not optimized as well as any framework dedicated to a specific game would be. This means that the advance and copy operations tend to be significantly slower than equivalent functions in individual game implementations. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>III. MONTE-CARLO TREE SEARCH</head><p>Monte-Carlo Tree Search (MCTS) <ref type="bibr" target="#b7">[8]</ref>, <ref type="bibr" target="#b8">[9]</ref> is a best-first search algorithm that gradually builds up a search tree and uses Monte-Carlo simulations to approximate the value of game states. To handle nondeterministic games with probabilistic models that are not exposed to the agent, an "open-loop" <ref type="bibr" target="#b10">[11]</ref> implementation of MCTS is used. In an open-loop approach, the root node represents the current game state (s 0 ), every edge represents an action, and every other node n represents the set of game states that can be reached by playing the sequence of actions corresponding to the path from the root node to n, starting from s 0 . See Figure <ref type="figure" target="#fig_0">1</ref> for an example.</p><p>MCTS is initialized with only the root node. Next, until some computational budget expires, the algorithm repeatedly executes simulations. Every simulation consists of the following four steps <ref type="bibr" target="#b11">[12]</ref>, depicted in Figure <ref type="figure">2</ref>.</p><p>In the Selection step, a selection policy is applied recursively, starting from the root node, until a node is reached that is not yet fully expanded (meaning that it currently has fewer successors than available actions). The selection policy determines which part of the tree built up so far is evaluated in more detail. It should provide a balance between exploitation of parts of the search tree that are estimated to have a high value so far, and exploration of parts of the tree that have not yet been visited frequently. The most commonly implemented selection policy is UCB1 [8], <ref type="bibr" target="#b12">[13]</ref>, which selects the successor S i of the current node P that maximizes Equation 1. S i and P are nodes, which can represent sets of states.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>U CB1(S</head><formula xml:id="formula_0">i ) = Q(S i ) + C × ln(n P ) n i<label>(1)</label></formula><p>Q(S i ) ∈ [0, 1] denotes the normalized average score backpropagated through S i so far (as described below), C is a parameter where higher values lead to more exploration, and n P and n i denote the visit counts of P and S i , respectively. In the Play-out step, the simulation is continued, starting from the last state encountered in the selection step, using a (semi-)random play-out policy. The most straightforward implementation is to randomly draw actions to play from a uniform distribution until a terminal game state is reached. In GVGP, this is typically not feasible, and a maximum play-out depth is used to end play-outs early.</p><p>In the Expansion step, the tree is expanded by adding one or more nodes. The most common implementation adds one node to the tree per simulation; the node corresponding to the first action played in the play-out step. In this paper, the Fig. <ref type="figure">2</ref>. The four steps of an MCTS simulation. Adapted from <ref type="bibr" target="#b11">[12]</ref>. tree is simply expanded by adding the whole play-out to the tree. The number of simulations per tick tends to be low enough in GVG-AI that there is no risk of running out of memory. Therefore, to keep all information gathered, all nodes are stored in memory.</p><p>In the Backpropagation step, the outcome of the final state of the simulation is backpropagated through the tree. Let s T be the final state of the simulation. Next, an evaluation X(s T ) of the state is added to a sum of scores stored in every node on the path from the root node to the final node of the simulation, and the visit counts of the same nodes are incremented. Because it is not feasible to let all simulations continue until terminal states are reached in GVG-AI, it is necessary to use some evaluation function for non-terminal states. A basic evaluation function that is also used by the sample MCTS controllers included in the GVG-AI framework is given by Equation <ref type="formula">2</ref>.</p><formula xml:id="formula_1">X(s T ) =      10 7 + score(s T ) if s T is a winning state -10 7 + score(s T ) if s T is a losing state score(s T )</formula><p>if s T is a non-terminal state (2) score(s T ) is the game score value of a state s T in GVG-AI. In some games a high game score value can indicate that the agent is playing well, but this is not guaranteed in all games.</p><p>Finally, the action leading to the node with the highest average score is played when the computational budget expires.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>IV. MCTS ENHANCEMENTS FOR GVGP</head><p>There is a wide variety of existing enhancements for the MCTS algorithm, many of which are described in <ref type="bibr" target="#b13">[14]</ref>. This section discusses a number of enhancements that have been evaluated in GVGP; Progressive History, N-Gram Selection Technique, Tree Reuse, Breadth-First Tree Initialization, Loss Avoidance, Novelty-Based Pruning, Knowledge-Based Evaluations, and Deterministic Game Detection. Some are known from existing research, and some are new.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A. Progressive History and N-Gram Selection Technique</head><p>Progressive History (PH) <ref type="bibr" target="#b14">[15]</ref> and N-Gram Selection Technique (NST) <ref type="bibr" target="#b15">[16]</ref> are two existing enhancements for the selection and play-out steps of MCTS, respectively. The basic idea of PH and NST is to introduce a bias in the respective steps towards playing actions, or sequences of actions, that performed well in earlier simulations. Because the value of playing an action in GVG-AI typically depends greatly on the current position of the avatar, this position is also taken into account when storing data concerning the previous performance of actions. For a detailed description of these enhancements we refer to the original publications <ref type="bibr" target="#b14">[15]</ref>, <ref type="bibr" target="#b15">[16]</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B. Tree Reuse</head><p>Suppose that a search tree was built up by MCTS in a previous game tick t -1 ≥ 0, and an action a t-1 was played. The entire subtree rooted in the node corresponding to that action can still be considered to be relevant for the new search process in the current tick t. Therefore, instead of initializing MCTS with only a root node, it can be initialized with a part of the tree built in the previous tick, as depicted in Figure <ref type="figure" target="#fig_1">3</ref>. This was previously found to be useful in the real-time game of Ms Pac-Man <ref type="bibr" target="#b16">[17]</ref>. This idea has also previously been suggested in the context of GVGP <ref type="bibr" target="#b10">[11]</ref>, but, to the best of our knowledge, the effect of this enhancement on the performance of MCTS in GVGP has not yet been evaluated.</p><p>In nondeterministic games, it is possible that the new root (which was previously a direct successor of the previous root) represented more than one possible game state. In the current tick, it is known exactly which of those possible states has been reached. Therefore, some of the old results in this tree are no longer relevant. For this reason, all the scores and visit counts in the tree are decayed by multiplying them by a decay factor γ ∈ [0, 1] before starting the next MCTS procedure. Tree Reuse (TR) with γ = 0 completely resets the accumulated scores and visit counts of nodes (but still retains the nodes, and therefore the structure of the generated tree), and TR with γ = 1 does not decay old results.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>C. Breadth-First Tree Initialization and Safety Prepruning</head><p>In some of the games supported by the GVG-AI framework, the number of MCTS simulations that can be executed in a single tick can be very small; sometimes smaller than the number of available actions. In such a situation, MCTS behaves nearly randomly, and is susceptible to playing actions that lead to a direct loss, even when there are actions available that do not directly lose the game.</p><p>Theoretically this problem could be avoided by adjusting the limit of the play-out depth of MCTS to ensure that a sufficient number of simulations can be done. In practice, this can be problematic because it requires a low initial depth limit to ensure that it is not too high at the start of a game, and this can in turn be detrimental in games where it is feasible and beneficial to run a larger number of longer play-outs. We propose to handle this problem using Breadth-First Tree Initialization. The idea is straightforward; before starting MCTS, the direct successors of the root node are generated by a 1-ply Breadth-First Search. Every action available in the root state is executed up to a number M times to deal with nondeterminism, and the resulting states are evaluated. The average of these M evaluations is backpropagated for every successor with a weight equal to a single MCTS simulation. MCTS is only started after this process. When MCTS starts, every direct successor of the root node already has a prior evaluation that can be used to avoid playing randomly in cases with an extremely small number of simulations. The M states generated for every successor are cached in the corresponding nodes, so that they can be re-used in the subsequent MCTS process. This reduces the computational overhead of the enhancement.</p><p>Safety prepruning, originally used in an algorithm called Iterated Width <ref type="bibr" target="#b17">[18]</ref>, has been integrated in this process. The idea of safety prepruning is to count the number of immediate game losses among the M generated states for each action, and only keep the actions leading to nodes with the minimum observed number of losses. All other actions are pruned.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>D. Loss Avoidance</head><p>In GVGP, many games have a high number of losing game states that are relatively easy to avoid. An example of such a game is Frogs, where the avatar is a frog that should cross a road and a river. The road contains trucks that cause a loss upon collision, but can easily be avoided because they move at a constant speed. The river contains logs that also move at a constant speed, which the frog should jump on in order to safely cross the river.</p><p>An example of a search tree with many losing states is depicted in Figure <ref type="figure" target="#fig_2">4</ref>. In this example, the rightmost action in the root node is an action that brings the agent back to a similar state as in the root node. In the Frogs game, this could be an action where the frog stays close to the initial position, and does not move towards the road.</p><p>The (semi-)random play used in the play-out step of MCTS is likely to frequently run into losing game states in situations like this. This leads to a negative evaluation of nodes that do in fact lead to a winning position. This is only corrected when sufficient simulations have been run such that the selection step of MCTS correctly biases the majority of the simulations towards a winning node. With a low simulation count in GVG- AI, MCTS is likely to repeatedly play the rightmost action in Figure <ref type="figure" target="#fig_2">4</ref>, which only delays the game until it is lost due to reaching the maximum game duration.</p><p>This problem is similar to the problem of traps <ref type="bibr" target="#b18">[19]</ref> or optimistic moves <ref type="bibr" target="#b19">[20]</ref> in (two-player) adversarial games. In those cases, MCTS has an overly optimistic evaluation of some states, whereas in the cases discussed here it has an overly pessimistic evaluation of some states. In <ref type="bibr" target="#b20">[21]</ref>, it was proposed to integrate shallow minimax searches inside of the steps of MCTS to improve its performance in game trees with traps or optimistic moves. Using minimax searches to prove wins or losses is difficult in GVGP because games can be nondeterministic, but a similar idea can be used to get less pessimistic evaluations.</p><p>In this paper, an idea named Loss Avoidance (LA) is proposed for GVGP. The idea of LA is to try to ignore losses by immediately searching for a better alternative whenever a loss is encountered the first time a node is visited. An example is depicted in Figure <ref type="figure" target="#fig_3">5</ref>. Whenever the play-out step of MCTS ends in a losing game state, that result is not backpropagated as would commonly be done in MCTS. Instead, one state is generated for every sibling of the last node, and only the evaluation of the node with the highest evaluation is backpropagated. All generated nodes are still added to the tree, and store their own evaluation in memory.</p><p>LA causes MCTS to keep an optimistic initial view of the value of nodes. This tends to work well in the single-player games of GVG-AI, where it is often possible to reactively get out of dangerous situations. It is unlikely to work well in, for instance, adversarial games, where a high concentration of losses in a subtree typically indicates that an opposing player has more options to win and is likely in a stronger position.</p><p>In an open-loop implementation of MCTS, LA can have a significant amount of computational overhead in game trees with many losses. For instance, in the Frogs game it roughly halves the average number of MCTS simulations per tick. This is because the node prior to the node with the losing game state does not store the corresponding game state in memory, which means that all states generated in the selection and playout steps need to be re-generated by playing the same action sequence from the root node. In nondeterministic games this process can also lead to finding a terminal state before the full action sequence has been executed again. To prevent spending too much time in the same simulation, the LA process is not started again, but the outcome of that state is backpropagated.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>E. Novelty-Based Pruning</head><p>The concept of novelty tests was first introduced in the Iterated Width algorithm (IW) <ref type="bibr" target="#b17">[18]</ref>, <ref type="bibr" target="#b21">[22]</ref>. In IW, novelty tests are used for pruning in Breadth-First Search (BrFS). Whenever a state s is generated in a BrFS, a novelty measure (described in more detail below) nov(s) is computed. This is a measure of the extent to which s is "new" with respect to all previously generated states. States with a lower measure are "more novel" than states with a higher measure <ref type="bibr" target="#b21">[22]</ref>. The original IW algorithm consists of a sequence of calls to IW(0), IW(1), etc., where IW(i) is a BrFS that prunes a state s if nov(s) &gt; i. In GVGP, it was found that it is only feasible to run a single IW(i) iteration <ref type="bibr" target="#b17">[18]</ref>. The best results were obtained with IW(1), and a variant named IW( <ref type="formula" target="#formula_2">3</ref>2 ) (see <ref type="bibr" target="#b17">[18]</ref> for details). The definition of the novelty measure nov(s) of a state s requires s to be defined in terms of a set of boolean features. An example of a boolean feature that can be a part of a state is a predicate at(cell, type), which is true in s if and only if there is an object of the given type in the given cell in s. Then, nov(s) is defined as the size of the smallest tuple of features that are all true in s, and not all true in any other state generated previously in the same search process. If there is no such tuple, s must be an exact copy of some previously generated state, and nov(s) is defined as n + 1, where n is the number of features that are defined. For example, suppose that in s, at((x, y), i) = true, and in all previously generated states, at((x, y), i) = f alse. Then, nov(s) = 1, because there is a tuple of size 1 of features that were not all true in any previously generated state.</p><p>IW(1) prunes any state s with nov(s) &gt; 1. In this paper, Novelty-Based Pruning (NBP) is proposed as an idea to prune nodes based on novelty tests in MCTS. The goal is not to prune bad lines of play, but to prune redundant lines of play.</p><p>MCTS often generates states deep in the tree before other states close to the root. For instance, the last state of the first play-out is much deeper in the tree than the first state of the second play-out. This is an important difference with the BrFS used by IW. It means that the novelty measure nov(s) of a state s should be redefined in such a way that it not necessarily uses all previously generated states, but only a specific set of states, referred to as the neighborhood N (s) of s.</p><p>N (s) is the union of four sets of states. The first set consists of the siblings on the "left" side of s. The ordering of the states matters, but can be arbitrary (as in a BrFS). The second set contains only the parent p(s) of s. The third set consists of all siblings of p(s). The fourth set is the neighborhood of p(s). More formally, let s i denote the i th successor of a parent p(s i ). Then, N (s i ) is defined as N (s i ) = {s 1 , s 2 , . . . , s i-1 } ∪ {p(s i )}∪Sib(p(s i ))∪N (p(s i )), where Sib(p(s i )) denotes the set of siblings of p(s i ). For the root state r, N (r) = Sib(r) = ∅. An example is depicted in Figure <ref type="figure" target="#fig_4">6</ref>. Using the above definition of N (s), nov(s, N (s)) is defined as the size of the smallest tuple of features that are all true in s, and not all true in any other state in the set N (s). The novelty tests are used in MCTS as follows. Let n be a node with a list of successors Succ(n). The first time that the selection step reaches n when it is fully expanded, all successors Succ(n) are novelty tested based on a single state generated per node, using a threshold of 1 for the novelty tests (as in IW( <ref type="formula" target="#formula_0">1</ref>)). The same boolean features are used to define states in GVG-AI as described in <ref type="bibr" target="#b17">[18]</ref>. Nodes are marked as not being novel if they fail the novelty test. Whenever all successors of a node are marked as not novel, that node itself is also marked as not novel. There are a few exceptions where nodes are not marked. If a state has a higher game score than the parent, it is always considered to be novel. Additionally, states transitioned into by playing a movement action are always considered to be novel in games where either only horizontal, or only vertical movement is available (because these games often require moving back and forth which can get incorrectly pruned by NBP otherwise), and in games where the avatar has a movement speed ≤ 0.5 (because slow movement does not result in the avatar reaching a new cell every tick, and is therefore not detected by the cell-based boolean features).</p><p>In the selection step of MCTS, when one of the successors Succ(n) of n should be selected, any successor n ′ ∈ Succ(n) is ignored if it is marked as not novel, unless the average normalized score Q(n) &lt; 0.5. In such cases, the situation is considered to be dangerous and all alternatives should be considered to see if a better position can be found. For the final selection of the move to play in the real game, non-novel nodes are also only considered if the best novel alternative has a normalized average score &lt; 0.5.</p><p>When the successors Succ(n) have been novelty tested, every node n i ∈ Succ(n) stores a set of tuples of features that were all true in the states generated for the purpose of novelty testing for the nodes {n} ∪ Succ(n). This means that the tuples of features that are true in the neighborhood N (s) of a state s can be reconstructed relatively efficiently by traversing the path from s back to the root, and collecting the tuples in the stored sets. This is the main reason for defining N (s) as described above. Including more states (for instance, the black states in Figure <ref type="figure" target="#fig_4">6</ref>) would require also traversing back down the tree to collect more sets of tuples. This could increase the number of nodes that NBP marks as not being novel, but would also be more expensive computationally. This is not a problem in the BrFS of IW, because it can simply store all tuples of features that are all true in any generated state in the same set for the entire search process.</p><p>Novelty measures are assigned to nodes based on only one state per node. Therefore, given two identical open-loop game trees in nondeterministic games, it is possible that a node in one tree is pruned and the equivalent node in the other tree is not pruned. For this reason, when combining NBP with Tree Reuse, the results of novelty tests on nodes in the first ply below the new root node are reset when reusing the previous tree. This does not entirely remove the influence of nondeterminism on NBP, but close to the root that influence is at least reduced.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>F. Knowledge-Based Evaluations</head><p>An important problem with MCTS in GVG-AI is that it is often infeasible to find any terminal states, or even states with a change in game score. This means that the evaluation function in Equation 2 often returns the same value for all states generated in the same tick, and MCTS explores the search space and behaves randomly. In this paper, a heuristic evaluation function is proposed that uses knowledge collected during simulations, and distances to objects that could potentially be interesting, to distinguish between states that have identical evaluations according to Equation <ref type="formula">2</ref>. The basic idea is not new; some agents in the competition of 2014 used distancebased evaluation functions <ref type="bibr" target="#b3">[4]</ref>. A similar idea is also described in <ref type="bibr" target="#b22">[23]</ref>, and extended in <ref type="bibr" target="#b23">[24]</ref>. The idea discussed here is based on the same intuition, but a number of implementation details are different. Another related idea is described in <ref type="bibr" target="#b24">[25]</ref>, where MCTS is used to learn which objects are interesting, and a pathfinding algorithm is used to move towards a selected goal. Let X(s 0 ) denote the evaluation of the current game state s 0 , and let X(s T ) denote the evaluation of the final state s T of a play-out. If X(s T ) = X(s 0 ), a heuristic evaluation Eval KB (s T ) is computed and added to X(s T ). For every object type i observed in a game, let d 0 (i) denote the distance from the avatar to the closest object of type i in s 0 , and let d T (i) denote the distance from the avatar to the closest object of type i in s T . These distances are computed using the A* pathfinding algorithm <ref type="bibr" target="#b25">[26]</ref>. The pathfinding algorithm takes objects of the wall type into account as obstacles. Many games can also contain other objects that block movement, or portals that can be used for teleportation. These objects are not taken into account, because the agent would first need to learn how these objects influence pathfinding. For every object type i, a weight w i is used to reward or punish the agent for moving to objects of that type. This is done by computing Eval KB (s T ) as given by Equation <ref type="formula" target="#formula_2">3</ref>, normalizing it to lie in [0, 0.5], and adding it to X(s T ) if otherwise X(s T ) = X(s 0 ).</p><formula xml:id="formula_2">Eval KB (s T ) = i w i × (d 0 (i) -d T (i))<label>(3)</label></formula><p>Object types i with a small absolute weight (|w i | &lt; 10 -4 ) are ignored, to save the computational cost of pathfinding.</p><p>The weights w i are determined as follows. To motivate exploration, all weights are initialized with positive values (0.1 for NPCs, 0.25 for Movables, and 1 for Resources and Portals), and incremented by 10 -4 every game tick. States s t generated during the selection or play-out steps of MCTS are used to adjust these weights. Let s t-1 denote the predecessor of s t . Whenever such a state s t is generated, it is used to update some of the weights w i . The intuition is that, if X(s t ) ̸ = X(s t-1 ), it is likely that some interesting collision event occurred in the transition from s t-1 to s t that caused the change in score. The framework provides access to a set E(s t ) of collision events that occurred in that transition. Every event e ∈ E(s t ) is a collision event between two objects, where one object is either the avatar, or an object created by the avatar (for instance, a missile fired by the avatar), and the other object is of some type i. Let ∆ = X(s t ) -X(s t-1 ) denote the observed change in score. For every object type i, a sum ∆ i is kept of all changes in scores observed in state transitions where collision events with objects of type i occurred. Additionally, a counter n i of event occurrences is kept for every type i, such that the average change in score ∆ i = ∆i ni for collisions with every type can be computed. Whenever an event with an object of type i is observed, w i is updated as given by Formula 4.</p><formula xml:id="formula_3">w i ← w i + (∆ i -w i ) × α i<label>(4)</label></formula><p>α i is a learning rate that is initialized to 0.8 for every type, and updated as given by Formula 5 after updating w i .</p><formula xml:id="formula_4">α i ← max(0.1, 0.75 × α i )<label>(5)</label></formula><p>This idea is similar to using gradient descent for minimizing |∆ i -w i |. The main reason for not simply using ∆ i directly is to avoid relying too much on the knowledge obtained from a low number of observed events.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>G. Deterministic Game Detection</head><p>The idea of Deterministic Game Detection (DGD) is to detect when a game is likely to be deterministic, and treat deterministic games differently from nondeterministic games. At the start of every game, M random sequences of actions of length N are generated. Each of the M sequences is used to advance a copy of the initial game state s 0 , with R repetitions per sequence. If any of the M action sequences did not result in equivalent states among the R repetitions for that sequence, the game is classified as nondeterministic. Additionally, any game in which NPCs are observed is immediately classified as nondeterministic. Any other game is classified as deterministic. In this paper, M = N = 5 and R = 3.</p><p>Many participants in previous GVG-AI competitions [7] used a similar idea to switch to a different algorithm for deterministic games (for instance, using Breadth-First Search in deterministic games and MCTS in nondeterministic games). In this paper, DGD is only used to modify MCTS and the TR and NBP enhancements in deterministic games. The Q(S i ) term in Equation 1 (or the equivalent term in the formula of PH) is replaced by 3  4 ×Q(S i )+<ref type="foot" target="#foot_0">foot_0</ref> 4 × Qmax (S i ), where Qmax (S i ) is the maximum score observed in the subtree rooted in S i . This is referred to as mixmax <ref type="bibr" target="#b26">[27]</ref>, <ref type="bibr" target="#b27">[28]</ref>. Additionally, TR and NBP are modified to no longer decay or reset any old results.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>V. EXPERIMENTS A. Setup</head><p>The enhancements discussed in this paper have been experimentally evaluated using the following setup. Every experiment was run using six sets that are available in the framework, of ten games each, for a total of sixty different games per experiment. Table VI lists the names of the games for every set. Average results are presented for every set of games, and for the total of all sixty games combined. For every game, five different levels were used, with a minimum of fifteen repetitions per level per experiment (leading to a minimum of 750 runs per set). 95% confidence intervals are presented for all results. All games were played according to the GVG-AI competition rules 1 , on a CentOS Linux server consisting of four AMD Twelve-Core OpteronT 6174 processors (2.2 GHz).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B. Results</head><p>In the first experiment, the following benchmark agents are compared to each other; SOLMCTS, MCTS, IW(1), and YBCRIBER. SOLMCTS is the Sample Open Loop MCTS controller included in the framework. MCTS is our baseline implementation of MCTS, based on the MAASTCTS <ref type="bibr" target="#b28">[29]</ref> agent, which has a number of differences in comparison to SOLMCTS. MCTS expands all nodes for states generated in simulations (as opposed to one node per simulation), C is set to 0.6 in the UCB1 equation (as opposed to C = √ 2), it simulates up to ten actions after the selection step (as opposed to ten steps from the root node), it uses the 1 second of initialization time for running the algorithm (as opposed to not using that time), and it plays the action with the maximum average score (as opposed to the maximum visit count). IW(1) is the Iterated Width-based agent, as described in <ref type="bibr" target="#b17">[18]</ref>. YBCRIBER is an IW-based agent with a number of other features, which won the GVG-AI competition at the IEEE CEEC 2015 conference. The results are given in Table <ref type="table">I</ref>. The experimental data reveals that the baseline MCTS agent outperforms SOLMCTS. IW(1) performs slightly better than MCTS overall, and YBCRIBER performs much better than the other benchmark agents.</p><p>In Table <ref type="table">II</ref>   The two columns on the right-hand side show the percentage of lost games where the game was terminated before t = 2000 (where t = 2000 is the maximum duration of a game in GVG-AI). BFTI reduces this percentage significantly. Even though it may slightly decrease win percentages, the quality of play in lost games can be considered to be improved; the agent delays a significant number of losses. This may leave more time for other enhancements to find wins. Therefore, BFTI is included in the baseline MCTS agent for the following experiments that evaluate other enhancements individually. This is followed by an experiment with more enhancements combined.</p><p>Table <ref type="table">III</ref> shows the win percentages obtained by adding Progressive History (PH), N-Gram Selection Technique (NST), or both to the BFTI agent. PH and NST appear to increase the average win percentage, but the confidence intervals overlap. The two combined result in a statistically significant increase. Table <ref type="table">IV</ref> shows the win percentages of adding either Knowledge-Based Evaluations (KBE), Loss Avoidance (LA) or Novelty-Based Pruning (NBP) to the BFTI agent. All three individually show an increase in the average win percentage over BFTI, with KBE giving the largest increase.</p><p>Table <ref type="table">V</ref> shows the win percentages of a number of variants of MCTS with multiple enhancements combined. "No DGD" is an agent with all enhancements discussed in this paper, except for Deterministic Game Detection (DGD). "No BFTI" is an agent with all enhancements except for BFTI. This is added to test the assumption made earlier that the ability of BFTI  to delay games may enable other enhancements to find more wins. The last agent contains all enhancements. In combination with all the other enhancements, DGD significantly improves the win percentage. DGD was found not to provide a significant increase in win percentage when applied to the BFTI, TR (γ = 0.6) or NBP agents without other enhancements (those results have been omitted to save space). Additionally, BFTI appears to increase the win percentage in combination with all other enhancements, whereas Table <ref type="table">II</ref> shows it appears to decrease the win percentage when other enhancements are absent, but these differences are not statistically significant.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>VI. CONCLUSION AND FUTURE WORK</head><p>Eight enhancements for Monte-Carlo Tree Search (MCTS) in General Video Game Playing (GVGP) have been discussed and evaluated. Most of them have been shown to significantly (95% confidence) increase the average win percentage over sixty different games when added individually to MCTS. All the enhancements combined increase the win percentage of our basic MCTS implementation from 31.0±1.2 to 48.4±1.5. This final performance is relatively close to the win percentage of the winner of the IEEE CEEC 2015 conference; YBCRIBER, with a win percentage of 52.4 ± 1.3.</p><p>Many of the discussed enhancements have parameters, which so far have only been tuned according to short, preliminary experiments. These parameters can likely be tuned better in future work to improve the performance. Loss Avoidance (LA) and Novelty-Based Pruning (NBP) as proposed in this paper have binary effects, in that LA backpropagates only one result from multiple generated siblings and NBP classifies nodes as either novel or not novel. Perhaps these can be improved by making them less binary. The overall performance of the agent can also likely be improved by incorporating more features that are commonly seen among the top entries in past  </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Fig. 1 .</head><label>1</label><figDesc>Fig. 1. Example open-loop game tree. Nodes other than the root node can represent multiple possible states in nondeterministic games.</figDesc><graphic coords="2,328.49,50.54,214.55,103.24" type="bitmap" /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Fig. 3 .</head><label>3</label><figDesc>Fig. 3. Tree Reuse in MCTS.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Fig. 4 .</head><label>4</label><figDesc>Fig. 4. Example search tree. Dark nodes represent losing game states, and white nodes represent winning or neutral game states.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Fig. 5 .</head><label>5</label><figDesc>Fig. 5. Example MCTS simulation with Loss Avoidance. The X values in the last three nodes are evaluations of game states in those nodes. The dark node is a losing node.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Fig. 6 .</head><label>6</label><figDesc>Fig.6. States used for NBP in MCTS. The grey states are the neighborhood of s i in MCTS. For s i+1 , s i is also included. The black states would be included for the novelty tests in IW, but not in MCTS.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>Figure 7 depicts</head><label>7</label><figDesc>Figure 7 depicts 95% confidence intervals for the win percentage of the BFTI agent with Tree Reuse (TR), for six different values of the decay factor γ. The confidence interval for BFTI is shaded in grey. TR with γ ∈ {0.4, 0.6, 1.0} significantly improves the win percentage of BFTI.TableIVshows the win percentages of adding either Knowledge-Based Evaluations (KBE), Loss Avoidance (LA) or Novelty-Based Pruning (NBP) to the BFTI agent. All three individually show an increase in the average win percentage over BFTI, with KBE giving the largest increase.TableVshows the win percentages of a number of variants of MCTS with multiple enhancements combined. "No DGD" is an agent with all enhancements discussed in this paper, except for Deterministic Game Detection (DGD). "No BFTI" is an agent with all enhancements except for BFTI. This is added to test the assumption made earlier that the ability of BFTI</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_6"><head>Fig. 7 .</head><label>7</label><figDesc>Fig. 7. 95% confidence intervals for win percentages of BFTI with Tree Reuse (TR) for different values of the decay factor γ. The area shaded in grey is the confidence interval for the win percentage of BFTI without TR.TABLE IV WIN PERCENTAGES (KBE, LA AND NBP, 750 RUNS PER SET) Sets BFTI KBE LA NBP Set 1 43.3 ± 3.5 50.4 ± 3.6 52.0 ± 3.6 49.6 ± 3.6 Set 2 33.1 ± 3.4 52.3 ± 3.6 34.0 ± 3.4 34.5 ± 3.4 Set 3 21.2 ± 2.9 19.1 ± 2.8 23.3 ± 3.0 23.5 ± 3.0 Set 4 30.3 ± 3.3 30.1 ± 3.3 29.6 ± 3.3 32.0 ± 3.3 Set 5 23.1 ± 3.0 31.3 ± 3.3 31.9 ± 3.3 23.9 ± 3.1 Set 6 29.2 ± 3.3 33.2 ± 3.4 28.8 ± 3.2 34.8 ± 3.4</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head></head><label></label><figDesc>, our MCTS implementation with Breadth-First Tree Initialization and Safety Prepruning (BFTI) is compared</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head></head><label></label><figDesc>± 1.3 30.7 ± 1.3 32.6 ± 1.4 33.2 ± 1.4to the MCTS implementation without BFTI. The results for MCTS are based on 1000 runs per set, and the results for BFTI on 750 runs per set. BFTI appears to lower the win percentage slightly, but the 95% confidence intervals overlap.</figDesc><table><row><cell></cell><cell></cell><cell>TABLE III</cell><cell></cell><cell></cell></row><row><cell cols="5">WIN PERCENTAGES (PH AND NST, 750 RUNS PER SET)</cell></row><row><cell>Sets</cell><cell>BFTI</cell><cell>PH</cell><cell>NST</cell><cell>NST+PH</cell></row><row><cell>Set 1</cell><cell cols="4">43.3 ± 3.5 43.2 ± 3.5 45.1 ± 3.6 43.5 ± 3.5</cell></row><row><cell>Set 2</cell><cell cols="4">33.1 ± 3.4 34.5 ± 3.4 36.5 ± 3.4 38.0 ± 3.5</cell></row><row><cell>Set 3</cell><cell cols="4">21.2 ± 2.9 23.3 ± 3.0 23.1 ± 3.0 24.1 ± 3.1</cell></row><row><cell>Set 4</cell><cell cols="4">30.3 ± 3.3 29.5 ± 3.3 29.7 ± 3.3 32.3 ± 3.3</cell></row><row><cell>Set 5</cell><cell cols="4">23.1 ± 3.0 23.9 ± 3.1 30.0 ± 3.3 28.0 ± 3.2</cell></row><row><cell>Set 6</cell><cell cols="4">29.2 ± 3.3 30.0 ± 3.3 31.1 ± 3.3 33.1 ± 3.4</cell></row><row><cell>Total</cell><cell>30.0</cell><cell></cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head></head><label></label><figDesc>TABLE IV WIN PERCENTAGES (KBE, LA AND NBP, 750 RUNS PER SET) ± 3.5 50.4 ± 3.6 52.0 ± 3.6 49.6 ± 3.6 Set 2 33.1 ± 3.4 52.3 ± 3.6 34.0 ± 3.4 34.5 ± 3.4 Set 3 21.2 ± 2.9 19.1 ± 2.8 23.3 ± 3.0 23.5 ± 3.0 Set 4 30.3 ± 3.3 30.1 ± 3.3 29.6 ± 3.3 32.0 ± 3.3 Set 5 23.1 ± 3.0 31.3 ± 3.3 31.9 ± 3.3 23.9 ± 3.1 Set 6 29.2 ± 3.3 33.2 ± 3.4 28.8 ± 3.2 34.8 ± 3.4 Total 30.0 ± 1.3 36.1 ± 1.4 33.3 ± 1.4 33.0 ± 1.4</figDesc><table><row><cell>Sets</cell><cell>BFTI</cell><cell>KBE</cell><cell>LA</cell><cell>NBP</cell></row><row><cell>Set 1</cell><cell>43.3</cell><cell></cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head></head><label></label><figDesc>± 3.5 62.7 ± 3.5 62.7 ± 3.5 62.8 ± 3.5 Set 2 33.1 ± 3.4 56.4 ± 3.5 55.7 ± 3.6 59.3 ± 3.6 Set 3 21.2 ± 2.9 22.1 ± 3.0 28.5 ± 3.2 28.7 ± 3.2 Set 4 30.3 ± 3.3 32.7 ± 3.4 47.1 ± 3.6 48.1 ± 3.6 Set 5 23.1 ± 3.0 37.2 ± 3.5 39.6 ± 3.5 42.1 ± 3.5 Set 6 29.2 ± 3.3 38.3 ± 3.5 49.2 ± 3.6 49.1 ± 3.6 Total 30.0 ± 1.3 41.6 ± 1.4 47.1 ± 1.5 48.4 ± 1.5</figDesc><table><row><cell></cell><cell></cell><cell>TABLE V</cell><cell></cell><cell></cell></row><row><cell cols="5">WIN PERCENTAGES (ENHANCEMENTS COMBINED, 750 RUNS PER SET)</cell></row><row><cell>Sets</cell><cell>BFTI</cell><cell>No DGD</cell><cell>No BFTI</cell><cell>All Enhanc.</cell></row><row><cell>Set 1</cell><cell>43.3</cell><cell></cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>TABLE VI NAMES</head><label>VI</label><figDesc>OF THE GAMES IN EVERY SET Set 1</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1" xml:id="foot_0"><p>Revision</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" xml:id="foot_1"><p>24b11aea75722ab02954c326357949b97efb7789 of the GVG-AI framework (https://github.com/EssexUniversityMCTS/gvgai) was used.</p></note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div><head>ACKNOWLEDGEMENT</head><p>This work is partially funded by the <rs type="funder">Netherlands Organisation for Scientific Research (NWO)</rs> in the framework of the project <rs type="projectName">GoGeneral</rs>, grant number <rs type="grantNumber">612.001.121</rs>.</p></div>
+			</div>
+			<listOrg type="funding">
+				<org type="funded-project" xml:id="_2ZvBCTE">
+					<idno type="grant-number">612.001.121</idno>
+					<orgName type="project" subtype="full">GoGeneral</orgName>
+				</org>
+			</listOrg>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">General Video Game Playing</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Levine</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">B</forename><surname>Congdon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Ebner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Kendall</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">M</forename><surname>Lucas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">M</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Schaul</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Thompson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Artif. and Comput. Intell. in Games, ser. Dagstuhl</title>
+		<title level="s">Schloss Dagstuhl-Leibniz-Zentrum fuer Informatik</title>
+		<editor>
+			<persName><forename type="first">S</forename><forename type="middle">M</forename><surname>Follow-Ups</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">M</forename><surname>Lucas</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">M</forename><surname>Mateas</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">P</forename><surname>Preuss</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">J</forename><surname>Spronck</surname></persName>
+		</editor>
+		<editor>
+			<persName><surname>Togelius</surname></persName>
+		</editor>
+		<imprint>
+			<date type="published" when="2013">2013</date>
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="page" from="77" to="83" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">General Game Playing: Overview of the AAAI Competition</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Genesereth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Love</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Pell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">AI Magazine</title>
+		<imprint>
+			<biblScope unit="volume">26</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="62" to="72" />
+			<date type="published" when="2005">2005</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">The Arcade Learning Environment: An Evaluation Platform for General Agents</title>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">G</forename><surname>Bellemare</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Naddaf</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Veness</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bowling</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Artif. Intell. Research</title>
+		<imprint>
+			<biblScope unit="volume">47</biblScope>
+			<biblScope unit="page" from="253" to="279" />
+			<date type="published" when="2013">2013</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">The 2014 General Video Game Playing Competition</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Perez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Samothrakis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Togelius</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Schaul</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">M</forename><surname>Lucas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Couëtoux</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C.-U</forename><surname>Lim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Thompson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Trans. on Comput. Intell. and AI in Games</title>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+	<note>To appear</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Towards a Video Game Description Language</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Ebner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Levine</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">M</forename><surname>Lucas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Schaul</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Thompson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Togelius</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Artif. and Comput. Intell. in Games, ser. Dagstuhl</title>
+		<title level="s">Schloss Dagstuhl-Leibniz-Zentrum fuer Informatik</title>
+		<editor>
+			<persName><forename type="first">S</forename><forename type="middle">M</forename><surname>Follow-Ups</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">M</forename><surname>Lucas</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">M</forename><surname>Mateas</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">P</forename><surname>Preuss</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">J</forename><surname>Spronck</surname></persName>
+		</editor>
+		<editor>
+			<persName><surname>Togelius</surname></persName>
+		</editor>
+		<imprint>
+			<date type="published" when="2013">2013</date>
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="page" from="85" to="100" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">A Video Game Description Language for Model-based or Interactive Learning</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Schaul</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the IEEE Conf. on Comput. Intell. in Games</title>
+		<meeting>of the IEEE Conf. on Comput. Intell. in Games<address><addrLine>Niagara Falls</addrLine></address></meeting>
+		<imprint>
+			<publisher>IEEE Press</publisher>
+			<date type="published" when="2013">2013</date>
+			<biblScope unit="page" from="193" to="200" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">General Video Game AI: Competition, Challenges and Opportunities</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Perez-Liebana</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Samothrakis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Togelius</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">M</forename><surname>Lucas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Schaul</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Thirtieth AAAI Conf. on Artif. Intell</title>
+		<meeting>of the Thirtieth AAAI Conf. on Artif. Intell</meeting>
+		<imprint>
+			<publisher>AAAI Press</publisher>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="page" from="4335" to="4337" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Bandit Based Monte-Carlo Planning</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Kocsis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Szepesvári</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Machine Learning: ECML 2006, ser</title>
+		<editor>
+			<persName><forename type="first">J</forename><surname>Lncs</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">T</forename><surname>Fürnkranz</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">M</forename><surname>Scheffer</surname></persName>
+		</editor>
+		<editor>
+			<persName><surname>Spiliopoulou</surname></persName>
+		</editor>
+		<meeting><address><addrLine>Berlin Heidelberg</addrLine></address></meeting>
+		<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2006">2006</date>
+			<biblScope unit="volume">4212</biblScope>
+			<biblScope unit="page" from="282" to="293" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Efficient Selectivity and Backup Operators in Monte-Carlo Tree Search</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Coulom</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Computers and Games</title>
+		<editor>
+			<persName><surname>Ser</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">H</forename><forename type="middle">J</forename><surname>Lncs</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">P</forename><surname>Van Den Herik</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">H</forename><forename type="middle">H L M</forename><surname>Ciancarini</surname></persName>
+		</editor>
+		<editor>
+			<persName><surname>Donkers</surname></persName>
+		</editor>
+		<meeting><address><addrLine>Berlin Heidelberg</addrLine></address></meeting>
+		<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2007">2007</date>
+			<biblScope unit="volume">4630</biblScope>
+			<biblScope unit="page" from="72" to="83" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">CadiaPlayer: A Simulation-Based General Game Player</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Björnsson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Finnsson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Trans. on Comput. Intell. and AI in Games</title>
+		<imprint>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="4" to="15" />
+			<date type="published" when="2009">2009</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Open Loop Search for General Video Game Playing</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Perez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Dieskau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Hünermund</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Mostaghim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">M</forename><surname>Lucas</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Genetic and Evol. Computation Conf. ACM</title>
+		<meeting>of the Genetic and Evol. Computation Conf. ACM</meeting>
+		<imprint>
+			<date type="published" when="2015">2015</date>
+			<biblScope unit="page" from="337" to="344" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Progressive Strategies for Monte-Carlo Tree Search</title>
+		<author>
+			<persName><forename type="first">G</forename><forename type="middle">M J</forename><surname>-B. Chaslot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">H M</forename><surname>Winands</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">J</forename><surname>Van Den Herik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">W H M</forename><surname>Uiterwijk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Bouzy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">New Mathematics and Natural Computation</title>
+		<imprint>
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="343" to="357" />
+			<date type="published" when="2008">2008</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Finite-time Analysis of the Multiarmed Bandit Problem</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Auer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Cesa-Bianchi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Fischer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Machine Learning</title>
+		<imprint>
+			<biblScope unit="volume">47</biblScope>
+			<biblScope unit="issue">2-3</biblScope>
+			<biblScope unit="page" from="235" to="256" />
+			<date type="published" when="2002">2002</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">A Survey of Monte Carlo Tree Search Methods</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Browne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Powley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Whitehouse</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Lucas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">I</forename><surname>Cowling</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Rohlfshagen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Tavener</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Perez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Samothrakis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Colton</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Trans. on Comput. Intell. and AI in Games</title>
+		<imprint>
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="1" to="43" />
+			<date type="published" when="2012">2012</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Enhancements for Multi-Player Monte-Carlo Tree Search</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">A M</forename><surname>Nijssen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">H M</forename><surname>Winands</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Computers and Games (CG 2010)</title>
+		<editor>
+			<persName><surname>Ser</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">H</forename><forename type="middle">J</forename><surname>Lncs</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">H</forename><surname>Van Den Herik</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">A</forename><surname>Iida</surname></persName>
+		</editor>
+		<editor>
+			<persName><surname>Plaat</surname></persName>
+		</editor>
+		<meeting><address><addrLine>Berlin Heidelberg</addrLine></address></meeting>
+		<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2011">2011</date>
+			<biblScope unit="volume">6515</biblScope>
+			<biblScope unit="page" from="238" to="249" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">N-Grams and the Last-Good-Reply Policy Applied in General Game Playing</title>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">J W</forename><surname>Tak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">H M</forename><surname>Winands</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Björnsson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Trans. on Comput. Intell. and AI in Games</title>
+		<imprint>
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="73" to="83" />
+			<date type="published" when="2012">2012</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Real-Time Monte Carlo Tree Search in Ms Pac-Man</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Pepels</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">H M</forename><surname>Winands</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Lanctot</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Trans. on Comput. Intell. and AI in Games</title>
+		<imprint>
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="245" to="257" />
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Width-Based Planning for General Video-Game Playing</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Geffner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Geffner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Eleventh Artif. Intell. and Interactive Digital Entertainment International Conf</title>
+		<editor>
+			<persName><forename type="first">A</forename><surname>Jhala</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">N</forename><surname>Sturtevant</surname></persName>
+		</editor>
+		<meeting>of the Eleventh Artif. Intell. and Interactive Digital Entertainment International Conf</meeting>
+		<imprint>
+			<publisher>AAAI Press</publisher>
+			<date type="published" when="2015">2015</date>
+			<biblScope unit="page" from="23" to="29" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">On Adversarial Search Spaces and Sampling-Based Planning</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Ramanujan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Sabharwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Selman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">20th International Conf. on Automated Planning and Scheduling</title>
+		<editor>
+			<persName><forename type="first">R</forename><forename type="middle">I</forename><surname>Brafman</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">H</forename><surname>Geffner</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">J</forename><surname>Hoffmann</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">H</forename><forename type="middle">A</forename><surname>Kautz</surname></persName>
+		</editor>
+		<imprint>
+			<publisher>AAAI</publisher>
+			<date type="published" when="2010">2010</date>
+			<biblScope unit="page" from="242" to="245" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Game-Tree Properties and MCTS Performance</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Finnsson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Björnsson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">IJCAI&apos;11 Workshop on General Intelligence in Game Playing Agents (GIGA&apos;11)</title>
+		<editor>
+			<persName><forename type="first">Y</forename><surname>Björnsson</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">N</forename><surname>Sturtevant</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">M</forename><surname>Thielscher</surname></persName>
+		</editor>
+		<imprint>
+			<date type="published" when="2011">2011</date>
+			<biblScope unit="page" from="23" to="30" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">MCTS-Minimax Hybrids</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Baier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">H M</forename><surname>Winands</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Trans. on Comput. Intell. and AI in Games</title>
+		<imprint>
+			<biblScope unit="volume">7</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="167" to="179" />
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Width and Serialization of Classical Planning Problems</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Lipovetzky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Geffner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Twentieth European Conf. on Artif. Intell. (ECAI 2012)</title>
+		<editor>
+			<persName><forename type="first">L</forename><surname>De Raedt</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">C</forename><surname>Bessiere</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">D</forename><surname>Dubois</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">P</forename><surname>Doherty</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">P</forename><surname>Frasconi</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">F</forename><surname>Heintz</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">P</forename><surname>Lucas</surname></persName>
+		</editor>
+		<meeting>of the Twentieth European Conf. on Artif. Intell. (ECAI 2012)</meeting>
+		<imprint>
+			<publisher>IOS Press</publisher>
+			<date type="published" when="2012">2012</date>
+			<biblScope unit="page" from="540" to="545" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Knowledge-based Fast Evolutionary MCTS for General Video Game Playing</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Perez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Samothrakis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Lucas</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the IEEE Conf. on Comput. Intell. and Games. IEEE</title>
+		<meeting>of the IEEE Conf. on Comput. Intell. and Games. IEEE</meeting>
+		<imprint>
+			<date type="published" when="2014">2014</date>
+			<biblScope unit="page" from="68" to="75" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<monogr>
+		<title level="m" type="main">Analysing and Improving the Knowledge-based Fast Evolutionary MCTS Algorithm</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Van Eeden</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2015">2015</date>
+			<pubPlace>Utrecht, the Netherlands</pubPlace>
+		</imprint>
+		<respStmt>
+			<orgName>Utrecht University</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Master&apos;s thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Combining Pathfinding Algorithm with Knowledge-based Monte-Carlo Tree Search in General Video Game Playing</title>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">Y</forename><surname>Chu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Hashizume</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Harada</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Thawonmas</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the IEEE Conf. on Comput. Intell. and Games. IEEE</title>
+		<meeting>of the IEEE Conf. on Comput. Intell. and Games. IEEE</meeting>
+		<imprint>
+			<date type="published" when="2015">2015</date>
+			<biblScope unit="page" from="523" to="529" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">A Formal Basis for the Heuristic Determination of Minimum Cost Paths</title>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">E</forename><surname>Hart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><forename type="middle">J</forename><surname>Nilsson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Raphael</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Systems Science and Cybernetics, IEEE Transactions on</title>
+		<imprint>
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="100" to="107" />
+			<date type="published" when="1968">1968</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Monte Mario: Platforming with MCTS</title>
+		<author>
+			<persName><forename type="first">E</forename><forename type="middle">J</forename><surname>Jacobsen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Greve</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Togelius</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the 2014 Conf. on Genetic and Evolutionary Computation</title>
+		<meeting>of the 2014 Conf. on Genetic and Evolutionary Computation</meeting>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2014">2014</date>
+			<biblScope unit="page" from="293" to="300" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Investigating MCTS Modifications in General Video Game Playing</title>
+		<author>
+			<persName><forename type="first">F</forename><surname>Frydenberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">R</forename><surname>Andersen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Risi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Togelius</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the IEEE Conf. on Comput. Intell. and Games. IEEE</title>
+		<meeting>of the IEEE Conf. on Comput. Intell. and Games. IEEE</meeting>
+		<imprint>
+			<date type="published" when="2015">2015</date>
+			<biblScope unit="page" from="107" to="113" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<monogr>
+		<title level="m" type="main">MCTS Based Agent for General Video Games</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Schuster</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2015">2015</date>
+			<pubPlace>Maastricht, the Netherlands</pubPlace>
+		</imprint>
+		<respStmt>
+			<orgName>Department of Knowledge Engineering, Maastricht University</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Master&apos;s thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<monogr>
+		<author>
+			<persName><forename type="first">I</forename><surname>Millington</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Funge</surname></persName>
+		</author>
+		<title level="m">Artificial Intelligence for Games</title>
+		<imprint>
+			<publisher>Morgan Kaufmann</publisher>
+			<date type="published" when="2009">2009</date>
+		</imprint>
+	</monogr>
+	<note>2nd ed</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

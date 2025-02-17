@@ -1,0 +1,1999 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Position: LLMs Can&apos;t Plan, But Can Help Planning in LLM-Modulo Frameworks</title>
+				<funder ref="#_YPgGKCp">
+					<orgName type="full">ONR</orgName>
+				</funder>
+				<funder ref="#_BNQdbTR">
+					<orgName type="full">Qualcomm</orgName>
+				</funder>
+				<funder>
+					<orgName type="full">Amazon</orgName>
+				</funder>
+				<funder ref="#_Q6ZYNce">
+					<orgName type="full">unknown</orgName>
+				</funder>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability  status="unknown">
+					<licence/>
+				</availability>
+				<date type="published" when="2024-06-12">12 Jun 2024</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Subbarao</forename><surname>Kambhampati</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Karthik</forename><surname>Valmeekam</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Lin</forename><surname>Guan</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Mudit</forename><surname>Verma</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Kaya</forename><surname>Stechly</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Siddhant</forename><surname>Bhambri</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Lucas</forename><surname>Saldyt</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Anil</forename><surname>Murthy</surname></persName>
+						</author>
+						<title level="a" type="main">Position: LLMs Can&apos;t Plan, But Can Help Planning in LLM-Modulo Frameworks</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2024-06-12">12 Jun 2024</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">CAF42FF8928463155730148923A92269</idno>
+					<idno type="arXiv">arXiv:2402.01817v3[cs.AI]</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.8.2-SNAPSHOT" ident="GROBID" when="2025-01-24T14:30+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>We argue that auto-regressive LLMs cannot, by themselves, do planning or self-verification (which is after all a form of reasoning), and shed some light on the reasons for misunderstandings in the literature. We also argue that LLMs should be viewed as universal approximate knowledge sources that have much more meaningful roles to play in planning/reasoning tasks beyond simple front-end/back-end format translators. We present a vision of LLM-Modulo Frameworks that combines the strengths of LLMs with external model-based verifiers in a tighter bi-directional interaction regime. We will show how the models driving the external verifiers themselves can be acquired with the help of LLMs. We will also argue that rather than simply pipelining LLMs and symbolic components, this LLM-Modulo Framework provides a better neuro-symbolic approach that offers tighter integration between LLMs and symbolic components, extending the scope of modelbased planning/reasoning regimes towards more flexible knowledge, problem and preference specifications.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.">Introduction</head><p>Large Language Models (LLMs), essentially n-gram models on steroids which have been pre-trained on web-scale language corpora (or, effectively, our collective consciousness), have caught the imagination of the AI research community with linguistic capabilities that no one expected text completion systems to possess. Their seeming versatility has led many researchers to wonder whether they can also do well on planning and reasoning tasks typically associated Proceedings of the 41 st International Conference on Machine <ref type="bibr">Learning, Vienna, Austria. PMLR 235, 2024.</ref> Copyright 2024 by the author(s).</p><p>with System 2 competency. On the face of it, this doesn't seem to ring true, as both by training and operation, LLMs are best seen as a giant pseudo System 1 <ref type="bibr" target="#b24">(Kahneman, 2011)</ref> (see Figure <ref type="figure">1</ref>). Even from a pure engineering perspective, a system that takes constant time to produce the next token cannot possibly be doing principled reasoning on its own.<ref type="foot" target="#foot_0">foot_0</ref> Not surprisingly, initial excitement based on anecdotal performance of LLMs on reasoning tasks <ref type="bibr" target="#b8">(Bubeck et al., 2023)</ref> has been dissipated to some extent by the recent spate of studies, including our own, questioning the robustness of such behaviors-be they planning <ref type="bibr">(Valmeekam et al., 2023c;</ref><ref type="bibr" target="#b27">Kambhampati, 2024)</ref>, simple arithmetic and logic <ref type="bibr" target="#b10">(Dziri et al., 2023)</ref>, theory of mind <ref type="bibr" target="#b52">(Ullman, 2023;</ref><ref type="bibr">Verma et al., 2024b)</ref>, or general mathematical and abstract benchmarks <ref type="bibr" target="#b34">(McCoy et al., 2023;</ref><ref type="bibr" target="#b11">Gendron et al., 2023)</ref>. Despite this, a steady stream of claims continue to be made in the literature about the planning and reasoning capabilities of LLMs. In light of questions about their planning capabilities, the head-long rush into agentic LLMs should be particularly concerning. After all, acting without the ability to plan is surely a recipe for unpleasant consequences! In an ironic juxtaposition to this unwarranted optimism about the planning and reasoning abilities of LLMs, there is also unwarranted pessimism about the roles LLMs can play in planning/reasoning tasks. Several efforts (e.g. <ref type="bibr" target="#b32">(Liu et al., 2023;</ref><ref type="bibr" target="#b40">Pan et al., 2023;</ref><ref type="bibr" target="#b63">Xie et al., 2023)</ref>) advocate using LLMs only as glorified translators-converting reasoning problems embedded in textual format to symbolic representations, and pawning them off to external classical symbolic solvers (with all their attendant expressivity and search complexity challenges <ref type="bibr" target="#b9">(Doyle &amp; Patil, 1991)</ref>). <ref type="foot" target="#foot_2">2</ref>Figure <ref type="figure">1</ref>. An informal account of viewing an LLM as a giant external non-veridical memory that acts as a pseudo System 1 lators. They are a kind of approximate knowledge source (albeit sans guarantees) trained on our collective consciousness. While it is unlikely that they will have System 2 competencies by themselves, they can nevertheless be valuable resources in solving System 2 tasks. To put it another way, the problem with Alchemy of yore was not that Chemistry is useless, but that people wanted to delude themselves that Chemistry-a pretty amazing discipline on its own meritscan be Nuclear Physics if you prompt it just so. The confusions regarding LLM abilities, or should we say, LLM alchemy, doesn't seem to be much different-oscillating between ignoring their strengths, and ascribing abilities they don't have.</p><p>The goal of this position paper is to introduce some clarity into this confusing state of affairs oscillating between overoptimism and over-pessimism. Simply put, we take the stance that LLMs are amazing giant external non-veridical memories that can serve as powerful cognitive orthotics for human or machine agents, if rightly used. The underlying ngram nature makes them effortlessly intermix what would be considered disparate fields of study (not surprisingly, LLMs are seen to be very good at making/finding analogies!). The challenge is to leverage them without wrongly ascribing to them capabilities they don't possess. The LLM-Modulo framework proposed in this position paper tackles this challenge.</p><p>For the sake of concreteness, we consider planning tasks, especially as studied in the automated planning community <ref type="bibr" target="#b12">(Ghallab et al., 2004)</ref>. The central position of the paper is that LLMs cannot plan themselves but can play a variety of constructive roles in solving planning tasks-especially as approximate knowledge sources and candidate plan generators in so-called LLM-Modulo Frameworks, where they are used in conjunction with external sound model-based verifiers.</p><p>We support this position by first reviewing literature, includ-ing our own works, that establishes that LLMs cannot be used as planners or plan verifiers themselves (Section 2). We also discuss why there are claims about planning/verification abilities in the first place, in the process hopefully clarifying some prevalent misunderstandings.</p><p>Second, we will propose a framework that allows us to leverage LLMs effectively in planning tasks, by combining them with external critics, verifiers and humans. We call this an LLM-Modulo Framework (a name loosely inspired by SAT Modulo Theories <ref type="bibr" target="#b36">(Nieuwenhuis &amp; Oliveras, 2006</ref>)); see Figure <ref type="figure" target="#fig_1">3</ref>. LLMs play a spectrum of roles in this architecture, from guessing candidate plans, to translating those plans into syntactic forms that are more accessible to external critics, to helping end users flesh out incomplete specifications, to helping expert users acquire domain models (that in turn drive model-based critics). All this leveraging of LLMs is done without ascribing to them any planning or verification abilities. The LLM ideas are vetted by external critics, thus ensuring that the plans generated in this architecture can have formal correctness guarantees where possible.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.">Planning-centered Limitations of LLMs</head><p>In this section, we will first review literature that calls into question claims about the planning and self-verification capabilities of LLMs. Subsequently, we will also provide some possible reasons for claims to the contrary made in the literature.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1.">LLMs cannot generate executable plans in autonomous mode</head><p>Despite initial claims about the planning capabilities of LLMs <ref type="bibr" target="#b3">(Bairi et al., 2023;</ref><ref type="bibr">Yao et al., 2023b;</ref><ref type="bibr" target="#b44">Shinn et al., 2023;</ref><ref type="bibr" target="#b21">Huang et al., 2022;</ref><ref type="bibr" target="#b17">Hao et al., 2023)</ref> several recent studies confirm that LLMs are not actually able to generate executable plans when they are used in autonomous modes <ref type="bibr">(Valmeekam et al., 2023c;</ref><ref type="bibr" target="#b32">Liu et al., 2023;</ref><ref type="bibr" target="#b46">Silver et al., 2022)</ref>. For example, in <ref type="bibr">(Valmeekam et al., 2023c;</ref><ref type="bibr">b)</ref>, we evaluate LLMs' ability to generate correct plans on a suite of planning problem instances based on the kinds of domains employed in the International Planning Competition <ref type="bibr">(IPC, 1998)</ref>. To eliminate the subjective aspect of analysis that forms the core part of many earlier efforts to evaluate the reasoning capabilities of LLMs, we leverage models and tools from the automated planning community to automate evaluation.</p><p>We show that results in the autonomous mode are pretty bleak. On average, only about 12% of the plans that the best LLM (GPT-4) generates are actually executable without errors and goal-reaching. We show that the choice of LLM doesn't have much bearing on this. We tested the family of GPT LLMs including <ref type="bibr">GPT-4 (OpenAI, 2023)</ref>, <ref type="bibr">GPT-3.5 (OpenAI, 2022)</ref>, <ref type="bibr">InstructGPT-3 (Ouyang et al., 2022)</ref> and <ref type="bibr">GPT-3 (Brown et al., 2020)</ref>. We also show that fine-tuning does not seem to have a major effect on this dismal performance. We demonstrate that the performance deteriorates further if the names of the actions and objects in the domain are obfuscated-a change that doesn't in any way affect the performance of the standard AI planners. This further suggests that LLMs are more likely doing approximate retrieval of plans than actual planning.</p><p>We continue to reconfirm these limitations over each of the more recently released LLMs, including Claude Opus, Gemini, GPT4-Turbo and GPT4-o. Table <ref type="table" target="#tab_0">1</ref> shows that all the state of the art LLMs show dismal performance on PlanBench <ref type="bibr">(Valmeekam et al., 2023b)</ref>.</p><p>More recently, we have also investigated so-called "chain of thought" prompting <ref type="bibr">(Stechly et al., 2024b)</ref>, as well as ReAct-style step-by-step prompting <ref type="bibr">(Verma et al., 2024a)</ref> and found that they too are largely ineffective in improving the planning performance of LLMs.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.">LLMs cannot verify plans and thus cannot improve by self-critiquing</head><p>There still exists considerable optimism that even if LLMs can't generate correct solutions in one go, their accuracy might improve in an iterative prompting regime, where LLMs will be able to "self-critique" their candidate solutions and refine them to the point of correctness <ref type="bibr">(Yao et al., 2023b;</ref><ref type="bibr">a;</ref><ref type="bibr" target="#b44">Shinn et al., 2023;</ref><ref type="bibr" target="#b61">Weng et al., 2023;</ref><ref type="bibr" target="#b21">Huang et al., 2022)</ref>. This belief seems to rest largely on the assumption that verification of correctness should be easier than generation for many reasoning problems-a rather classical argument from computational complexity. There are grounds to be skeptical of this assumption as the complexity of the reasoning task should be irrelevant to LLM performance if what they are doing is approximate retrieval. In general, unless LLMs are trained not just on "correct data," but also on "corrections data," there is no a priori reason to believe that their critiques would even be approximately relevant, let alone actually correct.</p><p>Two of our studies-one on plan verification <ref type="bibr">(Valmeekam et al., 2023a)</ref> and the other on CSP verification <ref type="bibr" target="#b48">(Stechly et al., 2023)</ref> seem to throw cold water on this optimism.</p><p>In <ref type="bibr" target="#b48">(Stechly et al., 2023)</ref>, we systematically investigate the effectiveness of iterative prompting in the context of Graph Coloring, a canonical NP-complete reasoning problem. Our methodology involves a principled empirical study of the performance of GPT4 on two tasks: solving a large suite of random graph coloring instances and, separately, verifying the correctness of the candidate colorings-both in direct (i.e., return the first solution generated by the LLM) and iterative modes. In iterative modes, we experiment both with an LLM critiquing LLM-produced solutions and an external, guaranteed correct reasoner verifying solutions. In both cases, we analyze whether the content of criticisms actually affects bottom-line performance. A more recent paper further analyzes these results along with performance on the 24 puzzle-a task that has been used by some researchers claiming LLMs have the ability to self verify <ref type="bibr">(Stechly et al., 2024a)</ref>.</p><p>Our results indicate that in direct mode, LLMs are, perhaps not surprisingly, pretty bad at solving graph coloring instances. More interestingly, they are no better at verifying solutions. In iterative modes, given the inability of LLMs to verify solutions, it should come as no surprise that our experiments also show that the strategy of LLMs self-critiquing their solutions does not improve over the baseline. We report that the performance is in fact worse because the system can't recognize a correct coloring and thus merrily passes over fortuitously correct colorings it has generated, ending up with a wrong one! Similar results have also been reported for planning problems in <ref type="bibr">(Valmeekam et al., 2023c)</ref>.</p><p>One important corollary of the fact that LLMs cannot selfcritique their plans is that they also can't self-improve by generating synthetic data, e.g. by generating plans themselves, critiquing the plans by themselves to improve them, and then using those to fine-tune themselves, as has been claimed in the literature <ref type="bibr">(Huang et al., 2023b;</ref><ref type="bibr" target="#b60">Wang et al., 2022)</ref> <ref type="foot" target="#foot_3">foot_3</ref> .</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3.">Analyzing Claims to the Contrary in the Literature</head><p>Given that LLMs can neither guarantee correct generation nor correct verification of plans, as discussed in the previous sections, one obvious question is why the literature is replete with claims contrary to this <ref type="bibr" target="#b3">(Bairi et al., 2023;</ref><ref type="bibr">Yao et al., 2023b;</ref><ref type="bibr" target="#b44">Shinn et al., 2023;</ref><ref type="bibr">Yao et al., 2023a;</ref><ref type="bibr" target="#b61">Weng et al., 2023;</ref><ref type="bibr" target="#b21">Huang et al., 2022)</ref>.</p><p>Claims about Planning: To analyze planning claims, we need to first understand that solving planning tasks requires (a) having the necessary planning domain knowledge-the actions and their preconditions, effects; the standard hierarchical recipes (e.g. task reduction schemas in HTN planning), past cases/plans, etc., and (b) being able to assemble this planning knowledge into an executable plan that takes care of any subgoal/resource interactions. The first part can be called knowledge acquisition and the second reasoning/planning. On closer examination, many papers claiming LLMs have planning abilities wind up confusing general planning knowledge extracted from the LLMs for executable plans. When all we are looking for are abstract plans, such as "wedding plans," with no intention of actually executing them, it is easy to confuse them for complete executable plans. Indeed, our close examination of several works claiming planning capabilities for LLMs <ref type="bibr" target="#b28">(Kambhampati et al., 2023)</ref> suggests that they either work in domains/tasks where subgoal interactions can be safely ignored <ref type="bibr">(Yao et al., 2023b;</ref><ref type="bibr" target="#b44">Shinn et al., 2023)</ref> <ref type="foot" target="#foot_4">foot_4</ref> -either because they are just working on a single subgoal, or because the world is forgiving and ergodic; or by delegating the interaction resolution (reasoning) to the humans in the loop (who, through repeated prompting, have to "correct" the plan). Sometimes, in common sense domains, or with enough fine-tuning, the "assembling" part may also be obviated by having seen a case that pretty much corresponds to the problem that needs to be solved. Not surprisingly, our work <ref type="bibr">(Valmeekam et al., 2023c)</ref> shows that if the action interactions are removed by relaxing the world Claims about Self-Verification: Coming to the claims about LLM's self-verification abilities, a closer look at the literature <ref type="bibr">(Yao et al., 2023a;</ref><ref type="bibr">Huang et al., 2023a)</ref> shows that those claims are either (i) made in the context of tacit knowledge tasks for which there is little possibility of a verifier (e.g. essay writing)-making it hard to evaluate whether LLM's critiquing actually helped or (ii) the external verification is carried out either by simulators <ref type="bibr">(Wang et al., 2023b;</ref><ref type="bibr">Yao et al., 2023b)</ref> or simple calls to the underlying operating system.</p><p>In a related vein, there is the recent Tree of Thoughts (ToT) paper <ref type="bibr">(Yao et al., 2023a)</ref>, which has been pitched as a way to convert LLMs into some type of systematic search with selfverification. Specifically, ToT employs a problem-specific prompt priming method. The "tree" in ToT is essentially a way to generate diverse priming prompts (that the authors set up in a problem specific way). In other words, despite the use of terminology of problem-solving agents <ref type="bibr" target="#b43">(Russell &amp; Norvig, 2010</ref>)-search tree, expansion etc., there is really no deeper connection to search-based agents.</p><p>The guarantees-if any-are coming in terms of soundness of the external verifier. The one clear reasoning problem used in the ToT paper is the 24 puzzle-for which the external verifier can be easily implemented in terms of arithmetic operations (thankfully not done by the numerically challenged LLM!). Here, our experiments show that the LLM's own criticisms are often quite off the mark. <ref type="foot" target="#foot_6">6</ref> Because the 24 puzzle's solutions can be verified by simple arithmetic operations, it is trivial to implement an external verifier for these problems. In general though, the verifier may be more complex and can involve substantial work (you can substitute a simulator for the verifier-but someone has to write that simulator too!).</p><p>LLMs as Approximate Knowledge Sources: The fact that LLMs are often good at extracting planning knowledge can indeed be gainfully leveraged. As shown in recent works <ref type="bibr" target="#b14">(Guan et al., 2023)</ref>, LLMs can be a rich source of approximate models of world/domain dynamics and user preferences, as long as the humans (and any specialized critics) in the loop verify and refine those models, and give them over to model-based solvers. This way of using LLMs has the advantage that the humans need only be present when the dynamics/preference model is being teased out and refined, and the actual planning after that can be left to sounder planning frameworks with correctness guarantees, such as the LLM-Modulo framework we propose.</p><p>Such an overall approach has striking similarities to knowledge-based AI systems of yore, with LLMs effectively replacing the "knowledge engineer" (see Figure <ref type="figure" target="#fig_0">2</ref>). Given the rather quixotic and dogmatic shift of AI away from apused in ToT, there are no formal quality metrics and so it is hard to say anything concrete about the critiques of the LLM.</p><p>proaches that accept domain knowledge from human experts that can be termed "Polanyi's Revenge" (c.f. (Kambhampati, 2021)), this new trend of using LLMs as knowledge sources can be viewed as a form of avenging Polanyi's revenge! Indeed, LLMs make it easy to get problem-specific knowledge as long as we are willing to relax the correctness requirements of that knowledge. In contrast to the old knowledge engineering approaches, LLMs offer this without making it look like we are inconveniencing any specific human (we are, instead, just leveraging everything humans told each other on the Web!). So the million dollar question for reasoning tasks is: "how would you do robust planning if you have some doddering know-it-all ready to give you any kind of knowledge?" The LLM-Modulo Framework is a principled method for tackling this challenge.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">LLM-Modulo Framework for Robust Planning</head><p>While Section 2 questions the claims that LLMs are capable of planning/reasoning by themselves, it is certainly not meant to imply that LLMs don't have any constructive roles to play in solving planning/reasoning tasks. On the contrary, as discussed in the Introduction, their uncanny ability to generate ideas/potential candidate solutions-albeit with no guarantees about those guesses-can be valuable in the generate-test-critique setups in conjunction with either model-based verifiers or expert humans in the loop. Accordingly, we propose a general "LLM-Modulo" framework<ref type="foot" target="#foot_7">foot_7</ref> . While we believe that versions of such an architecture can be of use in a wide variety of planning or reasoning tasks, for the sake of concreteness, we will focus on planning tasks, especially of the type studied in the automated planning community <ref type="bibr" target="#b12">(Ghallab et al., 2004)</ref>.</p><p>Figure <ref type="figure" target="#fig_1">3</ref> gives a schematic of the LLM-Modulo Framework, as we envision it. As can be seen readily, the underlying architecture is a Generate-Test-Critique loop, with the LLM generating candidate plans and a bank of critics critiquing the candidate. The loop starts with the LLM getting the problem specification and generating its first plan candidate.<ref type="foot" target="#foot_8">foot_8</ref> Note that the plans an LLM helps generate in this architecture have soundness guarantees because of the external sound critics. This means that plans coming out of such an compound system will constitute a better corpus of synthetic data for any fine tuning phase carried out to improve/customize the LLM's generation capability. The completeness of the system depends on the LLM's ability to generate all potentially relevant candidates.</p><p>Design Choices: Before going into the details about the framework and its various modules, it is worth noting some design decisions underlying the proposed architecture.</p><p>We start by noting that the LLM-Modulo architecture is a "Generate-Test" one that involves LLMs interacting with the external critics/verifiers rather than a LLMs being just frontends to external solvers. This is a deliberate decision-as this allows the LLM to guess/generate candidates to satisfy the critics, as against dealing with the expressiveness and search complexity issues of the solvers. The critics/verifiers also are also more naturally composable than solvers/planners. As we shall see, we do allow for constructive critics which can be based on solvers, and provide suggestions on specific ways of extending/modifying the candidate plans.</p><p>Secondly, the framework explicitly recognizes that the LLMs can generate approximate ideas not just about plan candidates, but domain models, problem reduction strategies, and refinements to the problem specification. The framework also recognizes that LLMs are good at format/syntax changes. Accordingly, the framework leverages all these abilities of LLMs, letting them play multiple roles in planning. Finally, the architecture carefully circumscribes the human's role-domain experts interact with the LLM to tease out the models used by (some of) the critics, while end users take part in refining any incomplete prob-lem specification in concert with the LLM. A notable, and deliberate, absence is human's involvement in the inner loop of planning-e.g. with iterative prompting. In addition to posing an infeasible burden on the human's time for complex planning problems, such iterative prompting strategies are notorious for their Clever Hans effect (cle).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1.">Critics/Verifers</head><p>In the LLM-Modulo framework, critics can evaluate LLMgenerated candidates for a planning/reasoning problem over both hard and soft (style) constraints. Hard constraints refer to correctness verification which can include causal correctness, timeline correctness, resource constraint correctness as well as unit tests. For PDDL planning problems, the hard critic can be based on VAL <ref type="bibr" target="#b18">(Howey et al., 2004)</ref>, that works off of a model (which itself can be acquired with the help of the LLM <ref type="bibr" target="#b14">(Guan et al., 2023)</ref>. It is worth noting that the critics don't always have to be declarative model-based ones, and can be simulators. Just as LLMs can help humans in coming up with models, they can also help in writing procedural simulators, as seems to be done in systems like Voyager <ref type="bibr">(Wang et al., 2023a)</ref>.</p><p>On the other hand, soft constraints can include more abstract notions of good form such as style, explicability, preference conformance, etc. As discussed in Section 2.3, while LLMs cannot take on the role of hard critics with soundness guarantees,<ref type="foot" target="#foot_9">foot_9</ref> they can help simulate some aspects of the role of soft (style) critics. So our framework does allow for style critics be possibly based on LLMs. For example, in <ref type="bibr">(Verma et al., 2024b)</ref> we discuss how LLMs can act as a human proxy to evaluate plans in terms of how they would be perceived by humans in the loop. Additionally, in <ref type="bibr" target="#b15">(Guan et al., 2024)</ref>, we show how Vision-Language Models (VLMs) can be leveraged to critique the style of robot behaviors in terms of their adherence to the soft common-sense preferences of the humans in the loop. We reiterate that the soundness of the LLM-modulo framework is inherited from the soundness of the correctness (hard) critics.</p><p>The bank of critics-hard (model-based) as well as soft (possibly LLM-based) evaluate the current plan candidate to evaluate its fitness/acceptability. If at least all the hard critics sign off on the current candidate, then that is considered a valid solution to be returned to the end-user or the executor. When a critic finds the current plan candidate to be unsatisfactory, it can provide varying levels of feedback, ranging from "No, try again" to "No, try again, here is one thing wrong with the current plan" to "No, try again, here are all the things wrong with the current plan." More importantly, the critics can be constructive, and offer alternatives plan/subplan suggestions. One way of obtaining such constructive critics is to base them on partial planners-operating either on the models themselves or their relaxations <ref type="bibr" target="#b7">(Bryce &amp; Kambhampati, 2007)</ref>.These critiques are all pooled at the Meta (Backprompt) Controller (see Section 3.2)</p><p>LLMs as Reformulators: One interesting challenge is that many of the symbolic model-based verifiers tend to be operating on specialized formal representations. Given a central candidate plan (e.g. a mission plan), these critics need translations of that candidate into their representations. This is the role of the reformulator module attached to individual critics. These reformulator modules can be supported to a large extent by LLMs, given that one thing LLMs are very good at is format change across different syntactic representations <ref type="bibr" target="#b37">(Olmo et al., 2021)</ref>. Indeed, as discussed in Section 1, some approaches to combine LLMs with external symbolic solvers just use LLMs as reformulators for these solvers <ref type="bibr" target="#b32">(Liu et al., 2023;</ref><ref type="bibr" target="#b40">Pan et al., 2023)</ref>. It is worth noting that the syntax conversion itself can be helped with a nested LLM-Modulo framework-where the syntactic correctness of the conversion is checked by syntax critics. We will have occasion to illustrate this in the context of our preliminary work on LLM-Modulo frameworks for travel planning discussed in Section 4. Our discussion of LLM-Modulo framework should make it clear that syntax reformulation alone is a severely limited role for LLMs!</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2.">Backprompt (Meta) Controller</head><p>The critiques from the various critics are pooled together by the Meta (Backprompt) Controller, which passes a processed version of them to the LLM as the next iterative prompt to elicit the next guess. This is especially required in the presence of a mix of soft and hard critics, where the Meta Controller can assume the responsibility of compiling the critiques into a consistent feedback to send to the LLM.</p><p>The processing in the controller can range from (i) simple round-robin selection of prompts to (ii) generating a summarized prompt (with LLM help) to (iii) employing a prompt diversification strategy to elicit the next candidate from a different part of the implicit search space. This last strategy helps increase the completeness of the LLM candidate generation, and may involve domain/task-specific knowledge (see the discussion of Tree of Thoughts in Section 2.3).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3.">Specification Refinement &amp; Critic/Model Acquisition</head><p>As mentioned earlier, we avoid having humans involved in iteratively prompting LLMs-as this can be an infeasibly time-consuming activity for them. Instead, we let automated verifiers, either model-based or LLM-supported, to manage the plan critiquing process. The framework does depend on humans for "once per domain" and "once per problem" interactions. In the former category, human domain experts can play a role in acquiring the domain model with the help of the LLM. Examples of such interaction include teasing out PDDL planning models from the LLMs with the help of human expert curation (top left in Figure <ref type="figure" target="#fig_1">3</ref>). An example of this is our work in <ref type="bibr" target="#b14">(Guan et al., 2023)</ref>. The idea here is that the traditional domain model acquisition task (e.g. <ref type="bibr" target="#b47">(Simpson et al., 2001)</ref>) is significantly made easier by having the LLMs help with ideas regarding various pieces of the domain model (e.g., actions, their preconditions and effects) and letting humans sign off/critique the resulting model. Once the model is acquired this way, it can be used by correctness verifiers such as VAL <ref type="bibr" target="#b18">(Howey et al., 2004;</ref><ref type="bibr" target="#b14">Guan et al., 2023)</ref>. Often the planning problems in real world situations are specified incompletely, leaving it to the human commonsense to refine the specification. This brings up a second role for humans-this time end users (bottom left in Figure <ref type="figure" target="#fig_1">3</ref>-in collaboratively refining the specification with the help of LLMs (similar to the way done in <ref type="bibr" target="#b63">(Xie et al., 2023;</ref><ref type="bibr" target="#b32">Liu et al., 2023)</ref>).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.4.">Summary of LLM Roles in LLM-Modulo</head><p>It is worth summarizing the multiple roles the LLM plays in the LLM-Modulo architecture. The most prominent, of course, is its role in "guessing" the candidate plans (step 2 in Figure <ref type="figure" target="#fig_1">3</ref>) in response to problem specification and iterative back prompting from the bank of critics (Step 5). Second, the LLM plays a role in converting the guessed plan candidate into specialized representations used by the various critics (e.g., the time-line view, the causal link view etc.). This role leverages the fact that LLMs are very good at format conversion (c.f. <ref type="bibr" target="#b37">(Olmo et al., 2021)</ref>). Third, the LLM plays a role in helping the end user flesh out the incomplete problem specification to begin with (Step 1 in Figure <ref type="figure" target="#fig_1">3</ref>). Finally, the LLM plays a role in helping the domain expert tease out and refine the domain models used by the various model-based critics <ref type="bibr" target="#b14">(Guan et al., 2023;</ref><ref type="bibr" target="#b30">Kwon et al., 2022)</ref>, or help "implement" procedural critics (such as those checking syntactic constraints). As a broad approximate source of knowledge, the LLM can also help enumerate the list of potential critics needed to validate the candidate plans (once again with a human in the loop).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.5.">Can LLM-Modulo Frameworks Pay Their Way?</head><p>Let's address the elephant in the room: Given that formal model-based planning systems already exist <ref type="bibr" target="#b12">(Ghallab et al., 2004)</ref>, is LLM-Modulo framework for planning more than a gratuitous attempt to shoe-horn (the currently popular) LLMs to solve planning problems? Indeed, when the underlying problem is actually solvable by such combinatorial solvers, it can be orders of magnitue more resource efficient to use them. 10 Compared to a planner that is guaranteed to be correct in a narrow set of domains, LLMs may likely be good at generating plausible (but not guaranteed to be correct) plan heuristics/suggestions in many more scenarios. Thus, unlike the traditional planning architectures studied in AI <ref type="bibr" target="#b12">(Ghallab et al., 2004)</ref>, which put a priori constraints on the expressiveness of the problems that can be posed to the planner (to wit, the different expressiveness levels of the PDDL specification <ref type="bibr" target="#b35">(McDermott et al., 1998)</ref>), the LLM-Modulo architecture puts no such restrictions. In this sense, it is more representative of real-world planning problems such as those in NASA mission planning, where the different critics-human and automated-are at best able to give "no objection" certificates for the candidate plans under consideration, clearing it from their perspective. (Indeed, both deep space network planning and mars rover task planning are done via a collective human blackboard. <ref type="bibr" target="#b23">(Johnston et al., 2014;</ref><ref type="bibr" target="#b5">Bresina et al., 2004)</ref>.) Note that this is starkly different from just sending an unvetted plan out to execution (as would be the case if we have LLMs operate in autonomous mode to guess plans). Generalizing planning and reasoning frameworks this way is consistent with the Doyle &amp; Patil's call to the Knowledge Representation community of yore <ref type="bibr" target="#b9">(Doyle &amp; Patil, 1991)</ref>, as well as our own call for model-lite planning <ref type="bibr" target="#b25">(Kambhampati, 2007)</ref>.</p><p>10 Not surprisingly, automated programming, the one community that certainly doesn't have the luxury of a ready-made "solver," have stuck to LLM-Modulo style approaches.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.">Two Case Studies of LLM-Modulo</head><p>We have applied the LLM-Modulo framework to classical planning domains (as reported in <ref type="bibr">(Valmeekam et al., 2023c)</ref>) and to a recent travel planning benchmark (as reported in <ref type="bibr" target="#b16">(Gundawar et al., 2024)</ref>). In the former case, the results (presented in Section 5.2 and Table <ref type="table">4</ref> of <ref type="bibr">(Valmeekam et al., 2023c)</ref>) show that with back prompting from VAL <ref type="bibr" target="#b18">(Howey et al., 2004)</ref> acting as the external verifier and critic, LLM performance in Blocks World improves to 82% within 15 back prompting rounds, while in Logistics, it improves to 70%. LLM-Modulo doesn't help as much in an obfuscated version of blocks world called Mystery BW, reaching about 10% accuracy. This should be expected because the LLMs have difficulty generating plausible candidate plans for this domain (note that even here, if a plan is returned, it must have passed muster with VAL, and is thus guaranteed correct by its model).</p><p>For the travel planning case study, we used a benchmark proposed in <ref type="bibr" target="#b62">(Xie et al., 2024)</ref>, which involves a rich mix of travel constraints presented in flexible natural language form. Our preliminary results on adapting LLM-Modulo framework to this benchmark are reported in <ref type="bibr" target="#b16">(Gundawar et al., 2024)</ref>. The benchmark's authors test LLMs across a variety of prompt engineering techniques including Chain of Thought and ReAct, reporting that-on GPT-3.5-Turbo-the current best strategies only manage a startlingly low 0.7% performance rate! We adapted the LLM-Modulo framework to this benchmark by operationalizing their hard constraints (such as the budget constraint set by the user) or commonsense constraints (such as suggesting diverse attractions to visit) as critics as shown in Figure <ref type="figure" target="#fig_2">4</ref>. Our preliminary results show (see Figure <ref type="figure">5</ref>; additional results in <ref type="bibr" target="#b16">(Gundawar et al., 2024)</ref>) that LLM-Modulo based agentification with automated critics in the loop significantly improves the performance (6x of baselines) even with a limit of 10 back prompting cycles, and weaker models such as GPT-3.5turbo. Furthermore, we also find that LLMs can successfully implement functions corresponding to hard critics and several common-sense critics. Finally, LLMs reliably play the role of reformatter as well, converting free form travel plans into structured plans parseable by the critics for backprompts or plan evaluation. One interesting observation about this domain is that we were able to use the LLM itself to enumerate the type of critics needed to validate the plan (with light human supervision).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.">Related Work</head><p>While the LLM-Modulo framework is being proposed in general form here for the first time, there are certainly works in leveraging LLMs in planning and reasoning tasks that are in line with the spirit of the LLM-Modulo framework. Work on FunSearch <ref type="bibr" target="#b42">(Romera-Paredes et al., 2023)</ref> depends on a generate-test loop between a specially fine-tuned LLM that guesses solutions, and an external symbolic evaluator that critiques them. The authors note how the external verifier is critical for avoiding falling prey to hallucinations (i.e., approximate solution candidates that have flaws). Alpha-Geometry <ref type="bibr" target="#b51">(Trinh et al., 2024)</ref> too depends on the Generate-Test-Critique interaction between a fine-tuned LLM and a symbolic evaluator. Both these systems fine-tune pre-trained LLMs with task specific synthetic data-the correctness of which is vetted with external simulators.</p><p>While we focused on PDDL planning tasks for the sake of concreteness, we believe that the essence of LLM-Modulo framework is equally applicable to other scenarios involving planning and reasoning-such as Reinforcement Learning with Simulators. Such RL systems rely on rewards as feedback to train a policy. Simulators takes on the roles of plan evaluation and critiques performed by the respective critics in the LLM-Modulo framework (e.g. <ref type="bibr" target="#b41">(Rajvanshi et al., 2023)</ref>). The fact that simulators play the role of verifiers is often not explicitly recognized in cases where LLMs are used as an actor to generate an admissible plan by interacting with a simulator, for example in the case of AlfWorld <ref type="bibr">(Yao et al., 2023b;</ref><ref type="bibr" target="#b44">Shinn et al., 2023)</ref> and Minecraft <ref type="bibr">(Wang et al., 2023b)</ref>. Similar to extracting a domain model such as in the case of <ref type="bibr" target="#b14">(Guan et al., 2023)</ref>, LLMs can also be used for designing a reward model or shaping the reward <ref type="bibr" target="#b4">(Bhambri et al., 2024;</ref><ref type="bibr" target="#b30">Kwon et al., 2022;</ref><ref type="bibr" target="#b17">Hao et al., 2023;</ref><ref type="bibr" target="#b33">Ma et al., 2023)</ref>.</p><p>Interestingly, the fact that LLM's can help come up with approximate quasi-symbolic transition models, reward models and models of high level actions has made a bigger splash in RL. This is because for far too long, researchers there have tried to spurn any high level models (lest that would involve depending on humans; <ref type="bibr" target="#b26">(Kambhampati, 2021)</ref>) and focused on learning to act from sensory information, under the name of "deep reinforcement learning." Given the horrendous sample complexity of the DRL methods even in reaching a single subgoal, and the well known fact that even approximate symbolic models can help drastically improve the performance (c.f. <ref type="bibr" target="#b13">(Guan et al., 2022)</ref>), coupled with the fact that LLM's are only too glad to dream up approximate models and goal recipes, there has been a performance revolution of sorts there <ref type="bibr">(Yao et al., 2023b;</ref><ref type="bibr" target="#b31">Liang et al., 2023;</ref><ref type="bibr">Wang et al., 2023b)</ref>. If we look beyond the improvements in these lower level goal seeking behaviors-especially in the presence of ergodic simulators, the RL approaches dependent on LLMs will encounter the same issues regarding subgoal interactions that our discussion of PDDL planning problems brought into focus. The LLM-Modulo inspired frameworks will thus, we believe, be equally relevant there. Indeed, SayCan <ref type="bibr" target="#b1">(Ahn et al., 2022)</ref> the earliest use of LLMs in generating policies in an RL-with-Simulator scenario, explicitly filters the action choices suggested by the LLM with the help of simulator.</p><p>Although we focused on text based LLMs (such as GPT4), recently there have also been impressive development in multi-modal LLMs (e.g. GPT4V). While multi-modality is a great addition that increases the coverage of their System 1 imagination (Figure <ref type="figure">1</ref>), it is not clear that this gives them System 2 competence.<ref type="foot" target="#foot_10">foot_10</ref> As we discussed earlier, we can leverage VLMs for style criticism of the robot behavior <ref type="bibr" target="#b15">(Guan et al., 2024)</ref>.</p><p>Finally, our position (with published supporting evidence) that LLMs are incapable of supporting planning in autonomous modes must seem quite at odds with the current head-long rush into agentic LLMs. We believe that the latter is largely a result of confusing "acting" with "planning." Given their ability to translate across formalisms, it is of course possible for LLMs to invoke external servicessomething frameworks like AutoGPT and LangChain support. But the mere ability to invoke an action doesn't, in any way, guarantee that the course of actions thus invoked will achieve a desired state of affairs. The only way to guarantee the latter is to to support robust planning capabilitiessomething our LLM-Modulo frameworks strive to do.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.">Conclusion</head><p>This position paper is a modest attempt to combat both overoptimism and over-pessimism about the role of LLMs in planning and reasoning tasks. Our position is that LLMs cannot plan themselves but can play a variety of constructive roles in solving planning tasks-especially as approximate knowledge sources and candidate plan generators in the socalled LLM-Modulo Frameworks in conjunction with external sound model-based verifiers. In support of this position, we summarized the literature questioning the claims about the planning and self-verification capabilities of LLMs by themselves. We also discussed how conflating approximate knowledge acquisition and generating executable plans of action is behind many of the claims about planning and verification abilities of LLMs. We then shared LLM-Modulo framework, our vision for a productive way to integrate the impressive idea generation/approximate knowledge provision capabilities of LLMs with external verifiers with correctness guarantees, for robust and expressive planning. We discussed how planning in LLM-Modulo framework avoids inheriting the expressiveness and search-complexity limitations of traditional symbolic planners, while retaining their soundness guarantees. We illustrated and discussed the many roles LLMs can play in the LLM-Modulo framework. Finally, we also discussed two case studies of adapting the LLM-Modulo frameworks.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Impact Statement</head><p>This position paper takes a stance on a robust and wellfounded way of leveraging Large Language Models in planning and reasoning tasks. It (i) points out the inabilities of current pre-trained LLMs to tackle planning problems, (ii) suggests some reasons as to why there are wide-spread misunderstandings about LLM planning abilities and (iii) proposes LLM-Modulo frameworks as a way to leverage LLMs for robust planning. The main consequences of realizing this position/vision is expected to be (i) sounding caution about misapplication of LLMs in autonomous modes for planning (ii) providing a way to leverage LLMs to do robust planning. Given the current interest in agentic LLMs, these insights can have significant positive impact in mission critical situations. We do not see any obvious negative societal consequences of leveraging LLMs this way (unless of course the plans are aimed at achieving malicious goals).</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 2 .</head><label>2</label><figDesc>Figure2. Viewing LLMs as an approximate knowledge source trained over civilizational knowledge models, then the ability of LLMs to guess executable plans improves. Without these assumptions or mitigations, the plans that come out of LLMs may look reasonable to the lay user, and yet lead to execution time interactions and errors.5   </figDesc><graphic coords="4,307.44,67.06,233.99,127.37" type="bitmap" /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 3 .</head><label>3</label><figDesc>Figure 3. The proposed LLM-Modulo framework where LLMs act as idea generators and various external critics that specialize in different aspects, critique the candidate plan.</figDesc><graphic coords="5,55.44,67.06,486.00,259.73" type="bitmap" /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 4 .</head><label>4</label><figDesc>Figure 4. LLM Modulo Framework adapted for Travel Planning</figDesc><graphic coords="8,65.90,226.38,210.61,117.85" type="bitmap" /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 1 .</head><label>1</label><figDesc>Results of state-of-the-art LLMs GPT-4o, GPT-4-Turbo, Claude-3-Opus, Gemini Pro and LLaMA-3 70B for Plan Generation with prompts in natural language.</figDesc><table><row><cell>Domain</cell><cell>Method</cell><cell></cell><cell></cell><cell cols="2">Instances correct</cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell>GPT-4o</cell><cell>GPT-4-</cell><cell>Claude-</cell><cell>LLaMA-</cell><cell>Gemini</cell><cell>GPT-4</cell></row><row><cell></cell><cell></cell><cell></cell><cell>Turbo</cell><cell>3-Opus</cell><cell>3 70B</cell><cell>Pro</cell><cell></cell></row><row><cell>Blocksworld (BW)</cell><cell>One-shot</cell><cell>170/600 (28.33%)</cell><cell>138/600 (23%)</cell><cell>289/600 (48.17%)</cell><cell>76/600 (12.6%)</cell><cell>68/600 (11.3%)</cell><cell>206/600 (34.3%)</cell></row><row><cell></cell><cell>Zero-shot</cell><cell>213/600</cell><cell>241/600</cell><cell>356/600</cell><cell>205/600</cell><cell>3/600</cell><cell>210/600</cell></row><row><cell></cell><cell></cell><cell>(35.5%)</cell><cell>(40.1%)</cell><cell>(59.3%)</cell><cell>(34.16%)</cell><cell>(0.5%)</cell><cell>(34.6%)</cell></row><row><cell>Mystery BW</cell><cell>One-shot</cell><cell>5/600</cell><cell>5/600</cell><cell>8/600</cell><cell>15/600</cell><cell>2/500</cell><cell>26/600</cell></row><row><cell>(Deceptive)</cell><cell></cell><cell>(0.83%)</cell><cell>(0.83%)</cell><cell>(1.3%)</cell><cell>(2.5%)</cell><cell>(0.4%)</cell><cell>(4.3%)</cell></row><row><cell></cell><cell>Zero-shot</cell><cell>0/600</cell><cell>1/600</cell><cell>0/600</cell><cell>0/600</cell><cell>(0/500)</cell><cell>1/600</cell></row><row><cell></cell><cell></cell><cell>(0%)</cell><cell>(0.16%)</cell><cell>(0%)</cell><cell>(0%)</cell><cell>(0%)</cell><cell>(0.16%)</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1" xml:id="foot_0"><p>School of Computing and AI, Arizona State University, Tempe, AZ, USA. Correspondence to: Subbarao Kambhampati &lt;rao@asu.edu&gt;.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1" xml:id="foot_1"><p>Think of asking an LLM an yes/no question-is this theorem logically entailed by this first-order logic knowledge-base. This is well-known to be a semi-decidable problem. Ask yourself if the LLM will take longer in answering the question. (If you are thinking Chain-of-thought prompts or training with step-by-step data, consider that you are essentially changing the nature of the original prompt/training).</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2" xml:id="foot_2"><p>In some circles, this unidirectional pipeline has been given the undeserved badge of neuro-symbolic architecture.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3" xml:id="foot_3"><p>Contrary to their claim of "self-improvement", works like<ref type="bibr" target="#b60">(Wang et al., 2022)</ref> actually heavily depend on external knowledge (crafted seed examples) and critics (filtering step).</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4" xml:id="foot_4"><p>Although domains like AlfWorld<ref type="bibr" target="#b45">(Shridhar et al., 2021)</ref> do have sub-goal interactions for successful task completion,(Yao  et al., 2023b)  and<ref type="bibr" target="#b44">(Shinn et al., 2023)</ref> largely ignore these interactions by either focusing on single subgoals or relying on the ergodic nature of the domain when prompting LLMs for generating plans(Verma et al., 2024a).</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5" xml:id="foot_5"><p>These issues are illustrated in part by a recent news story<ref type="bibr" target="#b29">(Kugel &amp; Hiltner, 2023)</ref> about the proliferation of travel planning books, mostly auto-extracted from LLMs, and the ensuing disappointment of the unsuspecting end users who buy them mistaking them for usable plans!</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6" xml:id="foot_6"><p>Note that we can do this check easily because of the formal specification of correctness. For the "improving writing task" also</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7" xml:id="foot_7"><p>The name LLM-Modulo is inspired by the SAT-Modulo theories<ref type="bibr" target="#b36">(Nieuwenhuis &amp; Oliveras, 2006)</ref>.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="8" xml:id="foot_8"><p>Although we focus on planning from scratch, it is easy to accommodate replanning scenarios, where the loop starts with an externally supplied candidate plan.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="9" xml:id="foot_9"><p>If we don't insist on soundness guarantees, then it is, in principle, possible to train LLMs discriminatively to learn to verify plans; see<ref type="bibr" target="#b2">(Arora &amp; Kambhampati, 2023)</ref>.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="11" xml:id="foot_10"><p>If you know how to complete sentences, and now learned to complete dance moves, does your ability to reason/plan magically improve?</p></note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div><head>Acknowledgments</head><p>The ideas discussed in this paper have evolved over a series of talks, tutorials and twitter threads. The discussions, feedback and encouragement from colleagues, including <rs type="person">Sarath Sreedharan</rs>, <rs type="person">Tom Dietterich</rs>, <rs type="person">Yann LeCun</rs>, <rs type="person">Daniel Borrajo</rs>, and <rs type="person">Dan Weld</rs> is gratefully acknowledged. The adaptation of LLM-Modulo Framework for Travel Planning, discussed in Section 4 was lead by <rs type="person">Atharva Gundawar</rs>. <rs type="person">Kambhampati</rs> acknowledges generous support from <rs type="funder">ONR</rs> via grants <rs type="grantNumber">N00014-18-1-2442</rs>, <rs type="grantNumber">N14-18-1-2840</rs> and <rs type="grantNumber">N00014-23-1-2409</rs>, as well as gifts from <rs type="person">J.P. Morgan</rs>, <rs type="funder">Qualcomm</rs> and <rs type="funder">Amazon</rs>.</p></div>
+			</div>
+			<listOrg type="funding">
+				<org type="funding" xml:id="_YPgGKCp">
+					<idno type="grant-number">N00014-18-1-2442</idno>
+				</org>
+				<org type="funding" xml:id="_Q6ZYNce">
+					<idno type="grant-number">N14-18-1-2840</idno>
+				</org>
+				<org type="funding" xml:id="_BNQdbTR">
+					<idno type="grant-number">N00014-23-1-2409</idno>
+				</org>
+			</listOrg>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Clever</forename><surname>Hans</surname></persName>
+		</author>
+		<ptr target="https://en.wikipedia.org/wiki/CleverHans" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<author>
+			<persName><forename type="first">M</forename><surname>Ahn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Brohan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Brown</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Chebotar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Cortes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>David</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Finn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Fu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Gopalakrishnan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Hausman</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2204.01691</idno>
+		<title level="m">Do as i can, not as i say: Grounding language in robotic affordances</title>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Learning and leveraging verifiers to improve planning capabilities of pre-trained language models</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Arora</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2305.17077</idno>
+	</analytic>
+	<monogr>
+		<title level="m">ICML Workshop on Knowledge and Logical Reasoning in the Era of Data-driven Learning</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<author>
+			<persName><forename type="first">R</forename><surname>Bairi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Sonwane</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kanade</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Iyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Parthasarathy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Rajamani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Ashok</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Shet</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2309.12499</idno>
+		<title level="m">Codeplan: Repository-level coding using llms and planning</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">Efficient reinforcement learning via large language model-based search</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Bhambri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Bhattacharjee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Activity planning for the mars exploration rovers</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">L</forename><surname>Bresina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">K</forename><surname>Jónsson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">H</forename><surname>Morris</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Rajan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ICAPS-2005 Conference</title>
+		<imprint>
+			<date type="published" when="2004">2004</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Language models are few-shot learners</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Brown</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Mann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Ryder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Subbiah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">D</forename><surname>Kaplan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Dhariwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Neelakantan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Shyam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Sastry</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Askell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Advances in neural information processing systems</title>
+		<imprint>
+			<biblScope unit="volume">33</biblScope>
+			<biblScope unit="page" from="1877" to="1901" />
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">A tutorial on planning graph based reachability heuristics</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Bryce</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">AI Mag</title>
+		<imprint>
+			<biblScope unit="volume">28</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="47" to="83" />
+			<date type="published" when="2007">2007</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<author>
+			<persName><forename type="first">S</forename><surname>Bubeck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Chandrasekaran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Eldan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Gehrke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Horvitz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Kamar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><forename type="middle">T</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Lundberg</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2303.12712</idno>
+		<title level="m">Sparks of artificial general intelligence: Early experiments with gpt-4</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Two theses of knowledge representation: Language restrictions, taxonomic classification, and the utility of representation services</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Doyle</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">S</forename><surname>Patil</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial intelligence</title>
+		<imprint>
+			<biblScope unit="volume">48</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="261" to="297" />
+			<date type="published" when="1991">1991</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Faith and fate: Limits of transformers on compositionality</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Dziri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Sclar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><forename type="middle">L</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><forename type="middle">Y</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Welleck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>West</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Bhagavatula</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">L</forename><surname>Bras</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">D</forename><surname>Hwang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Sanyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Ren</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ettinger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Harchaoui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Choi</surname></persName>
+		</author>
+		<ptr target="https://openreview.net/forum?id=Fkckkr3ya8" />
+	</analytic>
+	<monogr>
+		<title level="m">Thirty-seventh Conference on Neural Information Processing Systems</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<author>
+			<persName><forename type="first">G</forename><surname>Gendron</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Bao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Witbrock</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Dobbie</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2305.19555</idno>
+		<title level="m">Large language models are not abstract reasoners</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title level="m" type="main">Automated Planning: theory and practice</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Ghallab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Nau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Traverso</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2004">2004</date>
+			<publisher>Elsevier</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Leveraging approximate symbolic models for reinforcement learning via skill diversity</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Guan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Sreedharan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+		<ptr target="https://proceedings.mlr.press/v162/guan22c.html" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 39th International Conference on Machine Learning</title>
+		<title level="s">Proceedings of Machine Learning Research</title>
+		<editor>
+			<persName><forename type="first">K</forename><surname>Chaudhuri</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">S</forename><surname>Jegelka</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">L</forename><surname>Song</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">C</forename><surname>Szepesvari</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">G</forename><surname>Niu</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">S</forename><surname>Sabato</surname></persName>
+		</editor>
+		<meeting>the 39th International Conference on Machine Learning</meeting>
+		<imprint>
+			<publisher>PMLR</publisher>
+			<date type="published" when="2022-07-23">17-23 Jul 2022</date>
+			<biblScope unit="volume">162</biblScope>
+			<biblScope unit="page" from="7949" to="7967" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Leveraging pre-trained large language models to construct and utilize world models for model-based task planning</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Guan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Valmeekam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Sreedharan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+		<ptr target="https://openreview.net/forum?id=zDbsSscmuj" />
+	</analytic>
+	<monogr>
+		<title level="m">Thirty-seventh Conference on Neural Information Processing Systems</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title level="m" type="main">task success&quot; is not enough: Investigating the use of video-language models as behavior critics for catching undesirable agent behaviors</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Guan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">B</forename><surname>Amor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<author>
+			<persName><forename type="first">A</forename><surname>Gundawar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Verma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Guan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Valmeekam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Bhambri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+		<idno>arxiv:2405.20625</idno>
+		<title level="m">Robust planning with llmmodulo framework: Case study in travel planning</title>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<title level="m" type="main">Reasoning with language model is planning with world model</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Hao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Gu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">J</forename><surname>Hong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">Z</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Hu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2305.14992</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Automatic plan validation, continuous effects and mixed initiative planning using PDDL</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Howey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Long</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Fox</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Val</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">16th IEEE International Conference on Tools with Artificial Intelligence</title>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2004">2004</date>
+			<biblScope unit="page" from="294" to="301" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<author>
+			<persName><forename type="first">J</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Mishra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">S</forename><surname>Zheng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">W</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Zhou</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2310.01798</idno>
+		<title level="m">Large language models cannot self-correct reasoning yet</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Large language models can self-improve</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Gu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Hou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Han</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/2023.emnlp-main.67</idno>
+		<ptr target="https://aclanthology.org/2023.emnlp-main" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing</title>
+		<editor>
+			<persName><forename type="first">H</forename><surname>Bouamor</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">J</forename><surname>Pino</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">K</forename><surname>Bali</surname></persName>
+		</editor>
+		<meeting>the 2023 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Singapore</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2023-12">December 2023</date>
+			<biblScope unit="page" from="1051" to="1068" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<title level="m" type="main">Inner monologue: Embodied reasoning through planning with language models</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Xiao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Chan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Liang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Florence</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Zeng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Tompson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Mordatch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Chebotar</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2207.05608</idno>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<ptr target="https://www.icaps-conference.org/competitions/" />
+		<title level="m">IPC. International planning competition</title>
+		<imprint>
+			<date type="published" when="1998">1998</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Automated scheduling for nasa&apos;s deep space network</title>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">D</forename><surname>Johnston</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Tran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Arroyo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Sorensen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Tay</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Carruth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Coffman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Wallace</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">AI Magazine</title>
+		<imprint>
+			<biblScope unit="volume">35</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="7" to="25" />
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<title level="m" type="main">Thinking, fast and slow</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Kahneman</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2011">2011</date>
+			<publisher>macmillan</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Model-lite planning for the web age masses: The challenges of planning with incomplete and evolving domain models</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the National Conference on Artificial Intelligence</title>
+		<meeting>the National Conference on Artificial Intelligence<address><addrLine>Menlo Park, CA; Cambridge, MA; London</addrLine></address></meeting>
+		<imprint>
+			<publisher>MIT Press</publisher>
+			<date type="published" when="1999">1999. 2007</date>
+			<biblScope unit="volume">22</biblScope>
+			<biblScope unit="page">1601</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Polanyi&apos;s revenge and AI&apos;s new romance with tacit knowledge</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Communications of the ACM</title>
+		<imprint>
+			<biblScope unit="volume">64</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="31" to="32" />
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Can LLMs reason and plan</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Annals of the New York Academy of Sciences</title>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">On the role of large language models in planning</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Valmeekam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Marquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Guan</surname></persName>
+		</author>
+		<ptr target="https://yochan-lab.github.io/tutorial/ICAPS-2023/" />
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Automated Planning and Scheduling (ICAPS)</title>
+		<meeting><address><addrLine>Prague</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2023-07">July 2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<monogr>
+		<title level="m" type="main">A new frontier for travel scammers: A.I.-Generated Guidebooks</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kugel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Hiltner</surname></persName>
+		</author>
+		<ptr target="https://www.nytimes.com/2023/08/05/travel/amazon-guidebooks-artificial-intelligence.html" />
+		<imprint>
+			<date type="published" when="2023-08">August 2023</date>
+			<pubPlace>New York Times</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Reward design with language models</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Kwon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">M</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Bullard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Sadigh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The Eleventh International Conference on Learning Representations</title>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<title level="m" type="main">Code as policies: Language model programs for embodied control</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Liang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Hausman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Ichter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Florence</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Zeng</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<monogr>
+		<title level="m" type="main">Empowering large language models with optimal planning proficiency</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Biswas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Stone</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Llm+ P</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2304.11477</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<monogr>
+		<author>
+			<persName><forename type="first">Y</forename><forename type="middle">J</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Liang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D.-A</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Bastani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Jayaraman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Fan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Anandkumar</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Eureka</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2310.12931</idno>
+		<title level="m">Human-level reward design via coding large language models</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<monogr>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">T</forename><surname>Mccoy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Yao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Friedman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Hardy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><forename type="middle">L</forename><surname>Griffiths</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2309.13638</idno>
+		<title level="m">Embers of autoregression: Understanding large language models through the problem they are trained to solve</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<monogr>
+		<title level="m" type="main">Pddl-the planning domain definition language</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Mcdermott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Ghallab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">E</forename><surname>Howe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">A</forename><surname>Knoblock</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ram</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">M</forename><surname>Veloso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">S</forename><surname>Weld</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">E</forename><surname>Wilkins</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1998">1998</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">On sat modulo theories and optimization problems</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Nieuwenhuis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Oliveras</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Theory and Applications of Satisfiability Testing-SAT 2006: 9th International Conference</title>
+		<meeting><address><addrLine>Seattle, WA, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2006">August 12-15, 2006. 2006</date>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="page" from="156" to="169" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Gpt3-toplan: Extracting plans from text using gpt-3</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Olmo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Sreedharan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">FinPlan</title>
+		<imprint>
+			<biblScope unit="page">24</biblScope>
+			<date type="published" when="2021">2021. 2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<monogr>
+		<title level="m" type="main">Introducing chatgpt by openai</title>
+		<author>
+			<persName><surname>Openai</surname></persName>
+		</author>
+		<ptr target="https://openai.com/blog/chatgpt.OpenAI.Gpt-4technicalreport" />
+		<imprint>
+			<date type="published" when="2022">2022. 2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">Training language models to follow instructions with human feedback</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Ouyang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Almeida</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Wainwright</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Mishkin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Agarwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Slama</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ray</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Advances in Neural Information Processing Systems</title>
+		<imprint>
+			<biblScope unit="volume">35</biblScope>
+			<biblScope unit="page" from="27730" to="27744" />
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<monogr>
+		<title level="m" type="main">Logiclm: Empowering large language models with symbolic solvers for faithful logical reasoning</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Pan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Albalak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><forename type="middle">Y</forename><surname>Wang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2305.12295</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<monogr>
+		<title level="m" type="main">Grounding large language models for dynamic planning to navigation in new environments</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Rajvanshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Sikka</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H.-P</forename><surname>Chiu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Velasquez</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Saynav</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2309.04077</idno>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Mathematical discoveries from program search with large language models</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Romera-Paredes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Barekatain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Novikov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Balog</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">P</forename><surname>Kumar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Dupont</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><forename type="middle">J</forename><surname>Ruiz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">S</forename><surname>Ellenberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Fawzi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature</title>
+		<imprint>
+			<biblScope unit="page" from="1" to="3" />
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<monogr>
+		<title level="m" type="main">Artificial intelligence a modern approach</title>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">J</forename><surname>Russell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Norvig</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2010">2010</date>
+			<pubPlace>London</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Reflexion: Language agents with verbal reinforcement learning</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Shinn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Cassano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Gopinath</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">R</forename><surname>Narasimhan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Yao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Thirty-seventh Conference on Neural Information Processing Systems</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">Aligning Text and Embodied Environments for Interactive Learning</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Shridhar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Yuan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M.-A</forename><surname>Côté</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Bisk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Trischler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Hausknecht</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Alfworld</surname></persName>
+		</author>
+		<ptr target="https://arxiv.org/abs/2010.03768" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Conference on Learning Representations (ICLR)</title>
+		<meeting>the International Conference on Learning Representations (ICLR)</meeting>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">PDDL planning with pretrained large language models</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Silver</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Hariprasad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">S</forename><surname>Shuttleworth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Kumar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Lozano-Pérez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><forename type="middle">P</forename><surname>Kaelbling</surname></persName>
+		</author>
+		<ptr target="https://openreview.net/forum?id=1QMMUB4zfl" />
+	</analytic>
+	<monogr>
+		<title level="m">NeurIPS 2022 Foundation Models for Decision Making Workshop</title>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">Gipo: an integrated graphical tool to support knowledge engineering in ai planning</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Simpson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><forename type="middle">L</forename><surname>Mccluskey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Zhao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ECP-01</title>
+		<imprint>
+			<publisher>Citeseer</publisher>
+			<date type="published" when="2001">2001</date>
+			<biblScope unit="page">445</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">GPT-4 Doesn&apos;t Know It&apos;s Wrong: An Analysis of Iterative Prompting for Reasoning Problems</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Stechly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Marquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">NeurIPS 2023 Foundation Models for Decision Making Workshop</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<monogr>
+		<title level="m" type="main">On the self-verification limitations of large language models on reasoning and planning tasks</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Stechly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Valmeekam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+		<idno>arxiv:2402.08115</idno>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<monogr>
+		<title level="m" type="main">Chain of thoughtlessness: An analysis of cot in planning</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Stechly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Valmeekam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+		<idno>arxiv:2405.04776</idno>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<analytic>
+		<title level="a" type="main">Solving olympiad geometry without human demonstrations</title>
+		<author>
+			<persName><forename type="first">T</forename><forename type="middle">H</forename><surname>Trinh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><forename type="middle">V</forename><surname>Le</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Luong</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature</title>
+		<imprint>
+			<biblScope unit="volume">625</biblScope>
+			<biblScope unit="page" from="476" to="482" />
+			<date type="published" when="2024">7995. 2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<monogr>
+		<author>
+			<persName><forename type="first">T</forename><surname>Ullman</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2302.08399</idno>
+		<title level="m">Large language models fail on trivial alterations to theory-of-mind tasks</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<analytic>
+		<title level="a" type="main">Can large language models really improve by self-critiquing their own plans?</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Valmeekam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Marquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">NeurIPS 2023 Foundation Models for Decision Making Workshop</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b54">
+	<analytic>
+		<title level="a" type="main">An extensible benchmark for evaluating large language models on planning and reasoning about change</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Valmeekam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Marquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Olmo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Sreedharan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Planbench</surname></persName>
+		</author>
+		<ptr target="https://openreview.net/forum?id=YXogl4uQUO" />
+	</analytic>
+	<monogr>
+		<title level="m">Thirty-seventh Conference on Neural Information Processing Systems Datasets and Benchmarks Track</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b55">
+	<analytic>
+		<title level="a" type="main">On the planning abilities of large language models -a critical investigation</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Valmeekam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Marquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Sreedharan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+		<ptr target="https://openreview.net/forum?id=X6dEqXIsEW" />
+	</analytic>
+	<monogr>
+		<title level="m">Thirty-seventh Conference on Neural Information Processing Systems (Spotlight)</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b56">
+	<monogr>
+		<author>
+			<persName><forename type="first">M</forename><surname>Verma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Bhambri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2405.13966</idno>
+		<title level="m">On the brittle foundations of react prompting for agentic large language models</title>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b57">
+	<monogr>
+		<author>
+			<persName><forename type="first">M</forename><surname>Verma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Bhambri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kambhampati</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2401.05302</idno>
+		<title level="m">Theory of mind abilities of large language models in human-robot interaction: An illusion?</title>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b58">
+	<monogr>
+		<title level="m" type="main">Voyager: An open-ended embodied agent with large language models</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Mandlekar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Xiao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Fan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Anandkumar</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b59">
+	<monogr>
+		<author>
+			<persName><forename type="first">G</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Mandlekar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Xiao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Fan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Anandkumar</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2305.16291</idno>
+		<title level="m">Voyager: An openended embodied agent with large language models</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b60">
+	<monogr>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Kordi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Mishra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><forename type="middle">A</forename><surname>Smith</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Khashabi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Hajishirzi</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2212.10560</idno>
+		<title level="m">Self-instruct: Aligning language model with self generated instructions</title>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b61">
+	<analytic>
+		<title level="a" type="main">Large language models are better reasoners with self-verification</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Weng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Findings of the Association for Computational Linguistics: EMNLP 2023</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+			<biblScope unit="page" from="2550" to="2575" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b62">
+	<monogr>
+		<author>
+			<persName><forename type="first">J</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Lou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Tian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Xiao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Su</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Travelplanner</surname></persName>
+		</author>
+		<idno>arxiv:2402.01622</idno>
+		<title level="m">A benchmark for real-world planning with language agents</title>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b63">
+	<monogr>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Bai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Gong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Soh</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2302.05128</idno>
+		<title level="m">Translating natural language to planning goals with large-language models</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b64">
+	<analytic>
+		<title level="a" type="main">Tree of thoughts: Deliberate problem solving with large language models</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Yao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Shafran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><forename type="middle">L</forename><surname>Griffiths</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Cao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">R</forename><surname>Narasimhan</surname></persName>
+		</author>
+		<ptr target="https://openreview.net/forum?id=5Xc1ecxO1h" />
+	</analytic>
+	<monogr>
+		<title level="m">Thirtyseventh Conference on Neural Information Processing Systems</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b65">
+	<analytic>
+		<title level="a" type="main">React: Synergizing reasoning and acting in language models</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Yao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Du</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Shafran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">R</forename><surname>Narasimhan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Cao</surname></persName>
+		</author>
+		<ptr target="https://openreview.net/forum?id=WE_vluYUL-X" />
+	</analytic>
+	<monogr>
+		<title level="m">The Eleventh International Conference on Learning Representations</title>
+		<imprint>
+			<date type="published" when="2023">2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>
